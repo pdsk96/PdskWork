@@ -19,6 +19,27 @@ export const dictionaries = {
     spotlight: {
       hint: 'Move your cursor to wake the spotlight',
     },
+    bento: {
+      sectionLabel: 'Capabilities',
+      title: 'Built for the liquid-glass era',
+      lead: 'A cyberpunk motion foundation — reactive 3D, kinetic type, and glass surfaces that bend light.',
+      r3dTitle: 'Reactive 3D',
+      r3dBody:
+        'A cursor-reactive icosahedron rendered with React Three Fiber. It parallaxes toward your pointer and drifts as you scroll.',
+      kineticTitle: 'Kinetic type',
+      kineticBody:
+        'GlitchText tears cyan and magenta channels apart, then snaps them back — pure CSS animation, no per-frame cost.',
+      glassTitle: 'Liquid glass',
+      glassBody:
+        'GlassPanel surfaces tilt toward the pointer with a springy refractive highlight, and rest flat on touch devices.',
+      perfTitle: 'Adaptive perf',
+      perfBody:
+        'PerformanceMonitor watches framerate and drops pixel ratio under load; AdaptiveDpr regresses gracefully.',
+      a11yTitle: 'Motion-aware',
+      a11yBody:
+        'prefers-reduced-motion freezes the scene to a single frame, kills the glitch, and keeps AA contrast.',
+      cta: 'Explore work',
+    },
     admin: {
       title: 'Admin Console',
       loginTitle: 'Admin sign in',
@@ -49,6 +70,27 @@ export const dictionaries = {
     },
     spotlight: {
       hint: 'Gerakkan kursor untuk menyalakan sorotan',
+    },
+    bento: {
+      sectionLabel: 'Kemampuan',
+      title: 'Dibuat untuk era liquid-glass',
+      lead: 'Fondasi gerak cyberpunk — 3D reaktif, tipografi kinetik, dan permukaan kaca yang membelahkan cahaya.',
+      r3dTitle: '3D reaktif',
+      r3dBody:
+        'Icosahedron reaktif terhadap kursor yang dirender dengan React Three Fiber. Berparalaks ke arah kursor dan melayang saat Anda menggulir.',
+      kineticTitle: 'Tipografi kinetik',
+      kineticBody:
+        'GlitchText merobek saluran cyan dan magenta lalu menyatukannya kembali — animasi CSS murni, tanpa biaya per-frame.',
+      glassTitle: 'Liquid glass',
+      glassBody:
+        'Permukaan GlassPanel miring ke arah kursor dengan kilau refraktif yang elastis, dan rata pada perangkat sentuh.',
+      perfTitle: 'Performa adaptif',
+      perfBody:
+        'PerformanceMonitor memantau frame rate dan menurunkan rasio piksel saat beban berat; AdaptiveDpr menurunkan secara halus.',
+      a11yTitle: 'Sadari gerak',
+      a11yBody:
+        'prefers-reduced-motion membekukan adegan menjadi satu frame, mematikan glitch, dan menjaga kontras AA.',
+      cta: 'Jelajahi karya',
     },
     admin: {
       title: 'Konsol Admin',
