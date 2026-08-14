@@ -1,0 +1,32 @@
+# PdskWork — Agent Memory
+
+Cyberpunk-themed portfolio/work app. Stack: Next.js 16 (App Router, Turbopack), React 19,
+React Three Fiber, Framer Motion. Iteration-driven development from `.hermes/pdsk_work_master_spec.md`.
+
+## Next.js 16 critical notes (read node_modules/next/dist/docs/ before coding)
+- Turbopack is the default bundler for `next dev` and `next build`. No `--turbopack` flag needed.
+- Async Request APIs are mandatory: `cookies()`, `headers()`, `params`, `searchParams` must be `await`ed.
+- `next lint` is removed. Use ESLint CLI directly. `next build` no longer runs lint.
+- Middleware is renamed to **Proxy** (`proxy.ts` at project root or `src/` root).
+- ESLint Flat Config (`eslint.config.mjs`) is the default.
+- Node.js 20.9+ required.
+- `serverRuntimeConfig`/`publicRuntimeConfig` removed — use env vars / `NEXT_PUBLIC_*`.
+- Concurrent dev/build: `next dev` outputs to `.next/dev`.
+
+## Project conventions
+- Source lives under `src/` (`src/app`, `src/components`, `src/i18n`, `src/lib`).
+- i18n: cookie + context based, locales `en` and `id` (dictionaries in `src/i18n/dictionaries.ts`).
+- Admin auth: HMAC-signed httpOnly cookie; protected via `src/proxy.ts`.
+- DB schema: `src/db/schema.sql`; connection helper in `src/lib/db.ts`.
+- Accessibility: honor `prefers-reduced-motion`, AA contrast, alt text, focus-visible states.
+- Do NOT break existing API routes, DB schema, admin auth, i18n (en/id), or .gitignore.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
