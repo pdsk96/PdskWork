@@ -21,6 +21,23 @@ React Three Fiber, Framer Motion. Iteration-driven development from `.hermes/pds
 - Accessibility: honor `prefers-reduced-motion`, AA contrast, alt text, focus-visible states.
 - Do NOT break existing API routes, DB schema, admin auth, i18n (en/id), or .gitignore.
 
+## Iteration 1 notes (cyberpunk motion foundation)
+- Motion components: `CyberHero` (R3F), `GlitchText`, `GlassPanel`, `BentoGrid`.
+- `HeroScene.tsx` was removed (superseded by `CyberHero`).
+- R3F `useScroll`-linking: use `scrollYProgress` (0..1), NOT `scrollY` (pixels).
+- Gate R3F `<Canvas>` on a WebGL-support probe to avoid unhandled rejection in
+  WebGL-less environments (headless browsers, some devices).
+- drei v10 exports: `PerformanceMonitor`, `AdaptiveDpr`, `Float`, `Sparkles`,
+  `Environment`. `ScrollControls`/`useScroll` are NOT in drei — use framer-motion.
+- `motion[as]` (framer-motion) does not accept arbitrary DOM props (e.g. `id`);
+  forward them explicitly in the component's prop type.
+- GitHub push: `GITHUB_TOKEN` here has NO oauth scopes (403 on push). Use
+  `GITHUB_PAT_KEY` (has `repo` scope) for pushes/PR API via
+  `git remote set-url origin https://${GITHUB_PAT_KEY}@github.com/...`.
+- ESLint CLI crashes with a circular-structure error (eslint-config-next vs
+  ESLint 9) — pre-existing on master; `next build` TS check is the gate.
+- PR #1 tracks branch `canvas/iterasi-1` -> `master`; update it, don't recreate.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know
