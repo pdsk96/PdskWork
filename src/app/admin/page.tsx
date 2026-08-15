@@ -1,8 +1,6 @@
 import { redirect } from 'next/navigation'
 import { isAuthenticated } from '@/lib/auth'
-import { getDictionary } from '@/i18n/dictionaries'
-import { cookies } from 'next/headers'
-import { defaultLocale, isSupportedLocale } from '@/i18n/locale-server'
+import { getLocaleDict } from '@/i18n/locale-server'
 
 
 export default async function AdminPage() {
@@ -10,9 +8,7 @@ export default async function AdminPage() {
     redirect('/admin/login?next=/admin')
   }
 
-  const store = await cookies()
-  const locale = isSupportedLocale(store.get('pdsk_locale')?.value) ? store.get('pdsk_locale')!.value : defaultLocale
-  const dict = getDictionary(locale)
+  const { dict } = await getLocaleDict()
 
   return (
     <main className="auth-shell">

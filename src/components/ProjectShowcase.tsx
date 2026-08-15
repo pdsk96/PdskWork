@@ -19,40 +19,27 @@ export default function ProjectShowcase() {
     {
       accent: 'cyan' as const,
       label: dict.nav.work,
-      title:
-        dict.nav.work === 'Work' ? 'Real-time 3D scenes' : 'Adegan 3D real-time',
-      body:
-        dict.nav.work === 'Work'
-          ? 'React Three Fiber meshes that react to cursor and scroll without per-frame allocations.'
-          : 'Mesh R3F yang merespons kursor & gulir tanpa alokasi per-frame.',
+      title: dict.showcase.realtime3d,
+      body: dict.showcase.realtime3dBody,
       span: { gridColumn: 'span 2', gridRow: 'span 2' } as React.CSSProperties,
     },
     {
       accent: 'magenta' as const,
       label: 'Motion',
-      title: dict.nav.work === 'Work' ? 'Kinetic type' : 'Tipografi kinetik',
-      body:
-        dict.nav.work === 'Work'
-          ? 'Scramble + gradient glitch text guarded by prefers-reduced-motion.'
-          : 'Teks glitch scramble + gradien, dengan pengaman prefers-reduced-motion.',
+      title: dict.showcase.kineticType,
+      body: dict.showcase.kineticTypeBody,
     },
     {
       accent: 'violet' as const,
       label: 'Glass',
-      title: dict.nav.work === 'Work' ? 'Liquid surfaces' : 'Permukaan cair',
-      body:
-        dict.nav.work === 'Work'
-          ? 'Frosted backdrop-blur panels with accent glow.'
-          : 'Panel kaca buram backdrop-blur dengan glow aksen.',
+      title: dict.showcase.liquidSurfaces,
+      body: dict.showcase.liquidSurfacesBody,
     },
     {
       accent: 'cyan' as const,
       label: 'Stack',
-      title: 'Next.js 16 + R3F',
-      body:
-        dict.nav.work === 'Work'
-          ? 'App Router, Turbopack, React 19, Framer Motion.'
-          : 'App Router, Turbopack, React 19, Framer Motion.',
+      title: dict.showcase.stackTitle,
+      body: dict.showcase.stackBody,
       span: { gridColumn: 'span 2' } as React.CSSProperties,
     },
   ]

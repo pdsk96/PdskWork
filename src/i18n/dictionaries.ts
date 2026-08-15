@@ -52,6 +52,16 @@ export const dictionaries = {
       footerRights: 'All rights reserved.',
       feed: 'RSS feed',
     },
+    showcase: {
+      realtime3d: 'Real-time 3D scenes',
+      realtime3dBody: 'React Three Fiber meshes that react to cursor and scroll without per-frame allocations.',
+      kineticType: 'Kinetic type',
+      kineticTypeBody: 'Scramble + gradient glitch text guarded by prefers-reduced-motion.',
+      liquidSurfaces: 'Liquid surfaces',
+      liquidSurfacesBody: 'Frosted backdrop-blur panels with accent glow.',
+      stackTitle: 'Next.js 16 + R3F',
+      stackBody: 'App Router, Turbopack, React 19, Motion.',
+    },
   },
   id: {
     nav: {
@@ -101,6 +111,16 @@ export const dictionaries = {
       footerConnect: 'Terhubung',
       footerRights: 'Hak cipta dilindungi.',
       feed: 'Feed RSS',
+    },
+    showcase: {
+      realtime3d: 'Adegan 3D real-time',
+      realtime3dBody: 'Mesh R3F yang merespons kursor & gulir tanpa alokasi per-frame.',
+      kineticType: 'Tipografi kinetik',
+      kineticTypeBody: 'Teks glitch scramble + gradien, dengan pengaman prefers-reduced-motion.',
+      liquidSurfaces: 'Permukaan cair',
+      liquidSurfacesBody: 'Panel kaca buram backdrop-blur dengan glow aksen.',
+      stackTitle: 'Next.js 16 + R3F',
+      stackBody: 'App Router, Turbopack, React 19, Motion.',
     },
   },
 } as const

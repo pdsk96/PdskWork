@@ -4,13 +4,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useLocale } from '@/i18n/LocaleProvider'
 import ShareButtons from './ShareButtons'
-
-const NAV = [
-  { href: '/', key: 'home' as const },
-  { href: '/work', key: 'work' as const },
-  { href: '/about', key: 'about' as const },
-  { href: '/contact', key: 'contact' as const },
-]
+import { NAV_LINKS } from '@/lib/nav'
 
 /**
  * SiteFooter — bilingual footer with tagline, quick navigation, share buttons,
@@ -36,10 +30,10 @@ export default function SiteFooter() {
         <nav className="site-footer__col" aria-label={dict.ui.footerNav}>
           <h2 className="site-footer__heading">{dict.ui.footerNav}</h2>
           <ul className="site-footer__list">
-            {NAV.map((item) => (
+            {NAV_LINKS.map((item) => (
               <li key={item.href}>
-                <Link href={item.href} className="site-footer__link" transitionTypes={['nav-forward']}>
-                  {dict.nav[item.key]}
+                <Link href={item.href} className="site-footer__link" transitionTypes={[item.transitionType]}>
+                  {dict.nav[item.navKey]}
                 </Link>
               </li>
             ))}
