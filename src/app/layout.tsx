@@ -10,6 +10,7 @@ import ReadingProgress from '@/components/ReadingProgress'
 import BackToTop from '@/components/BackToTop'
 import SiteFooter from '@/components/SiteFooter'
 import { WebVitals } from '@/components/WebVitals'
+import { FirebaseAnalytics } from '@/components/FirebaseAnalytics'
 import { LazyMotion, domAnimation } from 'motion/react'
 
 export const metadata: Metadata = {
@@ -50,6 +51,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {/* LazyMotion + domAnimation: ship the lazy animation feature bundle
                 instead of the full Motion bundle (smaller client JS). */}
             <LazyMotion features={domAnimation} strict>
+              <FirebaseAnalytics />
               <WebVitals />
               <ReadingProgress />
               <CyberBackground />

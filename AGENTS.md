@@ -75,9 +75,11 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Iteration 5 — Firebase App Hosting + custom domain (applied, build green)
 - Deploy target: **Firebase App Hosting** (Next.js 16 SSR; static export NOT compatible due to cookies()/fs).
+- Firebase project: **pdskwork** (projectId `pdskwork`, measurementId `G-XH5XF12NSD`). Web config in `src/lib/firebase.ts`.
 - `next.config.ts`: added `output: 'standalone'` — self-contained server bundle for Cloud Run. Compatible with `cacheComponents` + `partialPrefetching`.
-- Config files added: `firebase.json` (`apphosting` block only — App Hosting handles CDN static + SSR routing; NO legacy `hosting.rewrites`), `apphosting.yaml` (Cloud Run runConfig + env/secrets), `.firebaserc` (project alias `pdsk-work`).
+- Config files added: `firebase.json` (`apphosting` block only — App Hosting handles CDN static + SSR routing; NO legacy `hosting.rewrites`), `apphosting.yaml` (Cloud Run runConfig + env/secrets), `.firebaserc` (project alias `pdskwork`).
 - App Hosting auto-detects Next.js → runs `npm run build` + framework adapter start. No buildCommand/runCommand overrides in apphosting.yaml.
+- **Google Analytics for Firebase:** `src/lib/firebase.ts` initializes the app + lazily `getAnalytics()` (guarded by `isSupported()` so SSR no-ops). `src/components/FirebaseAnalytics.tsx` (client) awaits the analytics promise on mount; mounted in root layout inside `<LazyMotion>`. `firebase` npm package added.
 - Custom domain: `pdsk.qd.je` via Firebase Hosting custom domain (DNS A/AAAA + TXT verification, managed SSL). Set as `NEXT_PUBLIC_SITE_URL` in apphosting.yaml + `.env.example`, used as `metadataBase` in layout.tsx, and as fallback BASE in sitemap.ts/robots.ts/feed.xml/route.ts (replaced `pdsk-work.example.com` placeholder). Fixed sitemap.ts bug that fell back to `NEXT_PUBLIC_APP_NAME` ("PdskWork") as a URL.
 - Secrets: `ADMIN_AUTH_SECRET`, `ADMIN_PASSWORD` → Cloud Secret Manager (`firebase apphosting:secrets:set`), referenced in apphosting.yaml. Never in repo.
 - **Blog persistence caveat:** `src/lib/blog-store.ts` uses fs writes. Cloud Run filesystem is read-only → reads work (bundled seed), writes throw new `ReadOnlyDataError` (HTTP 503) unless `BLOG_DATA_DIR` env points at a writable volume. API routes (POST/PUT/DELETE) catch it and return 503. For persistent admin edits in prod → migrate blog-store internals to Firestore (interface unchanged). See FIREBASE.md.

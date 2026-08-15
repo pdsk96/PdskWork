@@ -13,6 +13,10 @@ global Cloud CDN.
   (App Hosting requires Blaze — https://console.firebase.google.com → Billing).
 - The GitHub repo `pdsk96/PdskWork` connected (App Hosting deploys from GitHub).
 - Node 20.9+ locally for optional CLI deploys.
+- The **pdskwork** Firebase project already created — its web config lives in
+  `src/lib/firebase.ts` (apiKey, appId, measurementId `G-XH5XF12NSD`, etc.).
+  Google Analytics for Firebase is initialized client-side via
+  `<FirebaseAnalytics />` in the root layout.
 
 ## Files added for Firebase
 
@@ -21,7 +25,7 @@ global Cloud CDN.
 | `next.config.ts` | `output: 'standalone'` — self-contained server bundle for Cloud Run |
 | `firebase.json` | `apphosting` block — tells `firebase deploy` which backend to build |
 | `apphosting.yaml` | Cloud Run runtime config (CPU, memory, scaling) + env/secrets |
-| `.firebaserc` | Default project alias (`pdsk-work`) |
+| `.firebaserc` | Default project alias (`pdskwork`) |
 | `.env.example` | Documents all env vars (public + secret) |
 
 ## 1. Create the Firebase project & App Hosting backend
@@ -31,12 +35,11 @@ global Cloud CDN.
 npm install -g firebase-tools
 firebase login
 
-# Create + link the project (or use an existing one in the console)
-firebase projects:create pdsk-work
-firebase use pdsk-work
+# The pdskwork project already exists. Link it as the active project:
+firebase use pdskwork
 
 # Create the App Hosting backend (us-central1 by default)
-firebase apphosting:backends:create --project pdsk-work
+firebase apphosting:backends:create --project pdskwork
 ```
 
 Or do it in the console: **Firebase → App Hosting → Get started → connect
@@ -78,7 +81,7 @@ firebase deploy --only apphosting
 ```
 
 The first deploy gives you a URL like
-`https://pdsk-work--<region>-<id>.a.run.app`. Verify the site loads before
+`https://pdskwork--<region>-<id>.a.run.app`. Verify the site loads before
 adding the custom domain.
 
 ## 5. Connect custom domain `pdsk.qd.je`

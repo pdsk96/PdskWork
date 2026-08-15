@@ -1,6 +1,6 @@
 {
   "apphosting": {
-    "backendId": "pdsk-work",
+    "backendId": "pdskwork",
     "rootDir": "/",
     "ignore": [
       "node_modules",
