@@ -11,8 +11,8 @@ const firebaseConfig = {
   projectId: 'pdskwork',
   storageBucket: 'pdskwork.firebasestorage.app',
   messagingSenderId: '998484585821',
-  appId: '1:998484585821:web:0dbd74be4cf76db1c44cb4',
-  measurementId: 'G-XH5XF12NSD',
+  appId: '1:998484585821:web:f1d0d86733f00771c44cb4',
+  measurementId: 'G-ZZW0HL7P0T',
 }
 
 // Guard against duplicate init during hot reloads / HMR.
