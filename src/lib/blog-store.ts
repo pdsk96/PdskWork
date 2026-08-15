@@ -13,7 +13,19 @@ import { randomUUID } from 'node:crypto'
  *
  * All methods are async and read/write the file on each call — fine for a
  * single-admin portfolio CMS. Posts are kept in `src/db/blog.json`.
+ *
+ * Hosting note: on read-only serverless runtimes (Firebase App Hosting /
+ * Cloud Run) the deployed `blog.json` is readable but NOT writable, so public
+ * reads work while admin create/edit/delete will throw `ReadOnlyDataError`.
+ * For persistent admin edits in production, point `BLOG_DATA_DIR` at a
+ * writable volume, or migrate this module to Firestore (see FIREBASE.md).
  */
+export class ReadOnlyDataError extends Error {
+  constructor(message = 'Blog data store is read-only on this runtime.') {
+    super(message)
+    this.name = 'ReadOnlyDataError'
+  }
+}
 
 export interface BlogPost {
   id: string
@@ -38,20 +50,43 @@ export interface BlogInput {
   locale?: 'en' | 'id'
 }
 
-const BLOG_FILE = join(process.cwd(), 'src', 'db', 'blog.json')
+// Seed file shipped in the repo (read-only on serverless). Reads fall back to
+// this when no writable data dir is configured.
+const SEED_FILE = join(process.cwd(), 'src', 'db', 'blog.json')
+// Optional writable directory for runtime persistence. On Firebase App Hosting
+// / Cloud Run, set BLOG_DATA_DIR to a writable volume (e.g. a mounted Cloud
+// Run volume or /tmp for ephemeral per-instance data). When unset, the store
+// is read-only and writes throw ReadOnlyDataError.
+const DATA_DIR = process.env.BLOG_DATA_DIR ?? ''
+const BLOG_FILE = DATA_DIR ? join(DATA_DIR, 'blog.json') : SEED_FILE
 
 async function ensureFile(): Promise<void> {
   try {
     await readFile(BLOG_FILE, 'utf8')
-  } catch {
-    await mkdir(join(process.cwd(), 'src', 'db'), { recursive: true })
-    await writeFile(BLOG_FILE, '[]', 'utf8')
+  } catch (err) {
+    if (DATA_DIR) {
+      await mkdir(DATA_DIR, { recursive: true })
+      // Seed the writable store from the bundled file on first use so existing
+      // posts are not lost when switching to a writable data dir.
+      let seed = '[]'
+      try {
+        seed = await readFile(SEED_FILE, 'utf8')
+      } catch {
+        /* no seed — start empty */
+      }
+      await writeFile(BLOG_FILE, seed, 'utf8')
+    } else {
+      // No writable dir configured: fall back to the read-only seed so reads
+      // still work. Writes will fail later with ReadOnlyDataError.
+      await readFile(SEED_FILE, 'utf8')
+    }
   }
 }
 
 async function readAll(): Promise<BlogPost[]> {
   await ensureFile()
-  const raw = await readFile(BLOG_FILE, 'utf8')
+  const file = DATA_DIR ? BLOG_FILE : SEED_FILE
+  const raw = await readFile(file, 'utf8')
   try {
     return JSON.parse(raw) as BlogPost[]
   } catch {
@@ -60,8 +95,14 @@ async function readAll(): Promise<BlogPost[]> {
 }
 
 /** Atomic write: write to a temp file then rename, so a crash mid-write never
- *  leaves a half-written blog.json. */
+ *  leaves a half-written blog.json. Throws ReadOnlyDataError when no writable
+ *  data directory is configured (serverless read-only filesystem). */
 async function writeAll(posts: BlogPost[]): Promise<void> {
+  if (!DATA_DIR) {
+    throw new ReadOnlyDataError(
+      'Cannot write blog data: BLOG_DATA_DIR is not set. On Firebase App Hosting / Cloud Run the deployed filesystem is read-only — set BLOG_DATA_DIR to a writable volume or migrate to Firestore (see FIREBASE.md).',
+    )
+  }
   const tmp = `${BLOG_FILE}.tmp`
   await writeFile(tmp, JSON.stringify(posts, null, 2), 'utf8')
   // rename over the target atomically on POSIX; on Windows it replaces.

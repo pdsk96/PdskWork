@@ -8,9 +8,7 @@ import { getPublishedPosts } from '@/lib/blog-store'
  * (rendered on demand rather than prerendered at build).
  */
 const BASE =
-  process.env.NEXT_PUBLIC_SITE_URL ??
-  process.env.NEXT_PUBLIC_APP_NAME ??
-  'https://pdsk-work.example.com'
+  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://pdsk.qd.je'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date()

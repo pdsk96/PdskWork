@@ -1,6 +1,12 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { isAuthenticated } from '@/lib/auth'
-import { deletePost, getPostById, updatePost, type BlogInput } from '@/lib/blog-store'
+import {
+  deletePost,
+  getPostById,
+  updatePost,
+  ReadOnlyDataError,
+  type BlogInput,
+} from '@/lib/blog-store'
 
 /**
  * /api/blog/[id]
@@ -38,11 +44,18 @@ export async function PUT(
   } catch {
     return NextResponse.json({ error: 'Invalid request body' }, { status: 400 })
   }
-  const updated = await updatePost(id, body)
-  if (!updated) {
-    return NextResponse.json({ error: 'Not found' }, { status: 404 })
+  try {
+    const updated = await updatePost(id, body)
+    if (!updated) {
+      return NextResponse.json({ error: 'Not found' }, { status: 404 })
+    }
+    return NextResponse.json(updated)
+  } catch (err) {
+    if (err instanceof ReadOnlyDataError) {
+      return NextResponse.json({ error: err.message }, { status: 503 })
+    }
+    throw err
   }
-  return NextResponse.json(updated)
 }
 
 export async function DELETE(
@@ -53,9 +66,16 @@ export async function DELETE(
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
   const { id } = await params
-  const ok = await deletePost(id)
-  if (!ok) {
-    return NextResponse.json({ error: 'Not found' }, { status: 404 })
+  try {
+    const ok = await deletePost(id)
+    if (!ok) {
+      return NextResponse.json({ error: 'Not found' }, { status: 404 })
+    }
+    return NextResponse.json({ ok: true })
+  } catch (err) {
+    if (err instanceof ReadOnlyDataError) {
+      return NextResponse.json({ error: err.message }, { status: 503 })
+    }
+    throw err
   }
-  return NextResponse.json({ ok: true })
 }

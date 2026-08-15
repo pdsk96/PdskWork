@@ -1,0 +1,39 @@
+# Firebase App Hosting config for PdskWork (Next.js 16).
+# App Hosting auto-detects Next.js and runs `npm run build` + the framework
+# adapter's start command, so no buildCommand/runCommand overrides are needed.
+# This file only sets runtime (Cloud Run) settings + env/secrets.
+
+# Settings for the Cloud Run service that serves SSR.
+runConfig:
+  minInstances: 0          # scale to zero when idle (cost-friendly)
+  maxInstances: 10
+  concurrency: 80
+  cpu: 1
+  memoryMiB: 1024
+
+# Environment variables and secrets.
+# Public vars (NEXT_PUBLIC_*) are inlined into the client bundle at build time.
+env:
+  - variable: NODE_ENV
+    value: production
+    availability:
+      - BUILD
+      - RUNTIME
+  # Canonical site URL — used for sitemap, robots, RSS feed, and OG metadata.
+  - variable: NEXT_PUBLIC_SITE_URL
+    value: https://pdsk.qd.je
+    availability:
+      - BUILD
+      - RUNTIME
+  - variable: NEXT_PUBLIC_WEB_VITALS_ENDPOINT
+    value: ""
+    availability:
+      - BUILD
+      - RUNTIME
+  # Admin auth — stored in Cloud Secret Manager. Create with:
+  #   npx firebase-tools apphosting:secrets:set ADMIN_AUTH_SECRET
+  #   npx firebase-tools apphosting:secrets:set ADMIN_PASSWORD
+  - variable: ADMIN_AUTH_SECRET
+    secret: ADMIN_AUTH_SECRET
+  - variable: ADMIN_PASSWORD
+    secret: ADMIN_PASSWORD

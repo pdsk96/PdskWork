@@ -1,8 +1,7 @@
 import type { MetadataRoute } from 'next'
 
 const BASE =
-  process.env.NEXT_PUBLIC_SITE_URL ??
-  'https://pdsk-work.example.com'
+  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://pdsk.qd.je'
 
 /**
  * robots.ts — robots.txt generation. The admin console is disallowed for

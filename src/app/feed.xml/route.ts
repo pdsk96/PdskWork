@@ -8,7 +8,7 @@ import { stripMarkdown } from '@/lib/markdown'
  * visits. Reads blog posts at request time, so this route is dynamic.
  */
 const BASE =
-  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://pdsk-work.example.com'
+  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://pdsk.qd.je'
 
 const SECTIONS = [
   {

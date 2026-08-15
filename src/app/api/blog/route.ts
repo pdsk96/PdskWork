@@ -1,6 +1,11 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { isAuthenticated } from '@/lib/auth'
-import { createPost, getPublishedPosts, type BlogInput } from '@/lib/blog-store'
+import {
+  createPost,
+  getPublishedPosts,
+  ReadOnlyDataError,
+  type BlogInput,
+} from '@/lib/blog-store'
 
 /**
  * /api/blog
@@ -45,14 +50,21 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Content is required' }, { status: 400 })
   }
 
-  const post = await createPost({
-    title: body.title,
-    excerpt: body.excerpt ?? '',
-    content: body.content,
-    tags: body.tags,
-    published: body.published,
-    locale: body.locale,
-    slug: body.slug,
-  })
-  return NextResponse.json(post, { status: 201 })
+  try {
+    const post = await createPost({
+      title: body.title,
+      excerpt: body.excerpt ?? '',
+      content: body.content,
+      tags: body.tags,
+      published: body.published,
+      locale: body.locale,
+      slug: body.slug,
+    })
+    return NextResponse.json(post, { status: 201 })
+  } catch (err) {
+    if (err instanceof ReadOnlyDataError) {
+      return NextResponse.json({ error: err.message }, { status: 503 })
+    }
+    throw err
+  }
 }

@@ -13,11 +13,15 @@ import { WebVitals } from '@/components/WebVitals'
 import { LazyMotion, domAnimation } from 'motion/react'
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? 'https://pdsk.qd.je',
+  ),
   title: 'PdskWork — Cyberpunk Liquid Glass',
   description:
     'PdskWork portfolio. Cyberpunk creations built with Next.js, React Three Fiber and Motion.',
   applicationName: 'PdskWork',
   alternates: {
+    canonical: '/',
     types: {
       'application/rss+xml': [{ url: '/feed.xml', title: 'PdskWork RSS' }],
     },

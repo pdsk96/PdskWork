@@ -40,3 +40,12 @@ next-env.d.ts
 
 # turbopack cache
 .turbo
+
+# firebase
+firebase-debug.log
+firebase-debug.*.log
+ui-debug.log
+.database-debug.log
+.firestore-debug.log
+.firebase/
+firebaseConfig.json

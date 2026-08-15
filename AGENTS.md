@@ -72,3 +72,14 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+## Iteration 5 — Firebase App Hosting + custom domain (applied, build green)
+- Deploy target: **Firebase App Hosting** (Next.js 16 SSR; static export NOT compatible due to cookies()/fs).
+- `next.config.ts`: added `output: 'standalone'` — self-contained server bundle for Cloud Run. Compatible with `cacheComponents` + `partialPrefetching`.
+- Config files added: `firebase.json` (`apphosting` block only — App Hosting handles CDN static + SSR routing; NO legacy `hosting.rewrites`), `apphosting.yaml` (Cloud Run runConfig + env/secrets), `.firebaserc` (project alias `pdsk-work`).
+- App Hosting auto-detects Next.js → runs `npm run build` + framework adapter start. No buildCommand/runCommand overrides in apphosting.yaml.
+- Custom domain: `pdsk.qd.je` via Firebase Hosting custom domain (DNS A/AAAA + TXT verification, managed SSL). Set as `NEXT_PUBLIC_SITE_URL` in apphosting.yaml + `.env.example`, used as `metadataBase` in layout.tsx, and as fallback BASE in sitemap.ts/robots.ts/feed.xml/route.ts (replaced `pdsk-work.example.com` placeholder). Fixed sitemap.ts bug that fell back to `NEXT_PUBLIC_APP_NAME` ("PdskWork") as a URL.
+- Secrets: `ADMIN_AUTH_SECRET`, `ADMIN_PASSWORD` → Cloud Secret Manager (`firebase apphosting:secrets:set`), referenced in apphosting.yaml. Never in repo.
+- **Blog persistence caveat:** `src/lib/blog-store.ts` uses fs writes. Cloud Run filesystem is read-only → reads work (bundled seed), writes throw new `ReadOnlyDataError` (HTTP 503) unless `BLOG_DATA_DIR` env points at a writable volume. API routes (POST/PUT/DELETE) catch it and return 503. For persistent admin edits in prod → migrate blog-store internals to Firestore (interface unchanged). See FIREBASE.md.
+- `.gitignore`: added firebase debug logs + `.firebase/` + `firebaseConfig.json`.
+- Build verified green with standalone output; `.next/standalone/server.js` + traced `src/db/blog.json` present.
