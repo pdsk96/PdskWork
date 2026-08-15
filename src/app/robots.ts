@@ -1,5 +1,8 @@
 import type { MetadataRoute } from 'next'
 
+// Static export: robots.txt is generated at build time (no server runtime).
+export const dynamic = 'force-static'
+
 const BASE =
   process.env.NEXT_PUBLIC_SITE_URL ?? 'https://pdsk.qd.je'
 

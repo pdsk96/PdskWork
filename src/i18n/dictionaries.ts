@@ -44,6 +44,7 @@ export const dictionaries = {
     admin: {
       title: 'Admin Console',
       loginTitle: 'Admin sign in',
+      emailLabel: 'Email',
       passwordLabel: 'Password',
       submit: 'Sign in',
       logout: 'Sign out',
@@ -94,6 +95,7 @@ export const dictionaries = {
       tags: 'Tags',
       noPosts: 'No posts yet. Check back soon.',
       noPostsMatch: 'No posts in this language yet.',
+      notFound: 'Post not found.',
       showAll: 'Show all languages',
       minRead: 'min read',
       adminTitle: 'Blog Management',
@@ -168,6 +170,7 @@ export const dictionaries = {
     admin: {
       title: 'Konsol Admin',
       loginTitle: 'Masuk sebagai admin',
+      emailLabel: 'Email',
       passwordLabel: 'Kata sandi',
       submit: 'Masuk',
       logout: 'Keluar',
@@ -218,6 +221,7 @@ export const dictionaries = {
       tags: 'Tag',
       noPosts: 'Belum ada postingan. Nantikan segera.',
       noPostsMatch: 'Belum ada postingan dalam bahasa ini.',
+      notFound: 'Postingan tidak ditemukan.',
       showAll: 'Tampilkan semua bahasa',
       minRead: 'menit baca',
       adminTitle: 'Manajemen Blog',

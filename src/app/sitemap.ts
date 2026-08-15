@@ -1,16 +1,20 @@
 import type { MetadataRoute } from 'next'
-import { getPublishedPosts } from '@/lib/blog-store'
+import { getSeedPublishedPosts } from '@/lib/blog-seed'
+
+// Static export: sitemap is generated at build time (no server runtime).
+export const dynamic = 'force-static'
 
 /**
  * sitemap.ts — programmatic sitemap for search engines.
  *
- * Reads published blog posts at request time, so this route is dynamic
- * (rendered on demand rather than prerendered at build).
+ * Static export (`output: 'export'`) generates `/sitemap.xml` at BUILD time
+ * from the committed seed (`src/db/blog.json`). Posts created in Firestore
+ * after deploy appear here after the next build/redeploy. No server runtime.
  */
 const BASE =
   process.env.NEXT_PUBLIC_SITE_URL ?? 'https://pdsk.qd.je'
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date()
   const sections: MetadataRoute.Sitemap = [
     { url: `${BASE}/`, lastModified: now, changeFrequency: 'monthly', priority: 1 },
@@ -20,7 +24,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE}/contact`, lastModified: now, changeFrequency: 'yearly', priority: 0.6 },
   ]
 
-  const posts = await getPublishedPosts()
+  const posts = getSeedPublishedPosts()
   const postEntries: MetadataRoute.Sitemap = posts.map((p) => ({
     url: `${BASE}/blog/${p.slug}`,
     lastModified: new Date(p.updatedAt),
@@ -30,3 +34,4 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [...sections, ...postEntries]
 }
+

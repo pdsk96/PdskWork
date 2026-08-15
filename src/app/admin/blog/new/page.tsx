@@ -1,16 +1,15 @@
-import { redirect } from 'next/navigation'
-import { isAuthenticated } from '@/lib/auth'
+'use client'
+
 import BlogEditor from '@/components/BlogEditor'
+import AdminGate from '@/components/AdminGate'
 
-export const metadata = { title: 'New Post — PdskWork Admin' }
-
-export default async function NewBlogPostPage() {
-  if (!(await isAuthenticated())) {
-    redirect('/admin/login?next=/admin/blog/new')
-  }
+export default function NewBlogPostPage() {
   return (
-    <main className="auth-shell">
-      <BlogEditor />
-    </main>
+    <AdminGate>
+      <main className="auth-shell">
+        <BlogEditor />
+      </main>
+    </AdminGate>
   )
 }
+

@@ -1,15 +1,28 @@
-import { redirect } from 'next/navigation'
+'use client'
+
 import Link from 'next/link'
-import { isAuthenticated } from '@/lib/auth'
-import { getLocaleDict } from '@/i18n/locale-server'
+import { useRouter } from 'next/navigation'
+import { useLocale } from '@/i18n/LocaleProvider'
+import { useAdminAuth } from '@/lib/use-admin-auth'
+import AdminGate from '@/components/AdminGate'
 
+export default function AdminPage() {
+  return (
+    <AdminGate>
+      <AdminConsole />
+    </AdminGate>
+  )
+}
 
-export default async function AdminPage() {
-  if (!(await isAuthenticated())) {
-    redirect('/admin/login?next=/admin')
+function AdminConsole() {
+  const { dict } = useLocale()
+  const { signOutAdmin } = useAdminAuth()
+  const router = useRouter()
+
+  async function onLogout() {
+    await signOutAdmin()
+    router.push('/admin/login')
   }
-
-  const { dict } = await getLocaleDict()
 
   return (
     <main className="auth-shell">
@@ -21,13 +34,11 @@ export default async function AdminPage() {
           <Link href="/admin/blog" className="primary-btn">{dict.blog.adminTitle}</Link>
         </nav>
 
-        <form action="/api/admin/session" method="post">
-          <input type="hidden" name="_method" value="DELETE" />
-          <button type="submit" className="ghost-btn">
-            {dict.admin.logout}
-          </button>
-        </form>
+        <button type="button" className="ghost-btn" onClick={onLogout}>
+          {dict.admin.logout}
+        </button>
       </section>
     </main>
   )
 }
+

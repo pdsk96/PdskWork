@@ -1,20 +1,41 @@
-import { getLocaleDict } from '@/i18n/locale-server'
-import { getPublishedPosts } from '@/lib/blog-store'
-import RouteTransition from '@/components/RouteTransition'
+'use client'
+
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { useLocale } from '@/i18n/LocaleProvider'
+import { getPublishedPosts, type BlogPost } from '@/lib/blog-firestore'
 import { formatDate, readingTime } from '@/lib/blog-utils'
+import RouteTransition from '@/components/RouteTransition'
 
-export const metadata = {
-  title: 'Blog — PdskWork',
-  description: 'Process notes, deep dives, and iteration retrospectives.',
-}
+export default function BlogPage() {
+  const { locale, dict } = useLocale()
+  const [posts, setPosts] = useState<BlogPost[] | null>(null)
+  const [showingAll, setShowingAll] = useState(false)
 
-export default async function BlogPage() {
-  const { locale, dict } = await getLocaleDict()
-  // Show posts in the current locale first; fall back to all if none match.
-  const localePosts = await getPublishedPosts(locale)
-  const posts = localePosts.length > 0 ? localePosts : await getPublishedPosts()
-  const showingAll = localePosts.length === 0 && posts.length > 0
+  useEffect(() => {
+    let active = true
+    // Show posts in the current locale first; fall back to all if none match.
+    void getPublishedPosts(locale)
+      .then((localePosts) => {
+        if (!active) return
+        if (localePosts.length > 0) {
+          setPosts(localePosts)
+          setShowingAll(false)
+        } else {
+          void getPublishedPosts().then((all) => {
+            if (!active) return
+            setPosts(all)
+            setShowingAll(all.length > 0)
+          })
+        }
+      })
+      .catch(() => {
+        if (active) setPosts([])
+      })
+    return () => {
+      active = false
+    }
+  }, [locale])
 
   return (
     <RouteTransition>
@@ -24,7 +45,16 @@ export default async function BlogPage() {
           <p className="page-lead">{dict.blog.subtitle}</p>
         </section>
 
-        {posts.length === 0 ? (
+        {posts === null ? (
+          <section className="blog-list" aria-busy="true">
+            <div className="glass-card blog-card">
+              <div className="skeleton skeleton--lead" />
+              <div className="skeleton skeleton--title" />
+              <div className="skeleton skeleton--lead" />
+              <div className="skeleton skeleton--lead" />
+            </div>
+          </section>
+        ) : posts.length === 0 ? (
           <section className="page-card">
             <p className="blog-empty">{dict.blog.noPosts}</p>
           </section>
@@ -62,3 +92,4 @@ export default async function BlogPage() {
     </RouteTransition>
   )
 }
+

@@ -1,10 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useLocale } from '@/i18n/LocaleProvider'
-import type { BlogPost } from '@/lib/blog-store'
+import { createPost, getPostById, updatePost, deletePost, type BlogPost } from '@/lib/blog-firestore'
 
 interface BlogEditorProps {
   /** Existing post for edit mode; undefined for create mode. */
@@ -12,21 +12,70 @@ interface BlogEditorProps {
 }
 
 /**
- * BlogEditor — shared form for creating and editing posts. Submits to the
- * /api/blog CRUD endpoints. In edit mode it also offers a delete action.
+ * BlogEditor — shared form for creating and editing posts.
+ *
+ * In create mode (no `post` prop and not on an `/edit` route) it starts blank.
+ * In edit mode it either receives a `post` prop OR, when rendered behind the
+ * Firebase rewrite for `/admin/blog/{id}/edit`, derives the id from the URL
+ * pathname and loads the post from Firestore. Submits via the Firestore client
+ * store; in edit mode it also offers a delete action.
  */
 export default function BlogEditor({ post }: BlogEditorProps) {
   const { dict } = useLocale()
   const router = useRouter()
-  const isEdit = !!post
 
-  const [title, setTitle] = useState(post?.title ?? '')
-  const [slug, setSlug] = useState(post?.slug ?? '')
-  const [excerpt, setExcerpt] = useState(post?.excerpt ?? '')
-  const [content, setContent] = useState(post?.content ?? '')
-  const [tags, setTags] = useState((post?.tags ?? []).join(', '))
-  const [locale, setLocale] = useState<'en' | 'id'>(post?.locale ?? 'en')
-  const [published, setPublished] = useState(post?.published ?? false)
+  // Detect edit id from /admin/blog/<id>/edit when no post is provided.
+  const editIdFromPath =
+    typeof window !== 'undefined'
+      ? (window.location.pathname.match(/\/admin\/blog\/([^/]+)\/edit(?:\/)?$/) ?? [])[1]
+      : undefined
+  const isEdit = !!post || !!editIdFromPath
+
+  const [loadedPost, setLoadedPost] = useState<BlogPost | null>(post ?? null)
+  const [loadingPost, setLoadingPost] = useState(!post && !!editIdFromPath)
+
+  useEffect(() => {
+    if (post || !editIdFromPath) return
+    let active = true
+    setLoadingPost(true)
+    void getPostById(editIdFromPath)
+      .then((p) => {
+        if (active) setLoadedPost(p)
+      })
+      .catch(() => {
+        if (active) setLoadedPost(null)
+      })
+      .finally(() => {
+        if (active) setLoadingPost(false)
+      })
+    return () => {
+      active = false
+    }
+  }, [editIdFromPath, post])
+
+  const editing = post ?? loadedPost ?? undefined
+
+  const [title, setTitle] = useState('')
+  const [slug, setSlug] = useState('')
+  const [excerpt, setExcerpt] = useState('')
+  const [content, setContent] = useState('')
+  const [tags, setTags] = useState('')
+  const [locale, setLocale] = useState<'en' | 'id'>('en')
+  const [published, setPublished] = useState(false)
+  const [fieldsReady, setFieldsReady] = useState(!loadingPost)
+
+  // Populate form fields once the post to edit is known (prop or loaded).
+  useEffect(() => {
+    if (!editing) return
+    setTitle(editing.title)
+    setSlug(editing.slug)
+    setExcerpt(editing.excerpt)
+    setContent(editing.content)
+    setTags(editing.tags.join(', '))
+    setLocale(editing.locale)
+    setPublished(editing.published)
+    setFieldsReady(true)
+  }, [editing])
 
   const [saving, setSaving] = useState(false)
   const [deleting, setDeleting] = useState(false)
@@ -46,17 +95,10 @@ export default function BlogEditor({ post }: BlogEditorProps) {
         locale,
         published,
       }
-      const url = isEdit ? `/api/blog/${post!.id}` : '/api/blog'
-      const method = isEdit ? 'PUT' : 'POST'
-      const res = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      })
-      if (!res.ok) {
-        const data = (await res.json().catch(() => ({}))) as { error?: string }
-        setError(data.error ?? dict.blog.saveError)
-        return
+      if (isEdit && editing) {
+        await updatePost(editing.id, body)
+      } else {
+        await createPost(body)
       }
       router.push('/admin/blog')
       router.refresh()
@@ -68,13 +110,13 @@ export default function BlogEditor({ post }: BlogEditorProps) {
   }
 
   async function onDelete() {
-    if (!post) return
+    if (!editing) return
     if (!window.confirm(dict.blog.confirmDelete)) return
     setDeleting(true)
     setError(null)
     try {
-      const res = await fetch(`/api/blog/${post.id}`, { method: 'DELETE' })
-      if (!res.ok) {
+      const ok = await deletePost(editing.id)
+      if (!ok) {
         setError(dict.blog.deleteError)
         return
       }
@@ -85,6 +127,16 @@ export default function BlogEditor({ post }: BlogEditorProps) {
     } finally {
       setDeleting(false)
     }
+  }
+
+  if (loadingPost || (isEdit && !fieldsReady)) {
+    return (
+      <form className="glass-card blog-editor" aria-busy="true">
+        <div className="skeleton skeleton--title" />
+        <div className="skeleton skeleton--lead" />
+        <div className="skeleton skeleton--lead" />
+      </form>
+    )
   }
 
   return (
@@ -197,3 +249,4 @@ export default function BlogEditor({ post }: BlogEditorProps) {
     </form>
   )
 }
+

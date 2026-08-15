@@ -37,14 +37,28 @@ React Three Fiber, **Motion** (formerly Framer Motion). Iteration-driven develop
 - All new components are `'use client'` where they need browser APIs / context; CSS in `globals.css` (no styled-jsx in server components).
 - Cache Components gotcha: `new Date()` in a Client Component aborts prerender (`/_not-found`) → defer to `useEffect`.
 
+## Iteration 5 — static export for Firebase free (Spark) plan (applied, build green)
+- Target: deploy on Firebase Hosting **free Spark plan** with custom domain `pdsk.qd.je`. App Hosting/Cloud Functions need Blaze → not used. Refactor = full static export + Firestore client SDK + Firebase Auth (both free-tier).
+- `next.config.ts`: `output: 'export'`, `images.unoptimized: true`, `distDir: 'out'`, `trailingSlash: false`. Removed `cacheComponents` + `partialPrefetching` (incompatible with export). Removed `output: 'standalone'`.
+- **No server runtime.** Deleted: `src/proxy.ts` (Proxy/middleware), all `src/app/api/**` route handlers (blog CRUD, admin session, health), `src/lib/auth.ts` (cookie session), `src/i18n/locale-server.ts` (`cookies()`), `src/lib/blog-store.ts` (fs JSON), `src/lib/db.ts`, `apphosting.yaml`.
+- **Two blog data paths**: `src/lib/blog-seed.ts` = build-time sync read of `src/db/blog.json` (used by `generateStaticParams`, `generateMetadata`, `sitemap.ts`, RSS). `src/lib/blog-firestore.ts` = runtime Firestore client SDK (same interface names: getAllPosts/getPublishedPosts/getPostBySlug/getPostById/createPost/updatePost/deletePost/slugify). Shared types in `src/lib/blog-types.ts`.
+- **Admin auth = Firebase Auth** (email/password, client SDK) via `src/lib/use-admin-auth.ts` (`useAdminAuth` hook). Route protection is client-side `src/components/AdminGate.tsx` (redirects to `/admin/login?next=` if unauthed). No httpOnly cookie. Firestore rules (`firestore.rules`) require auth for writes; public read of published posts.
+- **Public blog pages are client components** fetching Firestore on mount (`src/app/blog/page.tsx`, `src/components/BlogPostView.tsx`). `/blog/[slug]` page is a server component exporting `generateStaticParams` (seed slugs + a `_` placeholder) + `generateMetadata`, rendering the client `<BlogPostView>` which reads the slug from `window.location.pathname`.
+- **Dynamic routes + static export**: unknown blog slugs (created post-deploy) have no static HTML → `firebase.json` rewrites `/blog/{slug}` → `/blog/_`; admin edit `/admin/blog/{id}/edit` → `/admin/blog/_/edit`. The client reads the real id/slug from the URL path. `generateStaticParams` for the edit route returns `[{ id: '_' }]`.
+- `sitemap.ts` + `robots.ts`: added `export const dynamic = 'force-static'` (Next 16 requires explicit static opt-in for metadata routes under `output: 'export'`). Both read seed at build.
+- **RSS**: route handler deleted (unsupported in export). `scripts/gen-feed.mjs` generates static `public/feed.xml` via `npm run prebuild`. Gitignored (regenerated each build). One-time Firestore seed via `scripts/seed-firestore.mjs` (`npm run seed:firestore`).
+- i18n: locale-server deleted; all locale consumers (about/contact/work/blog/admin pages) migrated to `useLocale()` from `LocaleProvider` (already client-side). Added `blog.notFound` + `admin.emailLabel` keys (en+id).
+- `firebase.json`: Hosting config (`public: out`, `cleanUrls`, cache headers for `/_next/static`, feed, sitemap) + the two rewrites above. `firestore.rules` + `firestore.indexes.json` added. `.firebaserc` → `pdskwork`.
+- `src/lib/firebase.ts` now exports `auth` + `db` (Firestore) alongside `analytics`. Build green: all routes `○ (Static)` / `● (SSG)`.
+
 ## Project conventions
 - Source lives under `src/` (`src/app`, `src/components`, `src/i18n`, `src/lib`).
-- i18n: cookie + context based, locales `en` and `id` (dictionaries in `src/i18n/dictionaries.ts`).
-- Admin auth: HMAC-signed httpOnly cookie; protected via `src/proxy.ts`.
-- DB schema: `src/db/schema.sql`; connection helper in `src/lib/db.ts`.
-- Blog system: JSON-file-backed store at `src/lib/blog-store.ts` (CRUD over `src/db/blog.json`), markdown rendering via `marked` (`src/lib/markdown.ts`). Public routes `/blog` + `/blog/[slug]`; admin management `/admin/blog` (+ `/new`, `/[id]/edit`); API `/api/blog` (GET/POST) + `/api/blog/[id]` (GET/PUT/DELETE). Write endpoints require admin auth (`isAuthenticated()`). The dynamic admin edit route sets `export const instant = false` (can't produce a PPR static shell). Blog posts are bilingual per-post via a `locale` field; RSS (`/feed.xml`) + `/sitemap.xml` include published posts.
+- i18n: cookie + context based, locales `en` and `id` (dictionaries in `src/i18n/dictionaries.ts`). Fully client-side (`LocaleProvider`).
+- Admin auth: Firebase Auth (email/password) client-side; gated by `AdminGate`. Firestore rules require auth for writes.
+- Blog data: Firestore `posts` collection at runtime (`blog-firestore.ts`); build-time seed from `src/db/blog.json` (`blog-seed.ts`) for static params/metadata/sitemap/feed.
 - Accessibility: honor `prefers-reduced-motion`, AA contrast, alt text, focus-visible states.
-- Do NOT break existing API routes, DB schema, admin auth, i18n (en/id), or .gitignore.
+- Deploy: `npm run build` → `out/` → `firebase deploy --only hosting`. See `FIREBASE.md`.
+- Do NOT break i18n (en/id), Firestore rules, the static-export build, or .gitignore.
 
 ## Iteration 1 notes (cyberpunk motion foundation)
 - Motion components: `CyberHero` (R3F), `GlitchText`, `GlassPanel`, `BentoGrid`.

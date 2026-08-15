@@ -3,11 +3,14 @@
 import { Suspense, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useLocale } from '@/i18n/LocaleProvider'
+import { useAdminAuth } from '@/lib/use-admin-auth'
 
 function LoginForm() {
   const { dict } = useLocale()
   const router = useRouter()
   const params = useSearchParams()
+  const { signIn } = useAdminAuth()
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
@@ -18,17 +21,10 @@ function LoginForm() {
     setError(null)
     const next = params.get('next') ?? '/admin'
     try {
-      const res = await fetch('/api/admin/session', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password, next }),
-      })
-      if (!res.ok) {
-        setError(dict.admin.invalid)
-        return
-      }
-      const data = (await res.json()) as { redirect: string }
-      router.push(data.redirect)
+      await signIn(email, password)
+      router.push(next)
+    } catch {
+      setError(dict.admin.invalid)
     } finally {
       setLoading(false)
     }
@@ -37,6 +33,18 @@ function LoginForm() {
   return (
     <form className="glass-card auth-form" onSubmit={onSubmit}>
       <h1 className="auth-title">{dict.admin.loginTitle}</h1>
+      <label className="field">
+        <span className="field-label">{dict.admin.emailLabel}</span>
+        <input
+          type="email"
+          name="email"
+          autoComplete="email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="field-input"
+        />
+      </label>
       <label className="field">
         <span className="field-label">{dict.admin.passwordLabel}</span>
         <input

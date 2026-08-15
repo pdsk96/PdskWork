@@ -1,10 +1,12 @@
-import { getLocaleDict } from '@/i18n/locale-server'
+'use client'
+
+import { useLocale } from '@/i18n/LocaleProvider'
 import ProjectShowcase from '@/components/ProjectShowcase'
 import RouteTransition from '@/components/RouteTransition'
 
 
-export default async function AboutPage() {
-  const { dict } = await getLocaleDict()
+export default function AboutPage() {
+  const { dict } = useLocale()
 
   return (
     <RouteTransition>

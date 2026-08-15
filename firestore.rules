@@ -1,0 +1,37 @@
+rules_version = '2'
+
+// PdskWork Firestore security rules.
+// Collection: `posts` (blog CMS).
+//
+// - Public users can READ published posts (so the public blog renders without
+//   auth).
+// - Writes (create/update/delete) require an authenticated Firebase Auth user.
+//   Optionally lock writes to a single admin uid by setting ADMIN_UID below
+//   (or leave empty to allow any authenticated user).
+//
+// To restrict to a specific admin, set ADMIN_UID to that user's uid and
+// uncomment the helper. Default: any signed-in user may write (the admin
+// account you create in the console).
+
+function isAdmin() {
+  // Lock to a single admin uid:
+  //   return request.auth.uid == 'REPLACE_WITH_ADMIN_UID'
+  // Default: any authenticated user.
+  return request.auth != null
+}
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Blog posts. Public read of published posts; admin-only writes.
+    match /posts/{postId} {
+      allow read: if resource.data.published == true || isAdmin()
+      allow create, update, delete: if isAdmin()
+    }
+
+    // Deny everything else by default.
+    match /{document=**} {
+      allow read, write: if false
+    }
+  }
+}

@@ -1,18 +1,37 @@
+'use client'
+
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { redirect } from 'next/navigation'
-import { isAuthenticated } from '@/lib/auth'
-import { getLocaleDict } from '@/i18n/locale-server'
-import { getAllPosts } from '@/lib/blog-store'
+import { useLocale } from '@/i18n/LocaleProvider'
+import { getAllPosts, type BlogPost } from '@/lib/blog-firestore'
 import { formatDate } from '@/lib/blog-utils'
+import AdminGate from '@/components/AdminGate'
 
-export const metadata = { title: 'Blog Management — PdskWork Admin' }
+export default function AdminBlogPage() {
+  return (
+    <AdminGate>
+      <AdminBlogList />
+    </AdminGate>
+  )
+}
 
-export default async function AdminBlogPage() {
-  if (!(await isAuthenticated())) {
-    redirect('/admin/login?next=/admin/blog')
-  }
-  const { locale, dict } = await getLocaleDict()
-  const posts = await getAllPosts()
+function AdminBlogList() {
+  const { locale, dict } = useLocale()
+  const [posts, setPosts] = useState<BlogPost[] | null>(null)
+
+  useEffect(() => {
+    let active = true
+    void getAllPosts()
+      .then((p) => {
+        if (active) setPosts(p)
+      })
+      .catch(() => {
+        if (active) setPosts([])
+      })
+    return () => {
+      active = false
+    }
+  }, [])
 
   return (
     <main className="auth-shell">
@@ -29,7 +48,9 @@ export default async function AdminBlogPage() {
           {dict.blog.viewPosts} ↗
         </Link>
 
-        {posts.length === 0 ? (
+        {posts === null ? (
+          <p className="blog-empty" aria-busy="true">…</p>
+        ) : posts.length === 0 ? (
           <p className="blog-empty">{dict.blog.noPosts}</p>
         ) : (
           <ul className="blog-admin__list">
@@ -67,3 +88,4 @@ export default async function AdminBlogPage() {
     </main>
   )
 }
+
