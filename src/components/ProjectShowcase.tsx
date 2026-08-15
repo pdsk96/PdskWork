@@ -15,8 +15,6 @@ export default function ProjectShowcase() {
   const { dict } = useLocale()
   const reduceMotion = useReducedMotion()
 
-  const easeOut = ['easeOut'] as const
-
   const items = [
     {
       accent: 'cyan' as const,
@@ -67,7 +65,7 @@ export default function ProjectShowcase() {
           initial={reduceMotion ? false : { opacity: 0, y: 22 }}
           whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.6, ease: easeOut, delay: i * 0.05 }}
+          transition={{ duration: 0.6, ease: ['easeOut'], delay: i * 0.05 }}
           style={item.span}
         >
           <GlassPanel accent={item.accent} label={item.label} style={{ height: '100%' }}>
