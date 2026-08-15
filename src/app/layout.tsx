@@ -1,8 +1,10 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
+import './view-transitions.css'
 import { LocaleProvider } from '@/i18n/LocaleProvider'
-import Navbar from '@/components/Navbar'
+import LiquidGlassNav from '@/components/LiquidGlassNav'
 import CursorSpotlight from '@/components/CursorSpotlight'
+import CyberBackground from '@/components/CyberBackground'
 
 export const metadata: Metadata = {
   title: 'PdskWork — Cyberpunk Liquid Glass',
@@ -21,8 +23,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" data-scroll-behavior="smooth">
       <body>
         <LocaleProvider>
+          <CyberBackground />
           <CursorSpotlight />
-          <Navbar />
+          <LiquidGlassNav />
           {children}
         </LocaleProvider>
       </body>

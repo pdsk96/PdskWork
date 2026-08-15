@@ -1,0 +1,87 @@
+/* =========================================================================
+   PdskWork — View Transitions (Next.js 16 native, React <ViewTransition>)
+   Additive stylesheet imported in the root layout. Targets the
+   ::view-transition-* pseudo-elements (not addressable via styled-jsx).
+   ========================================================================= */
+
+:root {
+  --vt-exit: 150ms;
+  --vt-enter: 210ms;
+  --vt-move: 400ms;
+  --vt-slide: 60px;
+}
+
+/* Let clicks pass through the transition overlay so the page stays live. */
+::view-transition {
+  pointer-events: none;
+}
+
+/* ---- Directional navigation (nav-forward / nav-back) ---- */
+::view-transition-old(.nav-forward) {
+  --slide-offset: calc(-1 * var(--vt-slide));
+  animation:
+    var(--vt-exit) ease-in both fade reverse,
+    var(--vt-move) ease-in-out both slide reverse;
+}
+::view-transition-new(.nav-forward) {
+  --slide-offset: var(--vt-slide);
+  animation:
+    var(--vt-enter) ease-out var(--vt-exit) both fade,
+    var(--vt-move) ease-in-out both slide;
+}
+
+::view-transition-old(.nav-back) {
+  --slide-offset: var(--vt-slide);
+  animation:
+    var(--vt-exit) ease-in both fade reverse,
+    var(--vt-move) ease-in-out both slide reverse;
+}
+::view-transition-new(.nav-back) {
+  --slide-offset: calc(-1 * var(--vt-slide));
+  animation:
+    var(--vt-enter) ease-out var(--vt-exit) both fade,
+    var(--vt-move) ease-in-out both slide;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide {
+  from {
+    translate: var(--slide-offset);
+  }
+  to {
+    translate: 0;
+  }
+}
+
+/* ---- Anchor the navbar so it doesn't slide with content ---- */
+::view-transition-group(lgnav),
+::view-transition-group(navbar) {
+  animation: none;
+  z-index: 100;
+}
+::view-transition-old(lgnav),
+::view-transition-old(navbar) {
+  display: none;
+}
+::view-transition-new(lgnav),
+::view-transition-new(navbar) {
+  animation: none;
+}
+
+/* ---- Reduced motion: instant swaps, no positional movement ---- */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}
