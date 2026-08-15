@@ -79,12 +79,18 @@ In the Firebase console for **pdskwork**:
 
 ## 4. Seed Firestore from blog.json (one time)
 
+Generate a **service account key** (Admin SDK credentials — this is a secret,
+keep it out of git): Firebase console → **Project settings → Service accounts →
+Generate new private key** → save as `serviceAccountKey.json` in the repo root
+(already gitignored). Then:
+
 ```bash
 npm run seed:firestore
 ```
 
-This imports the two committed seed posts into the `posts` collection so the
-public blog and admin list are populated. Requires `firebase login`.
+This imports the two committed seed posts into the `posts` collection using the
+Firebase Admin SDK (which bypasses security rules, so it works in production
+mode). Delete `serviceAccountKey.json` when done, or keep it locally only.
 
 ## 5. Build + deploy
 
