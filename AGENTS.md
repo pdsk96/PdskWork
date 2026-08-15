@@ -1,7 +1,7 @@
 # PdskWork — Agent Memory
 
-Cyberpunk-themed portfolio/work app. Stack: Next.js 16 (App Router, Turbopack), React 19,
-React Three Fiber, Framer Motion. Iteration-driven development from `.hermes/pdsk_work_master_spec.md`.
+Cyberpunk-themed portfolio/work app. Stack: Next.js 16.3 (App Router, Turbopack), React 19,
+React Three Fiber, **Motion** (formerly Framer Motion). Iteration-driven development from `.hermes/pdsk_work_master_spec.md`.
 
 ## Next.js 16 critical notes (read node_modules/next/dist/docs/ before coding)
 - Turbopack is the default bundler for `next dev` and `next build`. No `--turbopack` flag needed.
@@ -12,6 +12,18 @@ React Three Fiber, Framer Motion. Iteration-driven development from `.hermes/pds
 - Node.js 20.9+ required.
 - `serverRuntimeConfig`/`publicRuntimeConfig` removed — use env vars / `NEXT_PUBLIC_*`.
 - Concurrent dev/build: `next dev` outputs to `.next/dev`.
+- `next/image` `priority` is **deprecated** in Next 16+ → use `preload`.
+- `partialPrefetching` **requires** `cacheComponents: true` (both top-level config, not `experimental.*`).
+
+## Iteration 3 — Cache Components + perf (applied, build green)
+- `next.config.ts`: `cacheComponents: true` + `partialPrefetching: true` enabled.
+- `export const dynamic = 'force-dynamic'` is **incompatible** with `cacheComponents` — removed from ALL pages + route handlers. Pages reading `cookies()` auto-become dynamic (per-session shell); GET route handlers that do async file I/O / `Math.random()` / `headers()` auto-stop prerendering. Use `connection()` from `next/server` to force request-time when no dynamic API is used.
+- With cacheComponents, route build output shows: `◐ (Partial Prerender)` = static HTML + dynamic server-streamed content (desired). `○ (Static)`, `ƒ (Dynamic)`.
+- `loading.tsx` files stream a fallback for fast LCP. **loading.tsx is a Server Component** — do NOT use `styled-jsx` there; put styles in `globals.css`.
+- `WebVitals.tsx` (client, `'use client'`) uses `useReportWebVitals` from `next/web-vitals`; optional `NEXT_PUBLIC_WEB_VITALS_ENDPOINT` for RUM.
+- `LazyMotion` + `domAnimation` (strict) in root layout shrinks the Motion client bundle; components must use `m.div` (lazy) not `motion.div` (full) inside it.
+- Animation lib migrated: `framer-motion` → `motion/react` (package `motion`, rebrand). `useReducedMotion`, `useScroll`, `useTransform`, `useMotionValue`, `useSpring`, `m`, `LazyMotion`, `domAnimation` all exported from `motion/react`.
+- CyberBackground `dpr={[1, 1.75]}` (was `[1,2]`) — lighter on high-DPI mobile for the 5-octave FBM shader. CyberHero keeps `[1,2]` + `<AdaptiveDpr>` + `<PerformanceMonitor>`.
 
 ## Project conventions
 - Source lives under `src/` (`src/app`, `src/components`, `src/i18n`, `src/lib`).

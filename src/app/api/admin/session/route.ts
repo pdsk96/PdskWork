@@ -1,7 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { clearSessionCookie, createSessionCookie, verifyCredentials } from '@/lib/auth'
 
-export const dynamic = 'force-dynamic'
 
 export async function POST(request: NextRequest) {
   let body: { password?: string; next?: string } = {}

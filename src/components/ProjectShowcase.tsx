@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, useReducedMotion } from 'framer-motion'
+import { m, useReducedMotion } from 'motion/react'
 import GlassPanel from '@/components/GlassPanel'
 import { useLocale } from '@/i18n/LocaleProvider'
 
@@ -60,7 +60,7 @@ export default function ProjectShowcase() {
   return (
     <div className="bento">
       {items.map((item, i) => (
-        <motion.div
+        <m.div
           key={i}
           initial={reduceMotion ? false : { opacity: 0, y: 22 }}
           whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
@@ -72,7 +72,7 @@ export default function ProjectShowcase() {
             <h3 className="bento__title">{item.title}</h3>
             <p className="bento__body">{item.body}</p>
           </GlassPanel>
-        </motion.div>
+        </m.div>
       ))}
       <style jsx>{`
         .bento {

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { motion, useMotionValue, useSpring, useReducedMotion } from 'framer-motion'
+import { m, useMotionValue, useSpring, useReducedMotion } from 'motion/react'
 
 /**
  * Cursor-follow spotlight — 2026 "liquid glass" trend.
@@ -57,7 +57,7 @@ export default function CursorSpotlight() {
       style={staticStyle}
     >
       {!reduceMotion && (
-        <motion.div
+        <m.div
           className="cursor-spotlight__glow"
           style={{ left: sx, top: sy }}
         />

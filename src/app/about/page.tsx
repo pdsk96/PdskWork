@@ -4,7 +4,6 @@ import { cookies } from 'next/headers'
 import ProjectShowcase from '@/components/ProjectShowcase'
 import RouteTransition from '@/components/RouteTransition'
 
-export const dynamic = 'force-dynamic'
 
 export default async function AboutPage() {
   const store = await cookies()

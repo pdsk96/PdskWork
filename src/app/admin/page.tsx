@@ -4,7 +4,6 @@ import { getDictionary } from '@/i18n/dictionaries'
 import { cookies } from 'next/headers'
 import { defaultLocale, isSupportedLocale } from '@/i18n/locale-server'
 
-export const dynamic = 'force-dynamic'
 
 export default async function AdminPage() {
   if (!(await isAuthenticated())) {

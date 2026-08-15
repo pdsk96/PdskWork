@@ -5,6 +5,8 @@ import { LocaleProvider } from '@/i18n/LocaleProvider'
 import LiquidGlassNav from '@/components/LiquidGlassNav'
 import CursorSpotlight from '@/components/CursorSpotlight'
 import CyberBackground from '@/components/CyberBackground'
+import { WebVitals } from '@/components/WebVitals'
+import { LazyMotion, domAnimation } from 'motion/react'
 
 export const metadata: Metadata = {
   title: 'PdskWork — Cyberpunk Liquid Glass',
@@ -23,10 +25,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" data-scroll-behavior="smooth">
       <body>
         <LocaleProvider>
-          <CyberBackground />
-          <CursorSpotlight />
-          <LiquidGlassNav />
-          {children}
+          {/* LazyMotion + domAnimation: ship the lazy animation feature bundle
+              instead of the full framer/motion bundle (smaller client JS). */}
+          <LazyMotion features={domAnimation} strict>
+            <WebVitals />
+            <CyberBackground />
+            <CursorSpotlight />
+            <LiquidGlassNav />
+            {children}
+          </LazyMotion>
         </LocaleProvider>
       </body>
     </html>

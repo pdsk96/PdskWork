@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { motion, useMotionValue, useReducedMotion, useTransform } from 'framer-motion'
+import { m, useMotionValue, useReducedMotion, useTransform } from 'motion/react'
 import { useLocale } from '@/i18n/LocaleProvider'
 import LanguageToggle from './LanguageToggle'
 
@@ -42,7 +42,7 @@ export default function Navbar() {
   const sheenStyle = reduceMotion ? undefined : { background: sheenBackground }
 
   return (
-    <motion.header
+    <m.header
       className="navbar"
       role="banner"
       initial={reduceMotion ? false : { y: -24, opacity: 0 }}
@@ -74,7 +74,7 @@ export default function Navbar() {
                 >
                   {dict.nav[link.key]}
                   {active && !reduceMotion ? (
-                    <motion.span
+                    <m.span
                       layoutId="nav-active-pill"
                       className="navbar__active-pill"
                       transition={{ type: 'spring', stiffness: 380, damping: 32 }}
@@ -94,9 +94,9 @@ export default function Navbar() {
         </div>
 
         {!reduceMotion ? (
-          <motion.div className="navbar__sheen" style={sheenStyle} aria-hidden="true" />
+          <m.div className="navbar__sheen" style={sheenStyle} aria-hidden="true" />
         ) : null}
       </nav>
-    </motion.header>
+    </m.header>
   )
 }

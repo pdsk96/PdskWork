@@ -3,7 +3,6 @@ import { defaultLocale, isSupportedLocale } from '@/i18n/locale-server'
 import { cookies } from 'next/headers'
 import RouteTransition from '@/components/RouteTransition'
 
-export const dynamic = 'force-dynamic'
 
 export default async function ContactPage() {
   const store = await cookies()

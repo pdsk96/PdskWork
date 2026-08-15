@@ -447,3 +447,40 @@ a {
     display: none;
   }
 }
+
+/* ---- Route loading skeleton (streamed fallback) ---- */
+.skeleton {
+  border-radius: 8px;
+  background: linear-gradient(
+    100deg,
+    rgba(120, 200, 255, 0.08) 30%,
+    rgba(120, 200, 255, 0.18) 50%,
+    rgba(120, 200, 255, 0.08) 70%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+.skeleton--title {
+  height: 2.4rem;
+  width: 60%;
+  margin-bottom: 1rem;
+}
+.skeleton--lead {
+  height: 1.2rem;
+  width: 90%;
+  margin-bottom: 0.6rem;
+}
+@keyframes skeleton-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+    background: rgba(120, 200, 255, 0.1);
+  }
+}

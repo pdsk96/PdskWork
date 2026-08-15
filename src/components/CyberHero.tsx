@@ -2,7 +2,7 @@
 
 import { Canvas, useFrame, type RootState } from '@react-three/fiber'
 import { AdaptiveDpr, PerformanceMonitor, Sparkles } from '@react-three/drei'
-import { useReducedMotion, useScroll, useTransform } from 'framer-motion'
+import { useReducedMotion, useScroll, useTransform } from 'motion/react'
 import { useMemo, useRef } from 'react'
 import * as THREE from 'three'
 
