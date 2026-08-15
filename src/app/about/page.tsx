@@ -1,6 +1,7 @@
 import { getDictionary } from '@/i18n/dictionaries'
 import { defaultLocale, isSupportedLocale } from '@/i18n/locale-server'
 import { cookies } from 'next/headers'
+import ProjectShowcase from '@/components/ProjectShowcase'
 
 export const dynamic = 'force-dynamic'
 
@@ -16,6 +17,10 @@ export default async function AboutPage() {
       <section className="glass-card page-card">
         <h1 className="page-title">{dict.nav.about}</h1>
         <p className="page-lead">{dict.hero.subtitle}</p>
+      </section>
+
+      <section className="page-card" aria-label="Project showcase">
+        <ProjectShowcase />
       </section>
     </main>
   )
