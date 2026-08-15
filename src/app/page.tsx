@@ -4,6 +4,8 @@ import { motion, useReducedMotion } from 'framer-motion'
 import Link from 'next/link'
 import { useLocale } from '@/i18n/LocaleProvider'
 import HeroScene from '@/components/HeroScene'
+import CyberHero from '@/components/CyberHero'
+import GlitchText from '@/components/GlitchText'
 
 export default function HomePage() {
   const { dict } = useLocale()
@@ -12,6 +14,7 @@ export default function HomePage() {
   return (
     <main className="page page--home">
       <HeroScene />
+      <CyberHero />
 
       <section className="hero" aria-labelledby="hero-title">
         <motion.h1
@@ -19,9 +22,9 @@ export default function HomePage() {
           className="hero__title"
           initial={reduceMotion ? false : { opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.7, ease: ['easeOut'] }}
         >
-          {dict.hero.title}
+          <GlitchText text={dict.hero.title} as="span" />
         </motion.h1>
         <p className="hero__subtitle">{dict.hero.subtitle}</p>
         <div className="hero__actions">
