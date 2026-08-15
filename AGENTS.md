@@ -42,6 +42,7 @@ React Three Fiber, **Motion** (formerly Framer Motion). Iteration-driven develop
 - i18n: cookie + context based, locales `en` and `id` (dictionaries in `src/i18n/dictionaries.ts`).
 - Admin auth: HMAC-signed httpOnly cookie; protected via `src/proxy.ts`.
 - DB schema: `src/db/schema.sql`; connection helper in `src/lib/db.ts`.
+- Blog system: JSON-file-backed store at `src/lib/blog-store.ts` (CRUD over `src/db/blog.json`), markdown rendering via `marked` (`src/lib/markdown.ts`). Public routes `/blog` + `/blog/[slug]`; admin management `/admin/blog` (+ `/new`, `/[id]/edit`); API `/api/blog` (GET/POST) + `/api/blog/[id]` (GET/PUT/DELETE). Write endpoints require admin auth (`isAuthenticated()`). The dynamic admin edit route sets `export const instant = false` (can't produce a PPR static shell). Blog posts are bilingual per-post via a `locale` field; RSS (`/feed.xml`) + `/sitemap.xml` include published posts.
 - Accessibility: honor `prefers-reduced-motion`, AA contrast, alt text, focus-visible states.
 - Do NOT break existing API routes, DB schema, admin auth, i18n (en/id), or .gitignore.
 
