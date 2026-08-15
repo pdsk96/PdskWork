@@ -52,4 +52,8 @@ ui-debug.log
 .firestore-debug.log
 .firebase/
 firebaseConfig.json
+# Service account keys (Admin SDK) — secrets, never commit.
 serviceAccountKey.json
+*-firebase-adminsdk-*.json
+google-services.json
+GoogleService-Info.plist
