@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, useReducedMotion } from 'framer-motion'
+import { m, useReducedMotion } from 'motion/react'
 import Link from 'next/link'
 import { useLocale } from '@/i18n/LocaleProvider'
 import HeroScene from '@/components/HeroScene'
@@ -19,7 +19,7 @@ export default function HomePage() {
         <CyberHero />
 
         <section className="hero" aria-labelledby="hero-title">
-          <motion.h1
+          <m.h1
             id="hero-title"
             className="hero__title"
             initial={reduceMotion ? false : { opacity: 0, y: 18 }}
@@ -27,7 +27,7 @@ export default function HomePage() {
             transition={{ duration: 0.7, ease: ['easeOut'] }}
           >
             <GlitchText text={dict.hero.title} as="span" />
-          </motion.h1>
+          </m.h1>
           <p className="hero__subtitle">{dict.hero.subtitle}</p>
           <div className="hero__actions">
             <Link href="/work" className="primary-btn" transitionTypes={['nav-forward']}>

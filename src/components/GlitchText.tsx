@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { useReducedMotion } from 'framer-motion'
+import { useReducedMotion } from 'motion/react'
 
 export interface GlitchTextProps {
   /** Text to render (and scramble when animated). */

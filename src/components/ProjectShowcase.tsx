@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, useReducedMotion } from 'framer-motion'
+import { m, useReducedMotion } from 'motion/react'
 import GlassPanel from '@/components/GlassPanel'
 import { useLocale } from '@/i18n/LocaleProvider'
 
@@ -19,40 +19,27 @@ export default function ProjectShowcase() {
     {
       accent: 'cyan' as const,
       label: dict.nav.work,
-      title:
-        dict.nav.work === 'Work' ? 'Real-time 3D scenes' : 'Adegan 3D real-time',
-      body:
-        dict.nav.work === 'Work'
-          ? 'React Three Fiber meshes that react to cursor and scroll without per-frame allocations.'
-          : 'Mesh R3F yang merespons kursor & gulir tanpa alokasi per-frame.',
+      title: dict.showcase.realtime3d,
+      body: dict.showcase.realtime3dBody,
       span: { gridColumn: 'span 2', gridRow: 'span 2' } as React.CSSProperties,
     },
     {
       accent: 'magenta' as const,
       label: 'Motion',
-      title: dict.nav.work === 'Work' ? 'Kinetic type' : 'Tipografi kinetik',
-      body:
-        dict.nav.work === 'Work'
-          ? 'Scramble + gradient glitch text guarded by prefers-reduced-motion.'
-          : 'Teks glitch scramble + gradien, dengan pengaman prefers-reduced-motion.',
+      title: dict.showcase.kineticType,
+      body: dict.showcase.kineticTypeBody,
     },
     {
       accent: 'violet' as const,
       label: 'Glass',
-      title: dict.nav.work === 'Work' ? 'Liquid surfaces' : 'Permukaan cair',
-      body:
-        dict.nav.work === 'Work'
-          ? 'Frosted backdrop-blur panels with accent glow.'
-          : 'Panel kaca buram backdrop-blur dengan glow aksen.',
+      title: dict.showcase.liquidSurfaces,
+      body: dict.showcase.liquidSurfacesBody,
     },
     {
       accent: 'cyan' as const,
       label: 'Stack',
-      title: 'Next.js 16 + R3F',
-      body:
-        dict.nav.work === 'Work'
-          ? 'App Router, Turbopack, React 19, Framer Motion.'
-          : 'App Router, Turbopack, React 19, Framer Motion.',
+      title: dict.showcase.stackTitle,
+      body: dict.showcase.stackBody,
       span: { gridColumn: 'span 2' } as React.CSSProperties,
     },
   ]
@@ -60,7 +47,7 @@ export default function ProjectShowcase() {
   return (
     <div className="bento">
       {items.map((item, i) => (
-        <motion.div
+        <m.div
           key={i}
           initial={reduceMotion ? false : { opacity: 0, y: 22 }}
           whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
@@ -72,7 +59,7 @@ export default function ProjectShowcase() {
             <h3 className="bento__title">{item.title}</h3>
             <p className="bento__body">{item.body}</p>
           </GlassPanel>
-        </motion.div>
+        </m.div>
       ))}
       <style jsx>{`
         .bento {

@@ -3,16 +3,12 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef } from 'react'
-import { useReducedMotion } from 'framer-motion'
+import { useReducedMotion } from 'motion/react'
 import { useLocale } from '@/i18n/LocaleProvider'
 import LanguageToggle from './LanguageToggle'
-
-const NAV_LINKS = [
-  { href: '/', key: 'home' as const, type: 'nav-back' },
-  { href: '/work', key: 'work' as const, type: 'nav-forward' },
-  { href: '/about', key: 'about' as const, type: 'nav-forward' },
-  { href: '/contact', key: 'contact' as const, type: 'nav-forward' },
-] as const
+import ThemeToggle from './ThemeToggle'
+import AmbientSound from './AmbientSound'
+import { NAV_LINKS } from '@/lib/nav'
 
 /**
  * LiquidGlassNav — refractive glass navbar.
@@ -117,9 +113,9 @@ export default function LiquidGlassNav() {
                   href={link.href}
                   className={`lgnav__link${active ? ' is-active' : ''}`}
                   aria-current={active ? 'page' : undefined}
-                  transitionTypes={[link.type]}
+                  transitionTypes={[link.transitionType]}
                 >
-                  {dict.nav[link.key]}
+                  {dict.nav[link.navKey]}
                   {active && <span className="lgnav__active-pill" aria-hidden="true" />}
                 </Link>
               </li>
@@ -129,6 +125,8 @@ export default function LiquidGlassNav() {
 
         <div className="lgnav__actions">
           <LanguageToggle />
+          <ThemeToggle />
+          <AmbientSound />
           <Link href="/admin" className="lgnav__admin" transitionTypes={['nav-forward']}>
             {dict.nav.admin}
           </Link>

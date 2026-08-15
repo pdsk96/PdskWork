@@ -2,7 +2,7 @@
 
 import { Canvas, useFrame, type RootState } from '@react-three/fiber'
 import { AdaptiveDpr, PerformanceMonitor, Sparkles } from '@react-three/drei'
-import { useReducedMotion, useScroll, useTransform } from 'framer-motion'
+import { useReducedMotion, useScroll, useTransform } from 'motion/react'
 import { useMemo, useRef } from 'react'
 import * as THREE from 'three'
 
@@ -163,7 +163,6 @@ function Stage({ reduceMotion }: { reduceMotion: boolean | null }) {
 
   // Keep the scroll progress in a ref so useFrame reads it without re-render.
   const last = useRef(0)
-  const scrollFrame = useRef<number | null>(null)
   useFrame((state: RootState) => {
     // Pull latest scroll values cheaply each frame.
     scrollOffset.current = scrollZ.get()
@@ -180,8 +179,6 @@ function Stage({ reduceMotion }: { reduceMotion: boolean | null }) {
     pointer.current.x = THREE.MathUtils.lerp(pointer.current.x, targetX, 0.06)
     pointer.current.y = THREE.MathUtils.lerp(pointer.current.y, targetY, 0.06)
   })
-  // silence unused ref lint (kept for potential cleanup extensions)
-  void scrollFrame
 
   return <Scene pointer={pointer} scrollOffset={scrollOffset} reduceMotion={reduceMotion} />
 }
@@ -197,11 +194,9 @@ export default function CyberHero() {
         dpr={[1, 2]}
         gl={{ alpha: true, antialias: true, powerPreference: 'high-performance' }}
       >
-        <PerformanceMonitor
-          onDecline={() => {
-            /* drei lowers perf automatically; hint kept for clarity */
-          }}
-        />
+        {/* drei lowers dpr automatically on sustained low fps; AdaptiveDpr
+            reads the PerformanceMonitor-regulated pixel ratio during motion. */}
+        <PerformanceMonitor />
         <AdaptiveDpr pixelated />
         <Stage reduceMotion={reduceMotion} />
       </Canvas>

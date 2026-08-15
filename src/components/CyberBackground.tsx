@@ -2,7 +2,7 @@
 
 import { Canvas, extend, useFrame, useThree } from '@react-three/fiber'
 import { shaderMaterial } from '@react-three/drei'
-import { useReducedMotion } from 'framer-motion'
+import { useReducedMotion } from 'motion/react'
 import { useMemo, useRef } from 'react'
 import * as THREE from 'three'
 
@@ -162,7 +162,7 @@ export default function CyberBackground() {
     <div className="cyber-bg" aria-hidden="true" data-reduce={reduceMotion ? 'on' : 'off'}>
       <Canvas
         camera={camera}
-        dpr={[1, 2]}
+        dpr={[1, 1.75]}
         gl={{ alpha: false, antialias: true, powerPreference: 'high-performance' }}
       >
         <ShaderPlane reduceMotion={reduceMotion} />
