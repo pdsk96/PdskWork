@@ -15,6 +15,7 @@ export interface NavLink {
 export const NAV_LINKS: readonly NavLink[] = [
   { href: '/', navKey: 'home', transitionType: 'nav-back' },
   { href: '/work', navKey: 'work', transitionType: 'nav-forward' },
+  { href: '/blog', navKey: 'blog', transitionType: 'nav-forward' },
   { href: '/about', navKey: 'about', transitionType: 'nav-forward' },
   { href: '/contact', navKey: 'contact', transitionType: 'nav-forward' },
 ] as const

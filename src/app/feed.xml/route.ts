@@ -1,15 +1,16 @@
 import { NextResponse } from 'next/server'
+import { getPublishedPosts } from '@/lib/blog-store'
+import { stripMarkdown } from '@/lib/markdown'
 
 /**
- * RSS feed — `/feed.xml`. A simple RSS 2.0 feed describing the site's main
- * sections so feed readers can surface updates and drive return visits.
- *
- * Cached by default under Cache Components (no request-time APIs used).
+ * RSS feed — `/feed.xml`. RSS 2.0 describing the site's main sections plus
+ * published blog posts so feed readers can surface updates and drive return
+ * visits. Reads blog posts at request time, so this route is dynamic.
  */
 const BASE =
   process.env.NEXT_PUBLIC_SITE_URL ?? 'https://pdsk-work.example.com'
 
-const ITEMS = [
+const SECTIONS = [
   {
     path: '/',
     title: 'Beranda — PdskWork',
@@ -19,6 +20,11 @@ const ITEMS = [
     path: '/work',
     title: 'Karya — PdskWork',
     desc: 'Galeri karya & proyek bertema cyberpunk.',
+  },
+  {
+    path: '/blog',
+    title: 'Blog — PdskWork',
+    desc: 'Catatan proses, bedah mendalam, dan retrospektif iterasi.',
   },
   {
     path: '/about',
@@ -43,7 +49,21 @@ function esc(s: string): string {
 
 export async function GET() {
   const updated = new Date().toUTCString()
-  const items = ITEMS.map(
+
+  const posts = await getPublishedPosts()
+  const postItems = posts.map(
+    (p) => `
+    <item>
+      <title>${esc(p.title)}</title>
+      <link>${BASE}/blog/${esc(p.slug)}</link>
+      <guid isPermaLink="true">${BASE}/blog/${esc(p.slug)}</guid>
+      <description>${esc(p.excerpt || stripMarkdown(p.content))}</description>
+      <pubDate>${new Date(p.createdAt).toUTCString()}</pubDate>
+      <category>${p.locale}</category>
+    </item>`,
+  ).join('')
+
+  const sectionItems = SECTIONS.map(
     (it) => `
     <item>
       <title>${esc(it.title)}</title>
@@ -63,7 +83,8 @@ export async function GET() {
     <language>id</language>
     <lastBuildDate>${updated}</lastBuildDate>
     <atom:link href="${BASE}/feed.xml" rel="self" type="application/rss+xml" />
-    ${items}
+    ${postItems}
+    ${sectionItems}
   </channel>
 </rss>`
 

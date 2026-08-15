@@ -1,0 +1,32 @@
+[
+  {
+    "id": "welcome-to-pdskwork",
+    "slug": "welcome-to-pdskwork",
+    "title": "Welcome to PdskWork",
+    "excerpt": "A cyberpunk portfolio for the liquid-glass era — built with Next.js 16, React Three Fiber, and Motion.",
+    "content": "# Welcome to PdskWork\n\nThis is the inaugural post on the **PdskWork** blog. Here we share process notes, behind-the-scenes breakdowns of the 3D scenes and shaders, and iteration retrospectives.\n\n## What to expect\n\n- **Deep dives** into the React Three Fiber hero scenes and the FBM fresnel background shader.\n- **Performance** write-ups: Cache Components, Partial Prefetching, and LazyMotion bundle tuning.\n- **Accessibility** notes on `prefers-reduced-motion` and AA contrast.\n\n> Cyberpunk creations for the liquid-glass era.\n\nStay tuned — more posts coming soon.",
+    "tags": [
+      "meta",
+      "announcement"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-07-01T00:00:00.000Z",
+    "updatedAt": "2026-07-01T00:00:00.000Z"
+  },
+  {
+    "id": "selamat-datang-pdskwork",
+    "slug": "selamat-datang-pdskwork",
+    "title": "Selamat Datang di PdskWork",
+    "excerpt": "Portofolio cyberpunk untuk era liquid-glass — dibangun dengan Next.js 16, React Three Fiber, dan Motion.",
+    "content": "# Selamat Datang di PdskWork\n\nIni adalah postingan pertama di blog **PdskWork**. Di sini kami membagikan catatan proses, uraian di balik layar adegan 3D dan shader, serta retrospektif iterasi.\n\n## Yang bisa diharapkan\n\n- **Bedah mendalam** adegan hero React Three Fiber dan shader latar FBM fresnel.\n- **Performa**: Cache Components, Partial Prefetching, dan penalaan bundle LazyMotion.\n- **Aksesibilitas**: catatan tentang `prefers-reduced-motion` dan kontras AA.\n\n> Karya cyberpunk untuk era liquid-glass.\n\nNantikan — lebih banyak postingan segera hadir.",
+    "tags": [
+      "meta",
+      "pengumuman"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-07-02T00:00:00.000Z",
+    "updatedAt": "2026-07-02T00:00:00.000Z"
+  }
+]
