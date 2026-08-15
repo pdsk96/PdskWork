@@ -25,6 +25,18 @@ React Three Fiber, **Motion** (formerly Framer Motion). Iteration-driven develop
 - Animation lib migrated: `framer-motion` → `motion/react` (package `motion`, rebrand). `useReducedMotion`, `useScroll`, `useTransform`, `useMotionValue`, `useSpring`, `m`, `LazyMotion`, `domAnimation` all exported from `motion/react`.
 - CyberBackground `dpr={[1, 1.75]}` (was `[1,2]`) — lighter on high-DPI mobile for the 5-octave FBM shader. CyberHero keeps `[1,2]` + `<AdaptiveDpr>` + `<PerformanceMonitor>`.
 
+## Iteration 4 — engagement & comfort features (applied, build green)
+- **Theme toggle** (dark/light cyberpunk): `ThemeProvider`+`ThemeToggle`, no-flash inline script in `<head>`, persists to `pdsk-theme` cookie + localStorage. Light = softer "neon-on-ink" palette (AA contrast).
+- **Ambient sound**: `AmbientSound` — Web Audio API drone (2 detuned saw + slow LFO low-pass), default muted, lazy AudioContext on first enable, reduced-motion zeroes LFO. No audio files.
+- **Reading progress**: `ReadingProgress` — neon bar top of viewport, scroll-driven.
+- **Back-to-top**: `BackToTop` — floating button after 600px scroll, smooth (or instant when reduced-motion).
+- **Share buttons**: `ShareButtons` — copy link (+toast) + X/LinkedIn/WhatsApp.
+- **Site footer**: `SiteFooter` — bilingual, tagline + quick nav + share + RSS link + copyright.
+- **SEO/RSS**: `sitemap.ts`, `robots.ts`, `feed.xml/route.ts` (RSS 2.0). `metadata.alternates` links the feed.
+- **i18n expanded**: dictionaries gained a `ui` block (en+id) for all new feature labels. Existing keys untouched. Language toggle (EN/ID) already in nav.
+- All new components are `'use client'` where they need browser APIs / context; CSS in `globals.css` (no styled-jsx in server components).
+- Cache Components gotcha: `new Date()` in a Client Component aborts prerender (`/_not-found`) → defer to `useEffect`.
+
 ## Project conventions
 - Source lives under `src/` (`src/app`, `src/components`, `src/i18n`, `src/lib`).
 - i18n: cookie + context based, locales `en` and `id` (dictionaries in `src/i18n/dictionaries.ts`).

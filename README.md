@@ -37,10 +37,17 @@ Proyek ini dikembangkan secara **iteratif** (`iterasi-1`, `iterasi-2`, `iterasi-
 | 🪟 **Navbar Liquid-Glass** | `backdrop-blur` + refraksi **SVG `feDisplacementMap`** + glare mengikuti kursor via CSS var `--mx`/`--my` (rAF throttled) |
 | 🔄 **View Transitions + Instant Nav** | Next 16.3 `cacheComponents`+`partialPrefetching` + React `<ViewTransition>` — navigasi instan + slide directional |
 | 📊 **Core Web Vitals** | `useReportWebVitals` (LCP/INP/CLS/TTFB/FCP) + `loading.tsx` streaming fallback |
-| 🌍 **i18n en / id** | Cookie + context based, kamus type-safe |
+| 🌍 **i18n en / id** | Cookie + context based, kamus type-safe; toggle EN/ID di navbar |
 | 🔐 **Admin Auth** | Cookie httpOnly HMAC-signed (Web Crypto), dilindungi via Next 16 **Proxy** |
-| 🎗️ **Aksesibilitas** | `prefers-reduced-motion` di semua lapisan (shader, glare, transisi, Motion) |
+| 🎗️ **Aksesibilitas** | `prefers-reduced-motion` di semua lapisan (shader, glare, transisi, Motion, ambient) |
 | 🪶 **Bundle Ringan** | `LazyMotion`+`domAnimation` (Motion lazy bundle), migrasi `framer-motion`→`motion/react` |
+| 🌗 **Theme Toggle** | Dark/light cyberpunk, no-flash (inline script), persist cookie+localStorage, AA contrast |
+| 🎵 **Ambient Sound** | Drone Web Audio API (tanpa file audio), default muted, opt-in, reduced-motion aware |
+| 📖 **Reading Progress** | Bar neon scroll-driven di atas viewport |
+| ⬆️ **Back-to-Top** | Tombol melayang setelah scroll, smooth/instant (reduced-motion) |
+| 🔗 **Share Buttons** | Copy link (+toast) + X/LinkedIn/WhatsApp, bilingual |
+| 🦶 **Site Footer** | Bilingual: tagline + quick nav + share + RSS + copyright |
+| 📡 **SEO & RSS** | `sitemap.ts`, `robots.ts`, RSS feed `/feed.xml` |
 
 ---
 
@@ -309,7 +316,8 @@ Plus: kontras AA, alt text, `aria-hidden` dekoratif, `aria-label`/`aria-current`
 - ✅ **Iterasi 1** — R3F cyber hero, glitch text, glass panels, bento showcase
 - ✅ **Iterasi 2** — FBM fresnel background, refractive glass nav, View Transitions
 - ✅ **Iterasi 3** — Cache Components + Partial Prefetching, WebVitals monitoring, loading.tsx streaming, LazyMotion lazy bundle, migrasi `motion/react`, dpr mobile
-- 🔜 **Iterasi 4+** — `next/image`+`preload` untuk gambar proyek, WebGPU (saat ada particle/compute), wire DB driver nyata
+- ✅ **Iterasi 4** — Theme toggle (dark/light), ambient sound, reading progress, back-to-top, share buttons, site footer, sitemap/robots/RSS, i18n diperluas (ui block en+id)
+- 🔜 **Iterasi 5+** — `next/image`+`preload` untuk gambar proyek, WebGPU, wire DB driver nyata, blog/artikel, newsletter
 
 ---
 
