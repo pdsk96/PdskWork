@@ -1314,12 +1314,21 @@ a {
 
 /* Site footer */
 .site-footer {
+  position: relative;
+  z-index: 5;
   margin-top: 4rem;
   padding: 2.4rem 20px 1.6rem;
   border-top: 1px solid var(--glass-border);
-  background: linear-gradient(180deg, transparent, rgba(5, 6, 10, 0.5));
+  /* Solid themed backdrop so the footer stays readable above the fixed R3F
+     background canvases (cyber-bg/hero-scene are position:fixed z-index:0).
+     Without position+z-index here the footer painted UNDER those canvases and
+     was obscured. Uses theme bg vars so it adapts to light/dark. */
+  background: var(--bg-1);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+}
+[data-theme='dark'] .site-footer {
+  background: linear-gradient(180deg, rgba(5, 6, 10, 0.86), rgba(5, 6, 10, 0.97));
 }
 .site-footer__inner {
   max-width: var(--maxw);
