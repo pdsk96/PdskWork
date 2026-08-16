@@ -1,0 +1,76 @@
+name: Deploy to Firebase Hosting
+
+# Build the Next.js static export and deploy `out/` to Firebase Hosting.
+# See FIREBASE.md for the project architecture (Spark/free plan, static export).
+#
+# Required GitHub secret:
+#   FIREBASE_SERVICE_ACCOUNT — service account JSON key for the `pdskwork`
+#   Firebase project (Console → Project settings → Service accounts →
+#   "Generate new private key"). Stored as a repository Actions secret.
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+# Prevent overlapping deploys from clobbering each other.
+concurrency:
+  group: firebase-hosting-deploy
+  cancel-in-progress: false
+
+# Least-privilege permissions. (id-token: write is only needed if you later
+# switch to Workload Identity Federation instead of a raw key.)
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: 20
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build (static export → out/)
+        env:
+          NEXT_PUBLIC_SITE_URL: https://pdsk.qd.je
+          NEXT_PUBLIC_APP_NAME: PdskWork
+        run: npm run build
+
+      - name: Verify build output
+        run: |
+          test -d out
+          test -f out/index.html
+          echo "Static export present in out/"
+
+      - name: Authenticate to Google
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          firebaseProjectId: pdskwork
+          channelId: live
+          # `out/` is the static export dir (next.config.ts → distDir: 'out').
+          # The action reads `firebase.json` → hosting.public from the repo root.
+          entryPoint: ${{ github.workspace }}
+
+      - name: Deployment info
+        run: |
+          echo "Live site: https://pdsk.qd.je"
+          echo "Firebase console: https://console.firebase.google.com/project/pdskwork/hosting"

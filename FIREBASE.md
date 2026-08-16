@@ -103,6 +103,23 @@ firebase deploy --only hosting
 configured in the console: **Hosting → Add custom domain → pdsk.qd.je**, then
 add the DNS records Firebase shows you at your registrar.
 
+## 6. CI/CD — GitHub Actions (automatic deploy)
+
+A push to `master` (or a manual run) triggers `.github/workflows/firebase-deploy.yml`,
+which runs `npm run build` and deploys `out/` to Firebase Hosting via the
+`FirebaseExtended/action-hosting-deploy` action.
+
+### Setup the deploy key (one time)
+
+1. Firebase console → **Project settings → Service accounts → Generate new
+   private key** → download the JSON.
+2. GitHub repo → **Settings → Secrets and variables → Actions → New repository
+   secret** → name it `FIREBASE_SERVICE_ACCOUNT` → paste the full JSON value.
+3. Done. The next push to `master` deploys automatically.
+
+The workflow uses Node 20, caches npm, sets the public `NEXT_PUBLIC_*` env vars
+for the build, and verifies `out/index.html` exists before deploying.
+
 ## Notes
 
 - Analytics (Google Analytics for Firebase) initializes client-side via
