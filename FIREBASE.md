@@ -117,7 +117,7 @@ which runs `npm run build` and deploys `out/` to Firebase Hosting via the
    secret** → name it `FIREBASE_SERVICE_ACCOUNT` → paste the full JSON value.
 3. Done. The next push to `master` deploys automatically.
 
-The workflow uses Node 20, caches npm, sets the public `NEXT_PUBLIC_*` env vars
+The workflow uses Node 22, caches npm, sets the public `NEXT_PUBLIC_*` env vars
 for the build, and verifies `out/index.html` exists before deploying.
 
 ## Notes
