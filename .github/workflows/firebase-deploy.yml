@@ -18,8 +18,8 @@ concurrency:
   group: firebase-hosting-deploy
   cancel-in-progress: false
 
-# Least-privilege permissions. (id-token: write is only needed if you later
-# switch to Workload Identity Federation instead of a raw key.)
+# Least-privilege permissions. The hosting-deploy action authenticates from
+# the service account key directly, so no id-token: write is needed.
 permissions:
   contents: read
 
@@ -55,16 +55,13 @@ jobs:
           test -f out/index.html
           echo "Static export present in out/"
 
-      - name: Authenticate to Google
-        id: auth
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          firebaseProjectId: pdskwork
+          # The action does its own auth from the service account JSON — no
+          # separate google-github-actions/auth step needed.
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          projectId: pdskwork
           channelId: live
           # `out/` is the static export dir (next.config.ts → distDir: 'out').
           # The action reads `firebase.json` → hosting.public from the repo root.
