@@ -229,6 +229,7 @@ export default function LiquidGlassNav() {
           display: inline-flex;
           align-items: center;
           gap: 10px;
+          min-width: 0;
           text-decoration: none;
           color: var(--fg, #e9f6ff);
           font-weight: 700;
@@ -276,6 +277,7 @@ export default function LiquidGlassNav() {
           display: flex;
           align-items: center;
           gap: 10px;
+          flex-shrink: 0;
         }
         .lgnav__admin {
           text-decoration: none;
@@ -293,6 +295,27 @@ export default function LiquidGlassNav() {
         @media (max-width: 720px) {
           .lgnav__links {
             display: none;
+          }
+          .lgnav__inner {
+            gap: 10px;
+            padding: 8px;
+          }
+          .lgnav__actions {
+            gap: 6px;
+          }
+        }
+
+        @media (max-width: 380px) {
+          .lgnav__inner {
+            gap: 8px;
+            padding: 6px;
+          }
+          .lgnav__actions {
+            gap: 4px;
+          }
+          .lgnav__brand svg {
+            height: 22px;
+            width: auto;
           }
         }
 

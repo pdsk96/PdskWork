@@ -1138,9 +1138,11 @@ a {
 .theme-toggle,
 .ambient-toggle,
 .nav-icon-btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
   width: 36px;
   height: 36px;
   padding: 0;

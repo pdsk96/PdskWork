@@ -2,9 +2,9 @@
  * PdskLogo — typographic wordmark for PdskWork.
  *
  * A neon cyberpunk wordmark: "Pdsk" in cyan with a glow, "Work" in magenta,
- * separated by a small animated pulse dot. Pure SVG so it scales crisply at
- * any size (navbar, footer, favicon). Inherits currentColor for the base and
- * uses the theme's --cyan/--magenta for the accent split.
+ * rendered as a single continuous text (color split via tspan — no gap). Pure
+ * SVG so it scales crisply at any size (navbar, footer, favicon). Uses the
+ * theme's --cyan/--magenta for the accent split.
  *
  * Pass `size` to scale; the viewBox keeps proportions (240×56).
  */
@@ -46,7 +46,7 @@ export default function PdskLogo({ size = 28, className, animated = true }: Pdsk
         </filter>
       </defs>
 
-      {/* "Pdsk" — cyan/violet, glowing */}
+      {/* Single continuous "PdskWork" wordmark — color split via tspan, no gap */}
       <text
         x="2"
         y="42"
@@ -54,44 +54,10 @@ export default function PdskLogo({ size = 28, className, animated = true }: Pdsk
         fontSize="38"
         fontWeight="800"
         letterSpacing="-1.5"
-        fill="url(#pdsk-grad)"
         filter="url(#pdsk-glow)"
       >
-        Pdsk
-      </text>
-
-      {/* pulse dot */}
-      <circle cx="116" cy="28" r="4" fill="#00f0ff" filter="url(#pdsk-glow)">
-        {animated ? (
-          <animate
-            attributeName="opacity"
-            values="1;0.35;1"
-            dur="2.4s"
-            repeatCount="indefinite"
-          />
-        ) : null}
-        {animated ? (
-          <animate
-            attributeName="r"
-            values="4;2.6;4"
-            dur="2.4s"
-            repeatCount="indefinite"
-          />
-        ) : null}
-      </circle>
-
-      {/* "Work" — magenta/violet */}
-      <text
-        x="130"
-        y="42"
-        fontFamily="'Segoe UI', 'SF Pro Display', system-ui, sans-serif"
-        fontSize="38"
-        fontWeight="800"
-        letterSpacing="-1.5"
-        fill="url(#work-grad)"
-        filter="url(#pdsk-glow)"
-      >
-        Work
+        <tspan fill="url(#pdsk-grad)">Pdsk</tspan>
+        <tspan fill="url(#work-grad)">Work</tspan>
       </text>
     </svg>
   )
