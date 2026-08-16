@@ -1,0 +1,26 @@
+name: One-off admin creds set
+
+# TEMPORARY — sets the admin user's email + password via the Admin SDK using
+# the FIREBASE_SERVICE_ACCOUNT secret already in the repo. Triggered manually,
+# then removed. No secrets are echoed.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  set-admin-creds:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Update admin user (email + password)
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: node scripts/admin-set-creds.mjs ZSKWxXbWS0VrokTuQ0pdxKkZIB33 pdskproject@gmail.com 'Pdsk96!!'
