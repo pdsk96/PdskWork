@@ -11,6 +11,7 @@ export const dictionaries = {
       contact: 'Contact',
       admin: 'Admin',
       blog: 'Blog',
+      faq: 'FAQ',
     },
     hero: {
       title: 'PdskWork',
@@ -71,8 +72,11 @@ export const dictionaries = {
       readingProgress: 'Reading progress',
       footerTagline: 'Cyberpunk creations for the liquid-glass era',
       footerNav: 'Navigation',
+      footerSupport: 'Support',
+      footerLegal: 'Legal',
       footerConnect: 'Connect',
       footerRights: 'All rights reserved.',
+      footerBuiltWith: 'Built with Next.js, R3F & Motion',
       feed: 'RSS feed',
     },
     showcase: {
@@ -128,6 +132,114 @@ export const dictionaries = {
       viewPosts: 'View published blog',
       backToAdmin: 'Back to admin',
     },
+    faq: {
+      title: 'Frequently Asked Questions',
+      lead: 'Quick answers about PdskWork, the tech, and how to get in touch.',
+      items: [
+        {
+          q: 'What is PdskWork?',
+          a: 'PdskWork is a cyberpunk-themed portfolio and work showcase built with Next.js, React Three Fiber, and Motion. It highlights creative front-end work, motion design, and 3D experiments.',
+        },
+        {
+          q: 'What tech stack does it use?',
+          a: 'Next.js 16 (App Router, static export), React 19, React Three Fiber for 3D, Motion (Framer Motion) for animation, Firebase for hosting + Firestore + Auth, and CSS glassmorphism.',
+        },
+        {
+          q: 'Is the source code open?',
+          a: 'The repository is private. Selected experiments and write-ups are published on the blog. Reach out via the contact page for collaborations.',
+        },
+        {
+          q: 'How do I report a bug or request a feature?',
+          a: 'Use the contact page and describe the issue or idea. Screenshots and steps to reproduce help a lot.',
+        },
+        {
+          q: 'Does the site work on mobile?',
+          a: 'Yes. The layout is responsive, and heavy 3D scenes degrade gracefully — pixel ratio adapts and reduced-motion is respected.',
+        },
+        {
+          q: 'Is there an RSS feed?',
+          a: 'Yes. Subscribe to the RSS feed (linked in the footer and page head) to get new blog posts.',
+        },
+      ],
+    },
+    privacy: {
+      title: 'Privacy Policy',
+      updated: 'Last updated',
+      lead: 'How PdskWork handles your data.',
+      sections: [
+        {
+          h: 'Overview',
+          p: 'PdskWork is a static site hosted on Firebase. It does not run a server with a database of personal data. Public pages collect no personal information.',
+        },
+        {
+          h: 'Analytics',
+          p: 'The site uses Google Analytics for Firebase to measure aggregate, anonymized traffic. This includes page views, browser type, and approximate location. No personally identifiable information is collected from visitors.',
+        },
+        {
+          h: 'Firebase Auth (admin only)',
+          p: 'The admin console is protected by Firebase Authentication. Only the site owner signs in. Authentication credentials are stored by Firebase Auth, not in this site’s code or database.',
+        },
+        {
+          h: 'Firestore',
+          p: 'Blog content is stored in Firestore. Comments and user-generated content are not collected. Only the site owner can write data, enforced by Firestore security rules.',
+        },
+        {
+          h: 'Cookies & local storage',
+          p: 'A theme cookie (pdsk-theme) and locale preference are stored on your device to remember your settings. They are not used for tracking.',
+        },
+        {
+          h: 'Contact',
+          p: 'If you message via the contact page or email, your message and email are used only to reply. They are not sold or shared.',
+        },
+        {
+          h: 'Your rights',
+          p: 'You can request deletion of any data you sent by contacting the site owner. Analytics data is aggregate and not linked to you personally.',
+        },
+        {
+          h: 'Changes',
+          p: 'This policy may change. Updates are posted on this page with a new "last updated" date.',
+        },
+      ],
+    },
+    terms: {
+      title: 'Terms of Service',
+      updated: 'Last updated',
+      lead: 'The terms for using PdskWork.',
+      sections: [
+        {
+          h: 'Acceptance',
+          p: 'By accessing this site you agree to these terms. If you do not agree, please do not use the site.',
+        },
+        {
+          h: 'Use of content',
+          p: 'Blog posts, code samples, and visuals are the intellectual property of PdskWork unless stated otherwise. You may reference short excerpts with attribution. Full reproduction requires permission.',
+        },
+        {
+          h: 'No warranty',
+          p: 'The site and its content are provided "as is" without warranty of any kind. Tutorials and code may contain errors; use at your own risk.',
+        },
+        {
+          h: 'External links',
+          p: 'The site may link to external resources. PdskWork is not responsible for the content or practices of third-party sites.',
+        },
+        {
+          h: 'Acceptable use',
+          p: 'Do not attempt to access the admin console, overload the site, or scrape content aggressively. Automated access for indexing (search engines) is welcome.',
+        },
+        {
+          h: 'Limitation of liability',
+          p: 'PdskWork is not liable for any damages arising from use of the site or its content.',
+        },
+        {
+          h: 'Changes',
+          p: 'Terms may change. Continued use after changes constitutes acceptance of the new terms.',
+        },
+        {
+          h: 'Contact',
+          p: 'Questions about these terms? Reach out via the contact page.',
+        },
+      ],
+    },
   },
   id: {
     nav: {
@@ -137,6 +249,7 @@ export const dictionaries = {
       contact: 'Kontak',
       admin: 'Admin',
       blog: 'Blog',
+      faq: 'FAQ',
     },
     hero: {
       title: 'PdskWork',
@@ -197,8 +310,11 @@ export const dictionaries = {
       readingProgress: 'Progres baca',
       footerTagline: 'Karya cyberpunk untuk era liquid-glass',
       footerNav: 'Navigasi',
+      footerSupport: 'Dukungan',
+      footerLegal: 'Hukum',
       footerConnect: 'Terhubung',
       footerRights: 'Hak cipta dilindungi.',
+      footerBuiltWith: 'Dibuat dengan Next.js, R3F & Motion',
       feed: 'Feed RSS',
     },
     showcase: {
@@ -253,6 +369,114 @@ export const dictionaries = {
       publishedBadge: 'Terbit',
       viewPosts: 'Lihat blog publik',
       backToAdmin: 'Kembali ke admin',
+    },
+    faq: {
+      title: 'Pertanyaan yang Sering Diajukan',
+      lead: 'Jawaban singkat tentang PdskWork, teknologinya, dan cara menghubungi.',
+      items: [
+        {
+          q: 'Apa itu PdskWork?',
+          a: 'PdskWork adalah portofolio dan etalase karya bertema cyberpunk yang dibangun dengan Next.js, React Three Fiber, dan Motion. Menampilkan karya front-end kreatif, desain gerak, dan eksperimen 3D.',
+        },
+        {
+          q: 'Teknologi apa yang dipakai?',
+          a: 'Next.js 16 (App Router, static export), React 19, React Three Fiber untuk 3D, Motion (Framer Motion) untuk animasi, Firebase untuk hosting + Firestore + Auth, serta glassmorphism CSS.',
+        },
+        {
+          q: 'Apakah kode sumbernya terbuka?',
+          a: 'Repositori bersifat privat. Eksperimen dan tulisan terpilih diterbitkan di blog. Hubungi melalui halaman kontak untuk kolaborasi.',
+        },
+        {
+          q: 'Bagaimana cara melaporkan bug atau mengajukan fitur?',
+          a: 'Gunakan halaman kontak dan jelaskan masalah atau idenya. Tangkapan layar dan langkah reproduksi sangat membantu.',
+        },
+        {
+          q: 'Apakah situs berjalan di mobile?',
+          a: 'Ya. Tata letak responsif, dan adegan 3D berat menurun secara halus — rasio piksel beradaptasi dan reduced-motion dihormati.',
+        },
+        {
+          q: 'Apakah ada feed RSS?',
+          a: 'Ya. Berlangganan feed RSS (tertaut di footer dan head halaman) untuk mendapatkan postingan blog baru.',
+        },
+      ],
+    },
+    privacy: {
+      title: 'Kebijakan Privasi',
+      updated: 'Terakhir diperbarui',
+      lead: 'Bagaimana PdskWork menangani data Anda.',
+      sections: [
+        {
+          h: 'Ikhtisar',
+          p: 'PdskWork adalah situs statis yang dihosting di Firebase. Tidak menjalankan server dengan database data pribadi. Halaman publik tidak mengumpulkan informasi pribadi.',
+        },
+        {
+          h: 'Analitik',
+          p: 'Situs memakai Google Analytics for Firebase untuk mengukur lalu lintas agregat anonim. Termasuk tampilan halaman, jenis browser, dan lokasi perkiraan. Tidak ada data pribadi yang dikumpulkan dari pengunjung.',
+        },
+        {
+          h: 'Firebase Auth (admin saja)',
+          p: 'Konsol admin dilindungi oleh Firebase Authentication. Hanya pemilik situs yang masuk. Kredensial autentikasi disimpan oleh Firebase Auth, bukan di kode atau database situs ini.',
+        },
+        {
+          h: 'Firestore',
+          p: 'Konten blog disimpan di Firestore. Komentar dan konten buatan pengguna tidak dikumpulkan. Hanya pemilik situs yang dapat menulis data, ditegakkan oleh aturan keamanan Firestore.',
+        },
+        {
+          h: 'Cookie & local storage',
+          p: 'Cookie tema (pdsk-theme) dan preferensi bahasa disimpan di perangkat Anda untuk mengingat pengaturan. Tidak dipakai untuk pelacakan.',
+        },
+        {
+          h: 'Kontak',
+          p: 'Jika Anda mengirim pesan via halaman kontak atau email, pesan dan email Anda hanya dipakai untuk membalas. Tidak dijual atau dibagikan.',
+        },
+        {
+          h: 'Hak Anda',
+          p: 'Anda dapat meminta penghapusan data yang Anda kirim dengan menghubungi pemilik situs. Data analitik bersifat agregat dan tidak dikaitkan dengan Anda secara pribadi.',
+        },
+        {
+          h: 'Perubahan',
+          p: 'Kebijakan ini dapat berubah. Pembaruan diposting di halaman ini dengan tanggal "terakhir diperbarui" baru.',
+        },
+      ],
+    },
+    terms: {
+      title: 'Ketentuan Layanan',
+      updated: 'Terakhir diperbarui',
+      lead: 'Ketentuan menggunakan PdskWork.',
+      sections: [
+        {
+          h: 'Penerimaan',
+          p: 'Dengan mengakses situs ini Anda menyetujui ketentuan ini. Jika tidak setuju, mohon jangan gunakan situs.',
+        },
+        {
+          h: 'Penggunaan konten',
+          p: 'Postingan blog, contoh kode, dan visual adalah hak kekayaan intelektual PdskWork kecuali dinyatakan lain. Anda boleh mengutip cuplikan singkat dengan atribusi. Reproduksi penuh butuh izin.',
+        },
+        {
+          h: 'Tanpa jaminan',
+          p: 'Situs dan kontennya disediakan "apa adanya" tanpa jaminan apa pun. Tutorial dan kode mungkin mengandung kesalahan; gunakan dengan risiko Anda sendiri.',
+        },
+        {
+          h: 'Tautan eksternal',
+          p: 'Situs mungkin menautkan ke sumber daya eksternal. PdskWork tidak bertanggung jawab atas konten atau praktik situs pihak ketiga.',
+        },
+        {
+          h: 'Penggunaan yang dapat diterima',
+          p: 'Jangan mencoba mengakses konsol admin, membebani situs, atau mengikis konten secara agresif. Akses otomatis untuk pengindeksan (mesin pencari) diperbolehkan.',
+        },
+        {
+          h: 'Batasan tanggung jawab',
+          p: 'PdskWork tidak bertanggung jawab atas kerusakan yang timbul dari penggunaan situs atau kontennya.',
+        },
+        {
+          h: 'Perubahan',
+          p: 'Ketentuan dapat berubah. Penggunaan berkelanjutan setelah perubahan dianggap menerima ketentuan baru.',
+        },
+        {
+          h: 'Kontak',
+          p: 'Pertanyaan tentang ketentuan ini? Hubungi melalui halaman kontak.',
+        },
+      ],
     },
   },
 } as const

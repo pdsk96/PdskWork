@@ -18,4 +18,5 @@ export const NAV_LINKS: readonly NavLink[] = [
   { href: '/blog', navKey: 'blog', transitionType: 'nav-forward' },
   { href: '/about', navKey: 'about', transitionType: 'nav-forward' },
   { href: '/contact', navKey: 'contact', transitionType: 'nav-forward' },
+  { href: '/faq', navKey: 'faq', transitionType: 'nav-forward' },
 ] as const

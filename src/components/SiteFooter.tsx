@@ -7,8 +7,9 @@ import ShareButtons from './ShareButtons'
 import { NAV_LINKS } from '@/lib/nav'
 
 /**
- * SiteFooter — bilingual footer with tagline, quick navigation, share buttons,
- * and an RSS feed link. Drives return visits and cross-page discovery.
+ * SiteFooter — bilingual footer with brand, navigation, support/legal links,
+ * share buttons, and an RSS feed link. Drives return visits and cross-page
+ * discovery.
  */
 export default function SiteFooter() {
   const { dict } = useLocale()
@@ -25,6 +26,7 @@ export default function SiteFooter() {
         <div className="site-footer__col site-footer__brand">
           <div className="site-footer__logo" aria-hidden="true">⚡ PdskWork</div>
           <p className="site-footer__tagline">{dict.ui.footerTagline}</p>
+          <p className="site-footer__built">{dict.ui.footerBuiltWith}</p>
         </div>
 
         <nav className="site-footer__col" aria-label={dict.ui.footerNav}>
@@ -37,6 +39,32 @@ export default function SiteFooter() {
                 </Link>
               </li>
             ))}
+          </ul>
+        </nav>
+
+        <nav className="site-footer__col" aria-label={dict.ui.footerSupport}>
+          <h2 className="site-footer__heading">{dict.ui.footerSupport}</h2>
+          <ul className="site-footer__list">
+            <li>
+              <Link href="/faq" className="site-footer__link" transitionTypes={['nav-forward']}>
+                {dict.nav.faq}
+              </Link>
+            </li>
+            <li>
+              <Link href="/privacy" className="site-footer__link" transitionTypes={['nav-forward']}>
+                {dict.privacy.title}
+              </Link>
+            </li>
+            <li>
+              <Link href="/terms" className="site-footer__link" transitionTypes={['nav-forward']}>
+                {dict.terms.title}
+              </Link>
+            </li>
+            <li>
+              <Link href="/contact" className="site-footer__link" transitionTypes={['nav-forward']}>
+                {dict.nav.contact}
+              </Link>
+            </li>
           </ul>
         </nav>
 
@@ -54,7 +82,16 @@ export default function SiteFooter() {
 
       <div className="site-footer__bar">
         <span>{year ? `© ${year} PdskWork. ${dict.ui.footerRights}` : `© PdskWork. ${dict.ui.footerRights}`}</span>
+        <nav className="site-footer__bar-links" aria-label={dict.ui.footerLegal}>
+          <Link href="/privacy" className="site-footer__bar-link" transitionTypes={['nav-forward']}>
+            {dict.privacy.title}
+          </Link>
+          <Link href="/terms" className="site-footer__bar-link" transitionTypes={['nav-forward']}>
+            {dict.terms.title}
+          </Link>
+        </nav>
       </div>
     </footer>
   )
 }
+
