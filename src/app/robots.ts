@@ -4,7 +4,7 @@ import type { MetadataRoute } from 'next'
 export const dynamic = 'force-static'
 
 const BASE =
-  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://pdsk.qd.je'
+  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://pdskwork.web.app'
 
 /**
  * robots.ts — robots.txt generation. The admin console is disallowed for

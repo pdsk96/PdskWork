@@ -12,7 +12,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..')
 const SEED = join(ROOT, 'src', 'db', 'blog.json')
 const OUT = join(ROOT, 'public', 'feed.xml')
-const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://pdsk.qd.je'
+const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://pdskwork.web.app'
 
 function esc(s) {
   return String(s)

@@ -12,7 +12,7 @@ export const dynamic = 'force-static'
  * after deploy appear here after the next build/redeploy. No server runtime.
  */
 const BASE =
-  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://pdsk.qd.je'
+  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://pdskwork.web.app'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date()

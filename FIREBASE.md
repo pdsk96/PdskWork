@@ -99,9 +99,10 @@ npm run build        # runs prebuild (feed.xml) then `next build` → out/
 firebase deploy --only hosting
 ```
 
-`firebase.json` points Hosting at `out/`. The custom domain **pdsk.qd.je** is
-configured in the console: **Hosting → Add custom domain → pdsk.qd.je**, then
-add the DNS records Firebase shows you at your registrar.
+`firebase.json` points Hosting at `out/`. The site is served at the default
+Firebase Hosting URL **https://pdskwork.web.app** (set as `NEXT_PUBLIC_SITE_URL`
+in `.env.example` and the CI workflow, used as `metadataBase` + sitemap/robots/
+RSS base). No custom domain is configured.
 
 ## 6. CI/CD — GitHub Actions (automatic deploy)
 
@@ -119,54 +120,6 @@ which runs `npm run build` and deploys `out/` to Firebase Hosting via the
 
 The workflow uses Node 22, caches npm, sets the public `NEXT_PUBLIC_*` env vars
 for the build, and verifies `out/index.html` exists before deploying.
-
-## 7. Custom domain — pdsk.qd.je
-
-The auto-deploy is already live at the default URL `https://pdskwork.web.app`.
-To serve the same content on your custom domain **pdsk.qd.je**, connect it once
-in the Firebase console (this step needs your DNS registrar access, so it can't
-be done by CI):
-
-1. Firebase console → **pdskwork** project → **Hosting** → **Add custom domain**.
-2. Enter `pdsk.qd.je` → **Continue**. (Skip "Quick setup" for the apex/root domain.)
-3. Firebase shows you **A records** and a **TXT verification record**. Example
-   values Firebase typically gives (use the exact ones the console shows you):
-
-   | Type | Host/Name | Value |
-   |---|---|---|
-   | TXT | `pdsk.qd.je` (or `@`) | `firebase-site-verification=…` |
-   | A   | `pdsk.qd.je` (or `@`) | `151.101.1.195` |
-   | A   | `pdsk.qd.je` (or `@`) | `151.101.65.195` |
-   | A   | `pdsk.qd.je` (or `@`) | `151.101.129.195` |
-   | A   | `pdsk.qd.je` (or `@`) | `151.101.193.195` |
-
-4. At your **DNS registrar** for `qd.je` (the dashboard where you manage the
-   `qd.je` zone), add the records from step 3. The Host/Name field is usually
-   `pdsk` (the subdomain) or `@` for the apex — your registrar's UI tells you.
-5. Back in the Firebase console, click **Verify** / **Finish**. Firebase polls
-   DNS; once the TXT verifies, it provisions a **managed SSL certificate**
-   automatically (no manual cert needed). This can take ~15 min – a few hours.
-6. When status shows **Connected** with a green check, visit
-   **https://pdsk.qd.je** — it serves the latest `master` deploy.
-
-You can verify DNS propagation from a terminal:
-
-```bash
-# A records should resolve to Firebase's IPs:
-dig +short pdsk.qd.je A
-# Or via Google's DoH:
-curl -s "https://dns.google/resolve?name=pdsk.qd.je&type=A"
-```
-
-Notes:
-- `qd.je` is a `.je` (Jersey) TLD — make sure your registrar supports editing
-  the A/TXT records for the `pdsk` subdomain. If `qd.je` itself is the apex,
-  use `@` as the name.
-- The custom domain points at the **same Hosting site** (`pdskwork`) that CI
-  deploys to, so every `master` push updates `pdsk.qd.je` automatically — no
-  extra config in the workflow.
-- Both `pdskwork.web.app` and `pdsk.qd.je` stay active; you can keep the
-  `.web.app` URL as a fallback.
 
 ## Notes
 

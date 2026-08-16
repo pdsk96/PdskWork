@@ -15,7 +15,7 @@ import { LazyMotion, domAnimation } from 'motion/react'
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? 'https://pdsk.qd.je',
+    process.env.NEXT_PUBLIC_SITE_URL ?? 'https://pdskwork.web.app',
   ),
   title: 'PdskWork — Cyberpunk Liquid Glass',
   description:
