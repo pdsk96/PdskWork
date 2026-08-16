@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useLocale } from '@/i18n/LocaleProvider'
 import ShareButtons from './ShareButtons'
+import PdskLogo from './PdskLogo'
 import { NAV_LINKS } from '@/lib/nav'
 
 /**
@@ -24,7 +25,7 @@ export default function SiteFooter() {
     <footer className="site-footer" role="contentinfo">
       <div className="site-footer__inner">
         <div className="site-footer__col site-footer__brand">
-          <div className="site-footer__logo" aria-hidden="true">⚡ PdskWork</div>
+          <PdskLogo size={26} animated={false} />
           <p className="site-footer__tagline">{dict.ui.footerTagline}</p>
           <p className="site-footer__built">{dict.ui.footerBuiltWith}</p>
         </div>

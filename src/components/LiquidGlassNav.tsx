@@ -8,6 +8,8 @@ import { useLocale } from '@/i18n/LocaleProvider'
 import LanguageToggle from './LanguageToggle'
 import ThemeToggle from './ThemeToggle'
 import AmbientSound from './AmbientSound'
+import FullscreenToggle from './FullscreenToggle'
+import PdskLogo from './PdskLogo'
 import { NAV_LINKS } from '@/lib/nav'
 
 /**
@@ -97,8 +99,7 @@ export default function LiquidGlassNav() {
 
       <nav className="lgnav__inner" aria-label={dict.nav.home === 'Home' ? 'Primary' : 'Utama'}>
         <Link href="/" className="lgnav__brand" aria-label="PdskWork home" transitionTypes={['nav-back']}>
-          <span className="lgnav__brand-mark" aria-hidden="true" />
-          <span className="lgnav__brand-text">PdskWork</span>
+          <PdskLogo size={26} animated={false} />
         </Link>
 
         <ul className="lgnav__links">
@@ -127,6 +128,7 @@ export default function LiquidGlassNav() {
           <LanguageToggle />
           <ThemeToggle />
           <AmbientSound />
+          <FullscreenToggle autoOnFirstGesture />
           {/*
             Admin entry is intentionally hidden from the public nav. The admin
             console remains reachable at /admin/login (client-side gated by
@@ -231,13 +233,10 @@ export default function LiquidGlassNav() {
           color: var(--fg, #e9f6ff);
           font-weight: 700;
           letter-spacing: 0.02em;
+          transition: opacity 0.2s ease;
         }
-        .lgnav__brand-mark {
-          width: 22px;
-          height: 22px;
-          border-radius: 7px;
-          background: conic-gradient(from 120deg, #00f0ff, #7a5cff, #ff2bd6, #00f0ff);
-          box-shadow: 0 0 12px rgba(0, 240, 255, 0.6);
+        .lgnav__brand:hover {
+          opacity: 0.85;
         }
         .lgnav__links {
           display: flex;

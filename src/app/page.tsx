@@ -33,6 +33,9 @@ export default function HomePage() {
             <Link href="/work" className="primary-btn" transitionTypes={['nav-forward']}>
               {dict.hero.cta}
             </Link>
+            <Link href="/welcome" className="ghost-btn" transitionTypes={['nav-forward']}>
+              {dict.welcome.title}
+            </Link>
           </div>
           <p className="hero__hint" aria-live="polite">
             {dict.spotlight.hint}
