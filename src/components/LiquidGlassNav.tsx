@@ -127,9 +127,11 @@ export default function LiquidGlassNav() {
           <LanguageToggle />
           <ThemeToggle />
           <AmbientSound />
-          <Link href="/admin" className="lgnav__admin" transitionTypes={['nav-forward']}>
-            {dict.nav.admin}
-          </Link>
+          {/*
+            Admin entry is intentionally hidden from the public nav. The admin
+            console remains reachable at /admin/login (client-side gated by
+            Firebase Auth) — no discovery link is exposed in the UI.
+          */}
         </div>
 
         {/* cursor-follow glare (driven by --mx/--my) */}
