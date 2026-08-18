@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { Suspense, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useLocale } from '@/i18n/LocaleProvider'
@@ -71,11 +72,18 @@ function LoginForm() {
 }
 
 export default function AdminLoginPage() {
+  const { dict } = useLocale()
   return (
     <main className="auth-shell">
-      <Suspense fallback={<div className="glass-card auth-form" aria-busy="true" />}>
-        <LoginForm />
-      </Suspense>
+      <section className="glass-card auth-form">
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+          <h1 className="auth-title" style={{ margin: 0 }}>{dict.admin.loginTitle}</h1>
+          <Link href="/" className="ghost-btn">← Back to site</Link>
+        </div>
+        <Suspense fallback={<div className="glass-card auth-form" aria-busy="true" />}>
+          <LoginForm />
+        </Suspense>
+      </section>
     </main>
   )
 }

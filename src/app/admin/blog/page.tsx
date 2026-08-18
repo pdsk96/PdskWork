@@ -6,6 +6,7 @@ import { useLocale } from '@/i18n/LocaleProvider'
 import { getAllPosts, bulkUpdatePosts, bulkDeletePosts, type BlogPost } from '@/lib/blog-firestore'
 import { formatDate } from '@/lib/blog-utils'
 import AdminGate from '@/components/AdminGate'
+import AdminNav from '@/components/AdminNav'
 
 type BulkAction = 'publish' | 'unpublish' | 'delete' | 'tag'
 
@@ -68,7 +69,7 @@ function AdminBlogList() {
     setBulkLoading(true)
     try {
       if (action === 'delete') {
-        if (!confirm(`Delete ${ids.length} posts? This cannot be undone.`)) {
+        if (!confirm(dict.admin.bulkDeleteConfirm)) {
           setBulkLoading(false)
           return
         }
@@ -113,19 +114,21 @@ function AdminBlogList() {
           </div>
         </div>
 
-        <Link href="/blog" className="ghost-btn" target="_blank">
+        <AdminNav />
+
+        <Link href="/blog" className="ghost-btn" target="_blank" style={{ marginTop: '1rem' }}>
           {dict.blog.viewPosts} ↗
         </Link>
 
         {selectedCount > 0 && (
           <div className="bulk-actions">
-            <span className="bulk-actions__count">{selectedCount} selected</span>
+            <span className="bulk-actions__count">{selectedCount} {dict.admin.bulkSelected}</span>
             <div className="bulk-actions__btns">
               <button className="primary-btn" onClick={() => handleBulkAction('publish')} disabled={bulkLoading}>
-                Publish
+                {dict.admin.bulkPublish}
               </button>
               <button className="ghost-btn" onClick={() => handleBulkAction('unpublish')} disabled={bulkLoading}>
-                Unpublish
+                {dict.admin.bulkUnpublish}
               </button>
               <div className="bulk-actions__row">
                 <input
@@ -135,11 +138,11 @@ function AdminBlogList() {
                   placeholder="Add tags (comma-separated)"
                 />
                 <button className="ghost-btn" onClick={() => handleBulkAction('tag')} disabled={bulkLoading || !bulkTag.trim()}>
-                  Update Tags
+                  {dict.admin.bulkUpdateTags}
                 </button>
               </div>
               <button className="ghost-btn ghost-btn--danger" onClick={() => handleBulkAction('delete')} disabled={bulkLoading}>
-                Delete
+                {dict.admin.bulkDelete}
               </button>
             </div>
           </div>
@@ -200,7 +203,7 @@ function AdminBlogList() {
           </ul>
         )}
 
-        <Link href="/admin" className="ghost-btn">← {dict.blog.backToAdmin}</Link>
+        <Link href="/admin" className="ghost-btn" style={{ marginTop: '1rem' }}>← {dict.blog.backToAdmin}</Link>
       </section>
 
       {toast && <div className="toast">{toast}</div>}

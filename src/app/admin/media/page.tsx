@@ -1,8 +1,10 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 import { useLocale } from '@/i18n/LocaleProvider'
 import AdminGate from '@/components/AdminGate'
+import AdminNav from '@/components/AdminNav'
 import { uploadMedia, deleteMedia, listMedia, type MediaItem } from '@/lib/media-gallery'
 
 export default function AdminMediaPage() {
@@ -61,14 +63,16 @@ export default function AdminMediaPage() {
         <section className="glass-card admin-console">
           <div className="blog-admin__head">
             <div>
-              <h1 className="auth-title">Media Gallery</h1>
-              <p className="admin-welcome">Manage uploaded images and videos.</p>
+              <h1 className="auth-title">{dict.admin.mediaTitle}</h1>
+              <p className="admin-welcome">{dict.admin.mediaSubtitle}</p>
             </div>
             <label className="primary-btn" style={{ cursor: 'pointer' }}>
               {uploading ? 'Uploading...' : 'Upload File'}
               <input type="file" accept="image/*,video/*" onChange={handleUpload} disabled={uploading} hidden />
             </label>
           </div>
+
+          <AdminNav />
 
           {loading ? (
             <p className="blog-empty" aria-busy="true">Loading media...</p>

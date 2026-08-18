@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useLocale } from '@/i18n/LocaleProvider'
 import AdminGate from '@/components/AdminGate'
+import AdminNav from '@/components/AdminNav'
 import AgentChat from '@/components/AgentStudio/AgentChat'
 import AgentConfig from '@/components/AgentStudio/AgentConfig'
 import ContentReview from '@/components/AgentStudio/ContentReview'
@@ -178,6 +179,8 @@ export default function AdminAgentsPage() {
             </div>
             <AgentConfig config={config} onChange={updateConfig} />
           </div>
+
+          <AdminNav />
 
           <div className="admin-tabs">
             <button className={`admin-tabs__btn ${tab === 'agents' ? 'is-active' : ''}`} onClick={() => setTab('agents')}>Agents</button>

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useLocale } from '@/i18n/LocaleProvider'
 import { useAdminAuth } from '@/lib/use-admin-auth'
 import AdminGate from '@/components/AdminGate'
+import AdminNav from '@/components/AdminNav'
 
 export default function AdminPage() {
   return (
@@ -30,13 +31,9 @@ function AdminConsole() {
         <h1 className="auth-title">{dict.admin.title}</h1>
         <p className="admin-welcome">{dict.admin.welcome}</p>
 
-        <nav className="admin-nav" aria-label={dict.admin.title}>
-          <Link href="/admin/blog" className="primary-btn">{dict.blog.adminTitle}</Link>
-          <Link href="/admin/media" className="ghost-btn">Media Gallery</Link>
-          <Link href="/admin/agents" className="ghost-btn">AI Agent Studio</Link>
-        </nav>
+        <AdminNav />
 
-        <button type="button" className="ghost-btn" onClick={onLogout}>
+        <button type="button" className="ghost-btn" onClick={onLogout} style={{ marginTop: '1rem' }}>
           {dict.admin.logout}
         </button>
       </section>

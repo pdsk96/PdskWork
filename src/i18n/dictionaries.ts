@@ -70,7 +70,7 @@ export const dictionaries = {
         'prefers-reduced-motion freezes the scene to a single frame, kills the glitch, and keeps AA contrast.',
       cta: 'Explore work',
     },
-    admin: {
+     admin: {
       title: 'Admin Console',
       loginTitle: 'Admin sign in',
       emailLabel: 'Email',
@@ -79,6 +79,7 @@ export const dictionaries = {
       logout: 'Sign out',
       welcome: 'Signed in as administrator',
       invalid: 'Invalid credentials',
+      home: 'Admin Console',
       mediaTitle: 'Media Gallery',
       mediaSubtitle: 'Manage uploaded images and videos.',
       mediaUpload: 'Upload File',
@@ -380,6 +381,7 @@ export const dictionaries = {
       logout: 'Keluar',
       welcome: 'Masuk sebagai administrator',
       invalid: 'Kredensial tidak valid',
+      home: 'Admin Console',
       mediaTitle: 'Galeri Media',
       mediaSubtitle: 'Kelola gambar dan video yang diunggah.',
       mediaUpload: 'Unggah File',
