@@ -12,6 +12,7 @@ import {
   startAfter,
   updateDoc,
   where,
+  writeBatch,
 } from 'firebase/firestore'
 import { db } from './firebase'
 import { slugify, type BlogInput, type BlogPost } from './blog-types'
@@ -245,6 +246,37 @@ async function uniqueSlug(slug: string, excludeId?: string): Promise<string> {
     candidate = `${base}-${n}`
   }
   return candidate
+}
+
+/** Bulk update posts by id list. */
+export async function bulkUpdatePosts(ids: string[], patch: Partial<Pick<BlogPost, 'published' | 'tags' | 'locale' | 'title' | 'excerpt'>>): Promise<number> {
+  if (!ids.length) return 0
+  const batch = writeBatch(db)
+  let count = 0
+  for (const id of ids) {
+    const ref = doc(db, COLLECTION, id)
+    batch.update(ref, {
+      ...patch,
+      updatedAt: new Date().toISOString(),
+    })
+    count++
+  }
+  await batch.commit()
+  return count
+}
+
+/** Bulk delete posts by id list. */
+export async function bulkDeletePosts(ids: string[]): Promise<number> {
+  if (!ids.length) return 0
+  const batch = writeBatch(db)
+  let count = 0
+  for (const id of ids) {
+    const ref = doc(db, COLLECTION, id)
+    batch.delete(ref)
+    count++
+  }
+  await batch.commit()
+  return count
 }
 
 export { slugify }
