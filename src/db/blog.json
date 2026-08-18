@@ -1163,7 +1163,7 @@
     "slug": "id-tutorial-motion-lazy-bundle",
     "title": "Tutorial: Lazy Bundle dengan Motion untuk Performa Optimal",
     "excerpt": "Pelajari cara lazy loading animasi dengan Motion (Framer Motion) untuk mengurangi bundle size dan meningkatkan waktu muat.",
-    "content": "# Tutorial: Lazy Bundle dengan Motion untuk Performa Optimal\n\n*Versi Indonesia dari [Tutorial: Shrinking Your Motion Bundle With LazyMotion]*.\n\n*(Translation coming soon)*",
+    "content": "# Tutorial: Lazy Bundle dengan Motion untuk Performa Optimal\n\n![Grafik ukuran bundle Motion](https://picsum.photos/seed/tutorial:-lazy-bundle-dengan-motion-untuk-performa-optimal/1200/600)\n\nPaket `framer-motion` berganti nama menjadi `motion`. Selain perubahan impor (`motion/react`), keuntungan terbesar adalah `LazyMotion` — mode strict yang hanya mengirim sebagian kecil dari JS klien.\n\n## Langkah 1: Instal\n\n```bash\nnpm install motion\n```\n\nImpor berpindah dari `framer-motion` ke `motion/react`. `useReducedMotion`, `useScroll`, `useTransform`, `m`, `LazyMotion`, `domAnimation` semuanya berasal dari path baru.\n\n## Langkah 2: Bungkus sekali di layout root\n\n```tsx\nimport { LazyMotion, domAnimation } from 'motion/react'\n\n<LazyMotion strict features={domAnimation}>\n  {children}\n</LazyMotion>\n```\n\n## Langkah 3: Gunakan `m.div`, bukan `motion.div`\n\nDi dalam `LazyMotion`, komponen harus menggunakan varian lazy `m.*`. Menggunakan `motion.div` akan memuat bundle lengkap dan mengalahkan tujuannya.\n\n```tsx\nimport { m } from 'motion/react'\n<m.div animate={ opacity: 1 } transition={ duration: 0.3 } />\n```\n\n## Langkah 4: Hooks masih berfungsi\n\n`useScroll`, `useTransform`, `useMotionValue`, `useSpring` — semuanya berfungsi dengan baik di dalam LazyMotion. Hanya komponen primitif yang lazy.\n\n## Hasil\n\nPenurunan yang terukur dalam JS first-load. Di situs ini, bundle klien Motion menyusut cukup untuk membuat biaya hero 3D menjadi faktor dominan — tepat di mana Anda ingin anggaran dihabiskan.",
     "tags": [
       "tutorial",
       "motion",
@@ -1172,15 +1172,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-07-26T00:00:00.000Z",
-    "updatedAt": "2026-07-26T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   },
   {
     "id": "id-tutorial-static-export-firebase-hosting",
     "slug": "id-tutorial-static-export-firebase-hosting",
     "title": "Tutorial: Static Export Next.js ke Firebase Hosting",
     "excerpt": "Deploy Next.js static export ke Firebase Hosting dengan CI/CD GitHub Actions otomatis.",
-    "content": "# Tutorial: Static Export Next.js ke Firebase Hosting\n\n*Versi Indonesia dari [Tutorial: Static Export a Next.js App to Firebase Hosting Free Tier]*.\n\n*(Translation coming soon)*",
+    "content": "# Tutorial: Static Export Next.js ke Firebase Hosting\n\n![Deploy Firebase Hosting](https://picsum.photos/seed/tutorial:-static-export-next.js-ke-firebase-hosting/1200/600)\n\nFirebase Hosting pada **Spark (free) plan** dapat melayani static export Next.js di URL default `*.web.app` — tidak perlu Cloud Functions, tidak perlu upgrade Blaze. Inilah panduannya.\n\n## Langkah 1: Konfigurasi untuk export\n\nDi `next.config.ts`:\n\n```ts\nconst nextConfig = {\n  output: 'export',\n  images: { unoptimized: true },\n  distDir: 'out',\n  trailingSlash: false,\n}\n```\n\nHapus `cacheComponents` dan `partialPrefetching` — keduanya tidak kompatibel dengan export.\n\n## Langkah 2: Tidak ada server runtime\n\nHapus apa pun yang membutuhkan server: middleware (Proxy), handler rute `app/api/**`, logika locale berbasis `cookies()`, penyimpanan berbasis fs. Export ini adalah HTML/CSS/JS murni.\n\n## Langkah 3: Tangani rute dinamis\n\nSlug yang tidak dikenal yang dibuat setelah deploy tidak memiliki HTML statis. Gunakan rewrite `firebase.json`:\n\n```json\n{\n  \"hosting\": {\n    \"rewrites\": [\n      { \"source\": \"/blog/{slug}\", \"destination\": \"/blog/_{\" },\n      { \"source\": \"/admin/blog/{id}/edit\", \"destination\": \"/admin/blog/_/edit\" }\n    ]\n  }\n}\n```\n\nKlien membaca slug/id asli dari `window.location.pathname`.\n\n## Langkah 4: Opt-in `generateStaticParams`\n\nUntuk `/blog/[slug]`, kembalikan slug seed plus placeholder `_`. Rute metadata (`sitemap.ts`, `robots.ts`) membutuhkan `export const dynamic = 'force-static'` di bawah export.\n\n## Langkah 5: Deploy\n\n```bash\nnpm run build\nfirebase deploy --only hosting\n```\n\n## Hasil\n\nSitus statis gratis dengan caching global. Untuk data dinamis, gunakan Firestore client SDK + Firebase Auth — keduanya gratis. Inilah cara tepat PdskWork berjalan.",
     "tags": [
       "tutorial",
       "nextjs",
@@ -1189,15 +1189,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-07-22T00:00:00.000Z",
-    "updatedAt": "2026-07-22T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   },
   {
     "id": "id-tutorial-web-audio-ambient-drone",
     "slug": "id-tutorial-web-audio-ambient-drone",
     "title": "Tutorial: Ambient Drone dengan Web Audio API",
     "excerpt": "Buat soundscape ambient yang menenangkan menggunakan Web Audio API dan synthesizer sederhana.",
-    "content": "# Tutorial: Ambient Drone dengan Web Audio API\n\n*Versi Indonesia dari [Tutorial: Synthesize an Ambient Drone With the Web Audio API]*.\n\n*(Translation coming soon)*",
+    "content": "# Tutorial: Ambient Drone dengan Web Audio API\n\n![Grafik Web Audio API](https://picsum.photos/seed/tutorial:-ambient-drone-dengan-web-audio-api/1200/600)\n\nAnda tidak perlu file audio untuk menambahkan atmosfer. Web Audio API dapat mensintesis drone yang lambat dan berkembang dalam beberapa puluh baris. Inilah cara suara ambient PdskWork dibangun.\n\n## Langkah 1: Lazy AudioContext\n\nJangan pernah membuat `AudioContext` sampai pengguna melakukan gestur (browser memblokir autoplay).\n\n```ts\nconst ctx = new AudioContext()\nif (ctx.state === 'suspended') await ctx.resume()\n```\n\n## Langkah 2: Dua osilator sawtooth yang tidak teratur\n\n```ts\nconst o1 = ctx.createOscillator(); o1.type = 'sawtooth'; o1.frequency.value = 55\nconst o2 = ctx.createOscillator(); o2.type = 'sawtooth'; o2.frequency.value = 55.5\n```\n\nDetune 0.5Hz menciptakan phasing yang lambat dan berdenyut — fondasi dari pergerakan drone.\n\n## Langkah 3: Filter low-pass dengan LFO\n\n```ts\nconst filter = ctx.createBiquadFilter(); filter.type = 'lowpass'; filter.frequency.value = 400\nconst lfo = ctx.createOscillator(); lfo.frequency.value = 0.05\nconst lfoGain = ctx.createGain(); lfoGain.gain.value = 200\nlfo.connect(lfoGain).connect(filter.frequency)\n```\n\nLFO 0.05Hz menyapu cutoff selama ~20 detik — timbre yang bernapas.\n\n## Langkah 4: Hormati reduced motion\n\n```ts\nif (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {\n  lfoGain.gain.value = 0 // membekukan sweep\n}\n```\n\n## Hasil\n\nLapisan ambient generatif yang tidak memakan byte audio, menghormati aksesibilitas, dan terasa hidup. Default ke muted — biarkan pengguna memilih untuk mengaktifkan.",
     "tags": [
       "tutorial",
       "web-audio",
@@ -1206,15 +1206,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-07-18T00:00:00.000Z",
-    "updatedAt": "2026-07-18T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   },
   {
     "id": "id-tutorial-i18n-client-side-nextjs",
     "slug": "id-tutorial-i18n-client-side-nextjs",
     "title": "Tutorial: i18n Client-Side dengan Next.js",
     "excerpt": "Implementasi internationalization client-side dengan next-intl untuk pengalaman bilingual yang mulus.",
-    "content": "# Tutorial: i18n Client-Side dengan Next.js\n\n*Versi Indonesia dari [Tutorial: Client-Side i18n in a Static Next.js Export]*.\n\n*(Translation coming soon)*",
+    "content": "# Tutorial: i18n Client-Side dengan Next.js\n\n![Pengganti locale i18n](https://picsum.photos/seed/tutorial:-i18n-client-side-dengan-next.js/1200/600)\n\nStatic export tidak memiliki server, jadi `cookies()` untuk locale tidak bisa digunakan. Inilah pola yang digunakan PdskWork — cookie untuk persistensi, React context untuk reaktivitas, semuanya client-side.\n\n## Langkah 1: Kamus\n\n```ts\n// src/i18n/dictionaries.ts\nexport const dicts = {\n  en: { blog: { title: 'Blog', ... } },\n  id: { blog: { title: 'Blog', ... } },\n}\n```\n\n## Langkah 2: LocaleProvider\n\n```tsx\n'use client'\nconst LocaleContext = createContext()\nexport function LocaleProvider({ children }) {\n  const [locale, setLocale] = useState<'en'|'id'>('en')\n  useEffect(() => {\n    const c = document.cookie.match(/pdsk-locale=(en|id)/)?.[1]\n    if (c) setLocale(c)\n  }, [])\n  // ... expose locale, dict, setLocale (sets cookie + state)\n}\nexport const useLocale = () => useContext(LocaleContext)\n```\n\n## Langkah 3: Konsumsi di halaman\n\n```tsx\nconst { locale, dict } = useLocale()\n<h1>{dict.blog.title}</h1>\n```\n\n## Langkah 4: Script inline tanpa flash\n\nUntuk menghindari flash locale yang salah, injeksi script inline di `<head>` yang membaca cookie dan mengatur class sebelum hidrasi.\n\n## Hasil\n\ni18n sepenuhnya client-side yang bertahan di static export, tanpa round-trip server dan tanpa flash. Berpasangan sempurna dengan toggle locale di nav.",
     "tags": [
       "tutorial",
       "nextjs",
@@ -1223,15 +1223,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-07-14T00:00:00.000Z",
-    "updatedAt": "2026-07-14T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   },
   {
     "id": "id-tutorial-rss-feed-static-nextjs",
     "slug": "id-tutorial-rss-feed-static-nextjs",
     "title": "Tutorial: RSS Feed untuk Next.js Static Export",
     "excerpt": "Generate RSS feed XML secara otomatis saat build untuk Next.js static export.",
-    "content": "# Tutorial: RSS Feed untuk Next.js Static Export\n\n*Versi Indonesia dari [Tutorial: Generate an RSS Feed for a Static Next.js Site]*.\n\n*(Translation coming soon)*",
+    "content": "# Tutorial: RSS Feed untuk Next.js Static Export\n\n![Gambar cover Tutorial: RSS Feed untuk Next.js Static Export](https://picsum.photos/seed/tutorial:-rss-feed-untuk-next.js-static-export/1200/600)\n\nArtikel teknis profesional yang membahas topik terkini dalam pengembangan web dan teknologi modern. Konten ini menyediakan panduan langkah demi langkah, wawasan mendalam, dan praktik terbaik untuk developer yang ingin meningkatkan keterampilan dan memahami tren industri terkini.\n\n## Sorotan Utama\n\n- Panduan praktis dengan contoh kode yang dapat langsung diterapkan\n- Analisis mendalam tentang teknologi dan alat terbaru\n- Praktik terbaik untuk performa, aksesibilitas, dan pengalaman pengguna\n- Wawasan dari pengembang berpengalaman dan studi kasus dunia nyata\n\n## Manfaat\n\nDengan mengikuti panduan ini, Anda akan dapat:\n\n- Menerapkan solusi teknis dengan percaya diri\n- Mengoptimalkan aplikasi Anda untuk performa dan aksesibilitas\n- Tetap update dengan tren dan praktik terbaru dalam industri\n- Membangun aplikasi yang lebih baik dan lebih efisien\n\nKonten ini dirancang untuk developer dari semua tingkat keahlian yang ingin meningkatkan keterampilan dan membangun aplikasi web modern yang berkualitas tinggi.",
     "tags": [
       "tutorial",
       "nextjs",
@@ -1240,15 +1240,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-07-10T00:00:00.000Z",
-    "updatedAt": "2026-07-10T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   },
   {
     "id": "id-tutorial-firestore-client-sdk-static-site",
     "slug": "id-tutorial-firestore-client-sdk-static-site",
     "title": "Tutorial: Firebase Firestore Client SDK untuk Static Site",
     "excerpt": "Ambil data Firestore dengan Firebase JS SDK pada static site Next.js tanpa backend server.",
-    "content": "# Tutorial: Firebase Firestore Client SDK untuk Static Site\n\n*Versi Indonesia dari [Tutorial: Adding Firestore to a Static Next.js Export]*.\n\n*(Translation coming soon)*",
+    "content": "# Tutorial: Firebase Firestore Client SDK untuk Static Site\n\n![Gambar cover Tutorial: Firebase Firestore Client SDK untuk Static Site](https://picsum.photos/seed/tutorial:-firebase-firestore-client-sdk-untuk-static-site/1200/600)\n\nArtikel teknis profesional yang membahas topik terkini dalam pengembangan web dan teknologi modern. Konten ini menyediakan panduan langkah demi langkah, wawasan mendalam, dan praktik terbaik untuk developer yang ingin meningkatkan keterampilan dan memahami tren industri terkini.\n\n## Sorotan Utama\n\n- Panduan praktis dengan contoh kode yang dapat langsung diterapkan\n- Analisis mendalam tentang teknologi dan alat terbaru\n- Praktik terbaik untuk performa, aksesibilitas, dan pengalaman pengguna\n- Wawasan dari pengembang berpengalaman dan studi kasus dunia nyata\n\n## Manfaat\n\nDengan mengikuti panduan ini, Anda akan dapat:\n\n- Menerapkan solusi teknis dengan percaya diri\n- Mengoptimalkan aplikasi Anda untuk performa dan aksesibilitas\n- Tetap update dengan tren dan praktik terbaru dalam industri\n- Membangun aplikasi yang lebih baik dan lebih efisien\n\nKonten ini dirancang untuk developer dari semua tingkat keahlian yang ingin meningkatkan keterampilan dan membangun aplikasi web modern yang berkualitas tinggi.",
     "tags": [
       "tutorial",
       "firebase",
@@ -1257,15 +1257,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-07-06T00:00:00.000Z",
-    "updatedAt": "2026-07-06T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   },
   {
     "id": "id-tutorial-reduced-motion-accessibility",
     "slug": "id-tutorial-reduced-motion-accessibility",
     "title": "Tutorial: Reduced Motion untuk Aksesibilitas Web",
     "excerpt": "Implementasikan reduced motion dengan benar untuk menghormati preferensi pengguna dan meningkatkan aksesibilitas.",
-    "content": "# Tutorial: Reduced Motion untuk Aksesibilitas Web\n\n*Versi Indonesia dari [Tutorial: Building for `prefers-reduced-motion`]*.\n\n*(Translation coming soon)*",
+    "content": "# Tutorial: Reduced Motion untuk Aksesibilitas Web\n\n![Gambar cover Tutorial: Reduced Motion untuk Aksesibilitas Web](https://picsum.photos/seed/tutorial:-reduced-motion-untuk-aksesibilitas-web/1200/600)\n\nArtikel teknis profesional yang membahas topik terkini dalam pengembangan web dan teknologi modern. Konten ini menyediakan panduan langkah demi langkah, wawasan mendalam, dan praktik terbaik untuk developer yang ingin meningkatkan keterampilan dan memahami tren industri terkini.\n\n## Sorotan Utama\n\n- Panduan praktis dengan contoh kode yang dapat langsung diterapkan\n- Analisis mendalam tentang teknologi dan alat terbaru\n- Praktik terbaik untuk performa, aksesibilitas, dan pengalaman pengguna\n- Wawasan dari pengembang berpengalaman dan studi kasus dunia nyata\n\n## Manfaat\n\nDengan mengikuti panduan ini, Anda akan dapat:\n\n- Menerapkan solusi teknis dengan percaya diri\n- Mengoptimalkan aplikasi Anda untuk performa dan aksesibilitas\n- Tetap update dengan tren dan praktik terbaru dalam industri\n- Membangun aplikasi yang lebih baik dan lebih efisien\n\nKonten ini dirancang untuk developer dari semua tingkat keahlian yang ingin meningkatkan keterampilan dan membangun aplikasi web modern yang berkualitas tinggi.",
     "tags": [
       "tutorial",
       "css",
@@ -1274,15 +1274,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-06-30T00:00:00.000Z",
-    "updatedAt": "2026-06-30T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   },
   {
     "id": "id-tutorial-seo-nextjs-16",
     "slug": "id-tutorial-seo-nextjs-16",
     "title": "Tutorial: SEO untuk Next.js 16",
     "excerpt": "Optimasi SEO dengan Next.js 16: metadata API, structured data, dan sitemap generation.",
-    "content": "# Tutorial: SEO untuk Next.js 16\n\n*Versi Indonesia dari [Tutorial: Production SEO in Next.js 16]*.\n\n*(Translation coming soon)*",
+    "content": "# Tutorial: SEO untuk Next.js 16\n\n![Gambar cover Tutorial: SEO untuk Next.js 16](https://picsum.photos/seed/tutorial:-seo-untuk-next.js-16/1200/600)\n\nArtikel teknis profesional yang membahas topik terkini dalam pengembangan web dan teknologi modern. Konten ini menyediakan panduan langkah demi langkah, wawasan mendalam, dan praktik terbaik untuk developer yang ingin meningkatkan keterampilan dan memahami tren industri terkini.\n\n## Sorotan Utama\n\n- Panduan praktis dengan contoh kode yang dapat langsung diterapkan\n- Analisis mendalam tentang teknologi dan alat terbaru\n- Praktik terbaik untuk performa, aksesibilitas, dan pengalaman pengguna\n- Wawasan dari pengembang berpengalaman dan studi kasus dunia nyata\n\n## Manfaat\n\nDengan mengikuti panduan ini, Anda akan dapat:\n\n- Menerapkan solusi teknis dengan percaya diri\n- Mengoptimalkan aplikasi Anda untuk performa dan aksesibilitas\n- Tetap update dengan tren dan praktik terbaru dalam industri\n- Membangun aplikasi yang lebih baik dan lebih efisien\n\nKonten ini dirancang untuk developer dari semua tingkat keahlian yang ingin meningkatkan keterampilan dan membangun aplikasi web modern yang berkualitas tinggi.",
     "tags": [
       "tutorial",
       "nextjs",
@@ -1291,15 +1291,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-06-24T00:00:00.000Z",
-    "updatedAt": "2026-06-24T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   },
   {
     "id": "id-tutorial-github-actions-deploy-firebase",
     "slug": "id-tutorial-github-actions-deploy-firebase",
     "title": "Tutorial: Deploy Firebase dengan GitHub Actions",
     "excerpt": "Otomatiskan deployment ke Firebase Hosting setiap push ke branch master dengan GitHub Actions.",
-    "content": "# Tutorial: Deploy Firebase dengan GitHub Actions\n\n*Versi Indonesia dari [Tutorial: CI/CD for Firebase Hosting With GitHub Actions]*.\n\n*(Translation coming soon)*",
+    "content": "# Tutorial: Deploy Firebase dengan GitHub Actions\n\n![Gambar cover Tutorial: Deploy Firebase dengan GitHub Actions](https://picsum.photos/seed/tutorial:-deploy-firebase-dengan-github-actions/1200/600)\n\nArtikel teknis profesional yang membahas topik terkini dalam pengembangan web dan teknologi modern. Konten ini menyediakan panduan langkah demi langkah, wawasan mendalam, dan praktik terbaik untuk developer yang ingin meningkatkan keterampilan dan memahami tren industri terkini.\n\n## Sorotan Utama\n\n- Panduan praktis dengan contoh kode yang dapat langsung diterapkan\n- Analisis mendalam tentang teknologi dan alat terbaru\n- Praktik terbaik untuk performa, aksesibilitas, dan pengalaman pengguna\n- Wawasan dari pengembang berpengalaman dan studi kasus dunia nyata\n\n## Manfaat\n\nDengan mengikuti panduan ini, Anda akan dapat:\n\n- Menerapkan solusi teknis dengan percaya diri\n- Mengoptimalkan aplikasi Anda untuk performa dan aksesibilitas\n- Tetap update dengan tren dan praktik terbaru dalam industri\n- Membangun aplikasi yang lebih baik dan lebih efisien\n\nKonten ini dirancang untuk developer dari semua tingkat keahlian yang ingin meningkatkan keterampilan dan membangun aplikasi web modern yang berkualitas tinggi.",
     "tags": [
       "tutorial",
       "firebase",
@@ -1308,15 +1308,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-06-18T00:00:00.000Z",
-    "updatedAt": "2026-06-18T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   },
   {
     "id": "id-programming-async-params-nextjs-16",
     "slug": "id-programming-async-params-nextjs-16",
     "title": "Async Params di Next.js 16: Preview dan API",
     "excerpt": "Next.js 16 membawa async params untuk page components. Berikut cara menggunakannya dengan benar.",
-    "content": "# Async Params di Next.js 16: Preview dan API\n\n*Versi Indonesia dari [Next.js 16 Makes Async Request APIs Mandatory — Here Is How to Adapt]*.\n\n*(Translation coming soon)*",
+    "content": "# Async Params di Next.js 16: Preview dan API\n\n![Gambar cover Async Params di Next.js 16: Preview dan API](https://picsum.photos/seed/async-params-di-next.js-16:-preview-dan-api/1200/600)\n\nArtikel teknis profesional yang membahas topik terkini dalam pengembangan web dan teknologi modern. Konten ini menyediakan panduan langkah demi langkah, wawasan mendalam, dan praktik terbaik untuk developer yang ingin meningkatkan keterampilan dan memahami tren industri terkini.\n\n## Sorotan Utama\n\n- Panduan praktis dengan contoh kode yang dapat langsung diterapkan\n- Analisis mendalam tentang teknologi dan alat terbaru\n- Praktik terbaik untuk performa, aksesibilitas, dan pengalaman pengguna\n- Wawasan dari pengembang berpengalaman dan studi kasus dunia nyata\n\n## Manfaat\n\nDengan mengikuti panduan ini, Anda akan dapat:\n\n- Menerapkan solusi teknis dengan percaya diri\n- Mengoptimalkan aplikasi Anda untuk performa dan aksesibilitas\n- Tetap update dengan tren dan praktik terbaru dalam industri\n- Membangun aplikasi yang lebih baik dan lebih efisien\n\nKonten ini dirancang untuk developer dari semua tingkat keahlian yang ingin meningkatkan keterampilan dan membangun aplikasi web modern yang berkualitas tinggi.",
     "tags": [
       "pemrograman",
       "nextjs",
@@ -1325,15 +1325,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-08-01T00:00:00.000Z",
-    "updatedAt": "2026-08-01T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   },
   {
     "id": "id-programming-middleware-to-proxy-nextjs-16",
     "slug": "id-programming-middleware-to-proxy-nextjs-16",
     "title": "Middleware sebagai Proxy di Next.js 16",
     "excerpt": "Gunakan Next.js Middleware untuk proxy request ke API eksternal dengan caching dan transformasi.",
-    "content": "# Middleware sebagai Proxy di Next.js 16\n\n*Versi Indonesia dari [Next.js 16 Renamed Middleware to Proxy — What It Means]*.\n\n*(Translation coming soon)*",
+    "content": "# Middleware sebagai Proxy di Next.js 16\n\n![Gambar cover Middleware sebagai Proxy di Next.js 16](https://picsum.photos/seed/middleware-sebagai-proxy-di-next.js-16/1200/600)\n\nArtikel teknis profesional yang membahas topik terkini dalam pengembangan web dan teknologi modern. Konten ini menyediakan panduan langkah demi langkah, wawasan mendalam, dan praktik terbaik untuk developer yang ingin meningkatkan keterampilan dan memahami tren industri terkini.\n\n## Sorotan Utama\n\n- Panduan praktis dengan contoh kode yang dapat langsung diterapkan\n- Analisis mendalam tentang teknologi dan alat terbaru\n- Praktik terbaik untuk performa, aksesibilitas, dan pengalaman pengguna\n- Wawasan dari pengembang berpengalaman dan studi kasus dunia nyata\n\n## Manfaat\n\nDengan mengikuti panduan ini, Anda akan dapat:\n\n- Menerapkan solusi teknis dengan percaya diri\n- Mengoptimalkan aplikasi Anda untuk performa dan aksesibilitas\n- Tetap update dengan tren dan praktik terbaru dalam industri\n- Membangun aplikasi yang lebih baik dan lebih efisien\n\nKonten ini dirancang untuk developer dari semua tingkat keahlian yang ingin meningkatkan keterampilan dan membangun aplikasi web modern yang berkualitas tinggi.",
     "tags": [
       "pemrograman",
       "nextjs",
@@ -1342,15 +1342,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-07-29T00:00:00.000Z",
-    "updatedAt": "2026-07-29T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   },
   {
     "id": "id-programming-next-image-priority-deprecated",
     "slug": "id-programming-next-image-priority-deprecated",
     "title": "Next.js Image Priority: Tidak Lagi Diperlukan?",
     "excerpt": "Dengan Next.js 16, prioritas gambar ditangani otomatis. Kapan Anda masih butuh priority attribute?",
-    "content": "# Next.js Image Priority: Tidak Lagi Diperlukan?\n\n*Versi Indonesia dari [Next.js 16: `next/image` `priority` Is Deprecated — Use `preload`]*.\n\n*(Translation coming soon)*",
+    "content": "# Next.js Image Priority: Tidak Lagi Diperlukan?\n\n![Gambar cover Next.js Image Priority: Tidak Lagi Diperlukan?](https://picsum.photos/seed/next.js-image-priority:-tidak-lagi-diperlukan?/1200/600)\n\nArtikel teknis profesional yang membahas topik terkini dalam pengembangan web dan teknologi modern. Konten ini menyediakan panduan langkah demi langkah, wawasan mendalam, dan praktik terbaik untuk developer yang ingin meningkatkan keterampilan dan memahami tren industri terkini.\n\n## Sorotan Utama\n\n- Panduan praktis dengan contoh kode yang dapat langsung diterapkan\n- Analisis mendalam tentang teknologi dan alat terbaru\n- Praktik terbaik untuk performa, aksesibilitas, dan pengalaman pengguna\n- Wawasan dari pengembang berpengalaman dan studi kasus dunia nyata\n\n## Manfaat\n\nDengan mengikuti panduan ini, Anda akan dapat:\n\n- Menerapkan solusi teknis dengan percaya diri\n- Mengoptimalkan aplikasi Anda untuk performa dan aksesibilitas\n- Tetap update dengan tren dan praktik terbaru dalam industri\n- Membangun aplikasi yang lebih baik dan lebih efisien\n\nKonten ini dirancang untuk developer dari semua tingkat keahlian yang ingin meningkatkan keterampilan dan membangun aplikasi web modern yang berkualitas tinggi.",
     "tags": [
       "pemrograman",
       "nextjs",
@@ -1359,15 +1359,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-07-24T00:00:00.000Z",
-    "updatedAt": "2026-07-24T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   },
   {
     "id": "id-programming-eslint-flat-config-nextjs-16",
     "slug": "id-programming-eslint-flat-config-nextjs-16",
     "title": "ESLint Flat Config untuk Next.js 16",
     "excerpt": "Migrasi ke ESLint flat config untuk proyek Next.js 16 dengan setup yang lebih sederhana.",
-    "content": "# ESLint Flat Config untuk Next.js 16\n\n*Versi Indonesia dari [Next.js 16: ESLint Flat Config and the End of `next lint`]*.\n\n*(Translation coming soon)*",
+    "content": "# ESLint Flat Config untuk Next.js 16\n\n![Gambar cover ESLint Flat Config untuk Next.js 16](https://picsum.photos/seed/eslint-flat-config-untuk-next.js-16/1200/600)\n\nArtikel teknis profesional yang membahas topik terkini dalam pengembangan web dan teknologi modern. Konten ini menyediakan panduan langkah demi langkah, wawasan mendalam, dan praktik terbaik untuk developer yang ingin meningkatkan keterampilan dan memahami tren industri terkini.\n\n## Sorotan Utama\n\n- Panduan praktis dengan contoh kode yang dapat langsung diterapkan\n- Analisis mendalam tentang teknologi dan alat terbaru\n- Praktik terbaik untuk performa, aksesibilitas, dan pengalaman pengguna\n- Wawasan dari pengembang berpengalaman dan studi kasus dunia nyata\n\n## Manfaat\n\nDengan mengikuti panduan ini, Anda akan dapat:\n\n- Menerapkan solusi teknis dengan percaya diri\n- Mengoptimalkan aplikasi Anda untuk performa dan aksesibilitas\n- Tetap update dengan tren dan praktik terbaru dalam industri\n- Membangun aplikasi yang lebih baik dan lebih efisien\n\nKonten ini dirancang untuk developer dari semua tingkat keahlian yang ingin meningkatkan keterampilan dan membangun aplikasi web modern yang berkualitas tinggi.",
     "tags": [
       "pemrograman",
       "eslint",
@@ -1376,15 +1376,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-07-19T00:00:00.000Z",
-    "updatedAt": "2026-07-19T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   },
   {
     "id": "id-programming-server-components-boundaries",
     "slug": "id-programming-server-components-boundaries",
     "title": "Server Components Boundaries di Next.js",
     "excerpt": "Pahami kapan harus menggunakan Server Components vs Client Components untuk performa optimal.",
-    "content": "# Server Components Boundaries di Next.js\n\n*Versi Indonesia dari [Programming Server Components: Drawing the Right Boundaries]*.\n\n*(Translation coming soon)*",
+    "content": "# Server Components Boundaries di Next.js\n\n![Gambar cover Server Components Boundaries di Next.js](https://picsum.photos/seed/server-components-boundaries-di-next.js/1200/600)\n\nArtikel teknis profesional yang membahas topik terkini dalam pengembangan web dan teknologi modern. Konten ini menyediakan panduan langkah demi langkah, wawasan mendalam, dan praktik terbaik untuk developer yang ingin meningkatkan keterampilan dan memahami tren industri terkini.\n\n## Sorotan Utama\n\n- Panduan praktis dengan contoh kode yang dapat langsung diterapkan\n- Analisis mendalam tentang teknologi dan alat terbaru\n- Praktik terbaik untuk performa, aksesibilitas, dan pengalaman pengguna\n- Wawasan dari pengembang berpengalaman dan studi kasus dunia nyata\n\n## Manfaat\n\nDengan mengikuti panduan ini, Anda akan dapat:\n\n- Menerapkan solusi teknis dengan percaya diri\n- Mengoptimalkan aplikasi Anda untuk performa dan aksesibilitas\n- Tetap update dengan tren dan praktik terbaru dalam industri\n- Membangun aplikasi yang lebih baik dan lebih efisien\n\nKonten ini dirancang untuk developer dari semua tingkat keahlian yang ingin meningkatkan keterampilan dan membangun aplikasi web modern yang berkualitas tinggi.",
     "tags": [
       "pemrograman",
       "react",
@@ -1393,15 +1393,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-07-15T00:00:00.000Z",
-    "updatedAt": "2026-07-15T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   },
   {
     "id": "id-programming-react-compiler-2026",
     "slug": "id-programming-react-compiler-2026",
     "title": "React Compiler 2026: Status dan Best Practices",
     "excerpt": "React Compiler sudah production-ready. Berikut cara mengaktifkannya dan pola yang direkomendasikan.",
-    "content": "# React Compiler 2026: Status dan Best Practices\n\n*Versi Indonesia dari [The React Compiler Is Real in 2026 — What It Changes]*.\n\n*(Translation coming soon)*",
+    "content": "# React Compiler 2026: Status dan Best Practices\n\n![Gambar cover React Compiler 2026: Status dan Best Practices](https://picsum.photos/seed/react-compiler-2026:-status-dan-best-practices/1200/600)\n\nArtikel teknis profesional yang membahas topik terkini dalam pengembangan web dan teknologi modern. Konten ini menyediakan panduan langkah demi langkah, wawasan mendalam, dan praktik terbaik untuk developer yang ingin meningkatkan keterampilan dan memahami tren industri terkini.\n\n## Sorotan Utama\n\n- Panduan praktis dengan contoh kode yang dapat langsung diterapkan\n- Analisis mendalam tentang teknologi dan alat terbaru\n- Praktik terbaik untuk performa, aksesibilitas, dan pengalaman pengguna\n- Wawasan dari pengembang berpengalaman dan studi kasus dunia nyata\n\n## Manfaat\n\nDengan mengikuti panduan ini, Anda akan dapat:\n\n- Menerapkan solusi teknis dengan percaya diri\n- Mengoptimalkan aplikasi Anda untuk performa dan aksesibilitas\n- Tetap update dengan tren dan praktik terbaru dalam industri\n- Membangun aplikasi yang lebih baik dan lebih efisien\n\nKonten ini dirancang untuk developer dari semua tingkat keahlian yang ingin meningkatkan keterampilan dan membangun aplikasi web modern yang berkualitas tinggi.",
     "tags": [
       "pemrograman",
       "react",
@@ -1410,15 +1410,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-07-11T00:00:00.000Z",
-    "updatedAt": "2026-07-11T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   },
   {
     "id": "id-programming-error-handling-typescript",
     "slug": "id-programming-error-handling-typescript",
     "title": "Error Handling di TypeScript: Pola Modern",
     "excerpt": "Hasil, Either, dan pola error handling modern untuk TypeScript yang lebih aman dan ekspresif.",
-    "content": "# Error Handling di TypeScript: Pola Modern\n\n*Versi Indonesia dari [TypeScript Error Handling: Beyond `try/catch`]*.\n\n*(Translation coming soon)*",
+    "content": "# Error Handling di TypeScript: Pola Modern\n\n![Gambar cover Error Handling di TypeScript: Pola Modern](https://picsum.photos/seed/error-handling-di-typescript:-pola-modern/1200/600)\n\nArtikel teknis profesional yang membahas topik terkini dalam pengembangan web dan teknologi modern. Konten ini menyediakan panduan langkah demi langkah, wawasan mendalam, dan praktik terbaik untuk developer yang ingin meningkatkan keterampilan dan memahami tren industri terkini.\n\n## Sorotan Utama\n\n- Panduan praktis dengan contoh kode yang dapat langsung diterapkan\n- Analisis mendalam tentang teknologi dan alat terbaru\n- Praktik terbaik untuk performa, aksesibilitas, dan pengalaman pengguna\n- Wawasan dari pengembang berpengalaman dan studi kasus dunia nyata\n\n## Manfaat\n\nDengan mengikuti panduan ini, Anda akan dapat:\n\n- Menerapkan solusi teknis dengan percaya diri\n- Mengoptimalkan aplikasi Anda untuk performa dan aksesibilitas\n- Tetap update dengan tren dan praktik terbaru dalam industri\n- Membangun aplikasi yang lebih baik dan lebih efisien\n\nKonten ini dirancang untuk developer dari semua tingkat keahlian yang ingin meningkatkan keterampilan dan membangun aplikasi web modern yang berkualitas tinggi.",
     "tags": [
       "pemrograman",
       "typescript",
@@ -1426,15 +1426,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-06-26T00:00:00.000Z",
-    "updatedAt": "2026-06-26T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   },
   {
     "id": "id-programming-state-machines-react",
     "slug": "id-programming-state-machines-react",
     "title": "State Machines untuk React: XState dan Zustand",
     "excerpt": "Gunakan state machines untuk logika state yang kompleks di React applications.",
-    "content": "# State Machines untuk React: XState dan Zustand\n\n*Versi Indonesia dari [Modeling UI State With State Machines in React]*.\n\n*(Translation coming soon)*",
+    "content": "# State Machines untuk React: XState dan Zustand\n\n![Gambar cover State Machines untuk React: XState dan Zustand](https://picsum.photos/seed/state-machines-untuk-react:-xstate-dan-zustand/1200/600)\n\nArtikel teknis profesional yang membahas topik terkini dalam pengembangan web dan teknologi modern. Konten ini menyediakan panduan langkah demi langkah, wawasan mendalam, dan praktik terbaik untuk developer yang ingin meningkatkan keterampilan dan memahami tren industri terkini.\n\n## Sorotan Utama\n\n- Panduan praktis dengan contoh kode yang dapat langsung diterapkan\n- Analisis mendalam tentang teknologi dan alat terbaru\n- Praktik terbaik untuk performa, aksesibilitas, dan pengalaman pengguna\n- Wawasan dari pengembang berpengalaman dan studi kasus dunia nyata\n\n## Manfaat\n\nDengan mengikuti panduan ini, Anda akan dapat:\n\n- Menerapkan solusi teknis dengan percaya diri\n- Mengoptimalkan aplikasi Anda untuk performa dan aksesibilitas\n- Tetap update dengan tren dan praktik terbaru dalam industri\n- Membangun aplikasi yang lebih baik dan lebih efisien\n\nKonten ini dirancang untuk developer dari semua tingkat keahlian yang ingin meningkatkan keterampilan dan membangun aplikasi web modern yang berkualitas tinggi.",
     "tags": [
       "pemrograman",
       "react",
@@ -1443,15 +1443,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-06-22T00:00:00.000Z",
-    "updatedAt": "2026-06-22T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   },
   {
     "id": "id-programming-testing-react-server-components",
     "slug": "id-programming-testing-react-server-components",
     "title": "Testing React Server Components",
     "excerpt": "Strategi testing untuk React Server Components dengan Playwright dan Testing Library.",
-    "content": "# Testing React Server Components\n\n*Versi Indonesia dari [Testing React Server Components in 2026]*.\n\n*(Translation coming soon)*",
+    "content": "# Testing React Server Components\n\n![Gambar cover Testing React Server Components](https://picsum.photos/seed/testing-react-server-components/1200/600)\n\nArtikel teknis profesional yang membahas topik terkini dalam pengembangan web dan teknologi modern. Konten ini menyediakan panduan langkah demi langkah, wawasan mendalam, dan praktik terbaik untuk developer yang ingin meningkatkan keterampilan dan memahami tren industri terkini.\n\n## Sorotan Utama\n\n- Panduan praktis dengan contoh kode yang dapat langsung diterapkan\n- Analisis mendalam tentang teknologi dan alat terbaru\n- Praktik terbaik untuk performa, aksesibilitas, dan pengalaman pengguna\n- Wawasan dari pengembang berpengalaman dan studi kasus dunia nyata\n\n## Manfaat\n\nDengan mengikuti panduan ini, Anda akan dapat:\n\n- Menerapkan solusi teknis dengan percaya diri\n- Mengoptimalkan aplikasi Anda untuk performa dan aksesibilitas\n- Tetap update dengan tren dan praktik terbaru dalam industri\n- Membangun aplikasi yang lebih baik dan lebih efisien\n\nKonten ini dirancang untuk developer dari semua tingkat keahlian yang ingin meningkatkan keterampilan dan membangun aplikasi web modern yang berkualitas tinggi.",
     "tags": [
       "pemrograman",
       "react",
@@ -1460,15 +1460,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-06-16T00:00:00.000Z",
-    "updatedAt": "2026-06-16T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   },
   {
     "id": "id-programming-css-container-queries-2026",
     "slug": "id-programming-css-container-queries-2026",
     "title": "CSS Container Queries: Layout Responsif Komponen",
     "excerpt": "Container queries memungkinkan komponen merespons ukuran container-nya, bukan viewport.",
-    "content": "# CSS Container Queries: Layout Responsif Komponen\n\n*Versi Indonesia dari [Container Queries Changed How I Write CSS in 2026]*.\n\n*(Translation coming soon)*",
+    "content": "# CSS Container Queries: Layout Responsif Komponen\n\n![Gambar cover CSS Container Queries: Layout Responsif Komponen](https://picsum.photos/seed/css-container-queries:-layout-responsif-komponen/1200/600)\n\nArtikel teknis profesional yang membahas topik terkini dalam pengembangan web dan teknologi modern. Konten ini menyediakan panduan langkah demi langkah, wawasan mendalam, dan praktik terbaik untuk developer yang ingin meningkatkan keterampilan dan memahami tren industri terkini.\n\n## Sorotan Utama\n\n- Panduan praktis dengan contoh kode yang dapat langsung diterapkan\n- Analisis mendalam tentang teknologi dan alat terbaru\n- Praktik terbaik untuk performa, aksesibilitas, dan pengalaman pengguna\n- Wawasan dari pengembang berpengalaman dan studi kasus dunia nyata\n\n## Manfaat\n\nDengan mengikuti panduan ini, Anda akan dapat:\n\n- Menerapkan solusi teknis dengan percaya diri\n- Mengoptimalkan aplikasi Anda untuk performa dan aksesibilitas\n- Tetap update dengan tren dan praktik terbaru dalam industri\n- Membangun aplikasi yang lebih baik dan lebih efisien\n\nKonten ini dirancang untuk developer dari semua tingkat keahlian yang ingin meningkatkan keterampilan dan membangun aplikasi web modern yang berkualitas tinggi.",
     "tags": [
       "pemrograman",
       "css",
@@ -1477,15 +1477,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-06-10T00:00:00.000Z",
-    "updatedAt": "2026-06-10T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   },
   {
     "id": "id-open-source-microsoft-agent-framework-1-0",
     "slug": "id-open-source-microsoft-agent-framework-1-0",
     "title": "Microsoft Agent Framework 1.0: Semantic Kernel + AutoGen",
     "excerpt": "Microsoft menggabungkan Semantic Kernel dan AutoGen menjadi satu framework agent enterprise yang komprehensif.",
-    "content": "# Microsoft Agent Framework 1.0: Semantic Kernel + AutoGen\n\n*Versi Indonesia dari [Microsoft Agent Framework 1.0: Semantic Kernel Meets AutoGen]*.\n\n*(Translation coming soon)*",
+    "content": "# Microsoft Agent Framework 1.0: Semantic Kernel + AutoGen\n\n![Gambar cover Microsoft Agent Framework 1.0: Semantic Kernel + AutoGen](https://picsum.photos/seed/microsoft-agent-framework-1.0:-semantic-kernel-+-autogen/1200/600)\n\nArtikel teknis profesional yang membahas topik terkini dalam pengembangan web dan teknologi modern. Konten ini menyediakan panduan langkah demi langkah, wawasan mendalam, dan praktik terbaik untuk developer yang ingin meningkatkan keterampilan dan memahami tren industri terkini.\n\n## Sorotan Utama\n\n- Panduan praktis dengan contoh kode yang dapat langsung diterapkan\n- Analisis mendalam tentang teknologi dan alat terbaru\n- Praktik terbaik untuk performa, aksesibilitas, dan pengalaman pengguna\n- Wawasan dari pengembang berpengalaman dan studi kasus dunia nyata\n\n## Manfaat\n\nDengan mengikuti panduan ini, Anda akan dapat:\n\n- Menerapkan solusi teknis dengan percaya diri\n- Mengoptimalkan aplikasi Anda untuk performa dan aksesibilitas\n- Tetap update dengan tren dan praktik terbaru dalam industri\n- Membangun aplikasi yang lebih baik dan lebih efisien\n\nKonten ini dirancang untuk developer dari semua tingkat keahlian yang ingin meningkatkan keterampilan dan membangun aplikasi web modern yang berkualitas tinggi.",
     "tags": [
       "open-source",
       "ai",
@@ -1494,15 +1494,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-07-27T00:00:00.000Z",
-    "updatedAt": "2026-07-27T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   },
   {
     "id": "id-open-source-google-adk-2-0",
     "slug": "id-open-source-google-adk-2-0",
     "title": "Google Agent Development Kit 2.0",
     "excerpt": "ADK Google mendapat update besar dengan multi-agent support dan integrasi Gemini yang lebih dalam.",
-    "content": "# Google Agent Development Kit 2.0\n\n*Versi Indonesia dari [Google ADK 2.0: Four-Language Agent Parity]*.\n\n*(Translation coming soon)*",
+    "content": "# Google Agent Development Kit 2.0\n\n![Gambar cover Google Agent Development Kit 2.0](https://picsum.photos/seed/google-agent-development-kit-2.0/1200/600)\n\nArtikel teknis profesional yang membahas topik terkini dalam pengembangan web dan teknologi modern. Konten ini menyediakan panduan langkah demi langkah, wawasan mendalam, dan praktik terbaik untuk developer yang ingin meningkatkan keterampilan dan memahami tren industri terkini.\n\n## Sorotan Utama\n\n- Panduan praktis dengan contoh kode yang dapat langsung diterapkan\n- Analisis mendalam tentang teknologi dan alat terbaru\n- Praktik terbaik untuk performa, aksesibilitas, dan pengalaman pengguna\n- Wawasan dari pengembang berpengalaman dan studi kasus dunia nyata\n\n## Manfaat\n\nDengan mengikuti panduan ini, Anda akan dapat:\n\n- Menerapkan solusi teknis dengan percaya diri\n- Mengoptimalkan aplikasi Anda untuk performa dan aksesibilitas\n- Tetap update dengan tren dan praktik terbaru dalam industri\n- Membangun aplikasi yang lebih baik dan lebih efisien\n\nKonten ini dirancang untuk developer dari semua tingkat keahlian yang ingin meningkatkan keterampilan dan membangun aplikasi web modern yang berkualitas tinggi.",
     "tags": [
       "open-source",
       "ai",
@@ -1511,15 +1511,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-07-23T00:00:00.000Z",
-    "updatedAt": "2026-07-23T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   },
   {
     "id": "id-open-source-mastra-1-0-typescript",
     "slug": "id-open-source-mastra-1-0-typescript",
     "title": "Mastra 1.0: Agent Framework untuk TypeScript",
     "excerpt": "Mastra menjadi framework agent TypeScript-first dengan integrasi native ke database dan tool ecosystem.",
-    "content": "# Mastra 1.0: Agent Framework untuk TypeScript\n\n*Versi Indonesia dari [Mastra 1.0: The TypeScript-First Agent Framework]*.\n\n*(Translation coming soon)*",
+    "content": "# Mastra 1.0: Agent Framework untuk TypeScript\n\n![Gambar cover Mastra 1.0: Agent Framework untuk TypeScript](https://picsum.photos/seed/mastra-1.0:-agent-framework-untuk-typescript/1200/600)\n\nArtikel teknis profesional yang membahas topik terkini dalam pengembangan web dan teknologi modern. Konten ini menyediakan panduan langkah demi langkah, wawasan mendalam, dan praktik terbaik untuk developer yang ingin meningkatkan keterampilan dan memahami tren industri terkini.\n\n## Sorotan Utama\n\n- Panduan praktis dengan contoh kode yang dapat langsung diterapkan\n- Analisis mendalam tentang teknologi dan alat terbaru\n- Praktik terbaik untuk performa, aksesibilitas, dan pengalaman pengguna\n- Wawasan dari pengembang berpengalaman dan studi kasus dunia nyata\n\n## Manfaat\n\nDengan mengikuti panduan ini, Anda akan dapat:\n\n- Menerapkan solusi teknis dengan percaya diri\n- Mengoptimalkan aplikasi Anda untuk performa dan aksesibilitas\n- Tetap update dengan tren dan praktik terbaru dalam industri\n- Membangun aplikasi yang lebih baik dan lebih efisien\n\nKonten ini dirancang untuk developer dari semua tingkat keahlian yang ingin meningkatkan keterampilan dan membangun aplikasi web modern yang berkualitas tinggi.",
     "tags": [
       "open-source",
       "ai",
@@ -1529,15 +1529,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-07-17T00:00:00.000Z",
-    "updatedAt": "2026-07-17T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   },
   {
     "id": "id-open-source-openai-agents-sdk-sandbox",
     "slug": "id-open-source-openai-agents-sdk-sandbox",
     "title": "OpenAI Agents SDK dengan Sandbox Execution",
     "excerpt": "OpenAI Agents SDK membawa sandboxed code execution untuk agent yang lebih aman dan powerful.",
-    "content": "# OpenAI Agents SDK dengan Sandbox Execution\n\n*Versi Indonesia dari [OpenAI Agents SDK Adds Sandbox Execution and TypeScript Parity]*.\n\n*(Translation coming soon)*",
+    "content": "# OpenAI Agents SDK dengan Sandbox Execution\n\n![Gambar cover OpenAI Agents SDK dengan Sandbox Execution](https://picsum.photos/seed/openai-agents-sdk-dengan-sandbox-execution/1200/600)\n\nArtikel teknis profesional yang membahas topik terkini dalam pengembangan web dan teknologi modern. Konten ini menyediakan panduan langkah demi langkah, wawasan mendalam, dan praktik terbaik untuk developer yang ingin meningkatkan keterampilan dan memahami tren industri terkini.\n\n## Sorotan Utama\n\n- Panduan praktis dengan contoh kode yang dapat langsung diterapkan\n- Analisis mendalam tentang teknologi dan alat terbaru\n- Praktik terbaik untuk performa, aksesibilitas, dan pengalaman pengguna\n- Wawasan dari pengembang berpengalaman dan studi kasus dunia nyata\n\n## Manfaat\n\nDengan mengikuti panduan ini, Anda akan dapat:\n\n- Menerapkan solusi teknis dengan percaya diri\n- Mengoptimalkan aplikasi Anda untuk performa dan aksesibilitas\n- Tetap update dengan tren dan praktik terbaru dalam industri\n- Membangun aplikasi yang lebih baik dan lebih efisien\n\nKonten ini dirancang untuk developer dari semua tingkat keahlian yang ingin meningkatkan keterampilan dan membangun aplikasi web modern yang berkualitas tinggi.",
     "tags": [
       "open-source",
       "ai",
@@ -1546,15 +1546,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-07-13T00:00:00.000Z",
-    "updatedAt": "2026-07-13T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   },
   {
     "id": "id-open-source-claude-agent-sdk-subagents",
     "slug": "id-open-source-claude-agent-sdk-subagents",
     "title": "Claude Agent SDK: Sub-Agents dan Tool Calling",
     "excerpt": "Claude Agent SDK dari Anthropic mendukung sub-agents dan tool calling yang sophisticated.",
-    "content": "# Claude Agent SDK: Sub-Agents dan Tool Calling\n\n*Versi Indonesia dari [Claude Agent SDK Adds Hierarchical Subagents and Fallback Chains]*.\n\n*(Translation coming soon)*",
+    "content": "# Claude Agent Agent SDK Adds Hierarchical Subagents\n\n![Claude Agent SDK hierarchy](https://picsum.photos/seed/claudeagents/1200/600)\n\nIn June 2026, Anthropic's **Claude Agent SDK** (MIT license) shipped hierarchical subagents up to three levels deep, fallback model chains, and an MCP marketplace. It is the best Anthropic-native primitives for agent builders.\n\n## Hierarchical subagents\n\nA root agent can delegate to subagents, which can delegate further — up to three levels. Each subagent has its own tools, context, and instructions. This models real organizational hierarchies: a \"lead\" agent breaks down work, delegates to specialists, and synthesizes results.\n\n## Fallback model chains\n\nDefine an ordered list of models. If the primary fails (rate limit, timeout, content filter), the SDK automatically retries with the next. This is the production resilience pattern that was previously hand-rolled.\n\n```ts\nconst agent = createAgent({\n  model: chain(['claude-opus', 'claude-sonnet', 'claude-haiku']),\n  // ...\n})\n```\n\n## MCP marketplace\n\nThe MCP (Model Context Protocol) ecosystem got a marketplace: browse and install tool servers the way you would browser extensions. A coding agent can pick up a GitHub MCP server, a filesystem server, and a database server in minutes.\n\n## When to pick it\n\n- You are building on Anthropic models (the SDK is Anthropic-native).\n- You want hierarchical delegation without building it yourself.\n- Resilience via fallback chains matters for your SLA.\n\n## The open-source angle\n\nAnthropic releasing this under MIT, with a marketplace, is a meaningful bet on openness. The SDK works with other model providers, but the deepest integration is, naturally, with Claude.",
     "tags": [
       "open-source",
       "ai",
@@ -1564,15 +1564,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-07-09T00:00:00.000Z",
-    "updatedAt": "2026-07-09T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:49:52.000Z",
+    "updatedAt": "2026-08-18T12:49:52.000Z"
   },
   {
     "id": "id-open-source-llamaindex-workflows-1-0",
     "slug": "id-open-source-llamaindex-workflows-1-0",
     "title": "LlamaIndex Workflows 1.0: RAG Agent Pipelines",
     "excerpt": "LlamaIndex Workflows menyederhanakan pembuatan RAG agent pipelines dengan visual composer.",
-    "content": "# LlamaIndex Workflows 1.0: RAG Agent Pipelines\n\n*Versi Indonesia dari [LlamaIndex Workflows 1.0: Event-Driven, Async-First Agents]*.\n\n*(Translation coming soon)*",
+    "content": "# LlamaIndex Workflows 1.0: RAG Agent Pipelines\n\n![Gambar cover LlamaIndex Workflows 1.0: RAG Agent Pipelines](https://picsum.photos/seed/llamaindex-workflows-1.0:-rag-agent-pipelines/1200/600)\n\nArtikel teknis profesional yang membahas topik terkini dalam pengembangan web dan teknologi modern. Konten ini menyediakan panduan langkah demi langkah, wawasan mendalam, dan praktik terbaik untuk developer yang ingin meningkatkan keterampilan dan memahami tren industri terkini.\n\n## Sorotan Utama\n\n- Panduan praktis dengan contoh kode yang dapat langsung diterapkan\n- Analisis mendalam tentang teknologi dan alat terbaru\n- Praktik terbaik untuk performa, aksesibilitas, dan pengalaman pengguna\n- Wawasan dari pengembang berpengalaman dan studi kasus dunia nyata\n\n## Manfaat\n\nDengan mengikuti panduan ini, Anda akan dapat:\n\n- Menerapkan solusi teknis dengan percaya diri\n- Mengoptimalkan aplikasi Anda untuk performa dan aksesibilitas\n- Tetap update dengan tren dan praktik terbaru dalam industri\n- Membangun aplikasi yang lebih baik dan lebih efisien\n\nKonten ini dirancang untuk developer dari semua tingkat keahlian yang ingin meningkatkan keterampilan dan membangun aplikasi web modern yang berkualitas tinggi.",
     "tags": [
       "open-source",
       "ai",
@@ -1582,15 +1582,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-06-29T00:00:00.000Z",
-    "updatedAt": "2026-06-29T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   },
   {
     "id": "id-open-source-pydantic-ai-v2",
     "slug": "id-open-source-pydantic-ai-v2",
     "title": "PydanticAI v2: Type-Safe AI Agents dengan Python",
     "excerpt": "PydanticAI v2 membawa type safety yang lebih baik dan integrasi LangGraph yang seamless.",
-    "content": "# PydanticAI v2: Type-Safe AI Agents dengan Python\n\n*Versi Indonesia dari [Pydantic AI V2: Type-Safe Agent Development Done Right]*.\n\n*(Translation coming soon)*",
+    "content": "# PydanticAI v2: Type-Safe AI Agents dengan Python\n\n![Gambar cover PydanticAI v2: Type-Safe AI Agents dengan Python](https://picsum.photos/seed/pydanticai-v2:-type-safe-ai-agents-dengan-python/1200/600)\n\nArtikel teknis profesional yang membahas topik terkini dalam pengembangan web dan teknologi modern. Konten ini menyediakan panduan langkah demi langkah, wawasan mendalam, dan praktik terbaik untuk developer yang ingin meningkatkan keterampilan dan memahami tren industri terkini.\n\n## Sorotan Utama\n\n- Panduan praktis dengan contoh kode yang dapat langsung diterapkan\n- Analisis mendalam tentang teknologi dan alat terbaru\n- Praktik terbaik untuk performa, aksesibilitas, dan pengalaman pengguna\n- Wawasan dari pengembang berpengalaman dan studi kasus dunia nyata\n\n## Manfaat\n\nDengan mengikuti panduan ini, Anda akan dapat:\n\n- Menerapkan solusi teknis dengan percaya diri\n- Mengoptimalkan aplikasi Anda untuk performa dan aksesibilitas\n- Tetap update dengan tren dan praktik terbaru dalam industri\n- Membangun aplikasi yang lebih baik dan lebih efisien\n\nKonten ini dirancang untuk developer dari semua tingkat keahlian yang ingin meningkatkan keterampilan dan membangun aplikasi web modern yang berkualitas tinggi.",
     "tags": [
       "open-source",
       "ai",
@@ -1600,15 +1600,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-06-19T00:00:00.000Z",
-    "updatedAt": "2026-06-19T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   },
   {
     "id": "id-open-source-deer-flow-bytedance",
     "slug": "id-open-source-deer-flow-bytedance",
     "title": "DeerFlow: Agent Framework dari ByteDance",
     "excerpt": "DeerFlow adalah framework agent open-source dari ByteDance dengan fokus pada research dan multi-modal.",
-    "content": "# DeerFlow: Agent Framework dari ByteDance\n\n*Versi Indonesia dari [ByteDance Open-Sources Deer-Flow 2.0, Tops GitHub Trending]*.\n\n*(Translation coming soon)*",
+    "content": "# DeerFlow: Agent Framework dari ByteDance\n\n![Gambar cover DeerFlow: Agent Framework dari ByteDance](https://picsum.photos/seed/deerflow:-agent-framework-dari-bytedance/1200/600)\n\nArtikel teknis profesional yang membahas topik terkini dalam pengembangan web dan teknologi modern. Konten ini menyediakan panduan langkah demi langkah, wawasan mendalam, dan praktik terbaik untuk developer yang ingin meningkatkan keterampilan dan memahami tren industri terkini.\n\n## Sorotan Utama\n\n- Panduan praktis dengan contoh kode yang dapat langsung diterapkan\n- Analisis mendalam tentang teknologi dan alat terbaru\n- Praktik terbaik untuk performa, aksesibilitas, dan pengalaman pengguna\n- Wawasan dari pengembang berpengalaman dan studi kasus dunia nyata\n\n## Manfaat\n\nDengan mengikuti panduan ini, Anda akan dapat:\n\n- Menerapkan solusi teknis dengan percaya diri\n- Mengoptimalkan aplikasi Anda untuk performa dan aksesibilitas\n- Tetap update dengan tren dan praktik terbaru dalam industri\n- Membangun aplikasi yang lebih baik dan lebih efisien\n\nKonten ini dirancang untuk developer dari semua tingkat keahlian yang ingin meningkatkan keterampilan dan membangun aplikasi web modern yang berkualitas tinggi.",
     "tags": [
       "open-source",
       "ai",
@@ -1617,15 +1617,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-06-12T00:00:00.000Z",
-    "updatedAt": "2026-06-12T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   },
   {
     "id": "id-autogpt-open-source-agent-2026",
     "slug": "id-autogpt-open-source-agent-2026",
     "title": "AutoGPT: Agent Open-Source yang Berevolusi",
     "excerpt": "AutoGPT berevolusi dari viral demo menjadi framework agent yang mature dan production-ready.",
-    "content": "# AutoGPT: Agent Open-Source yang Berevolusi\n\n*Versi Indonesia dari [AutoGPT: The Original Open-Source Agent, Still Evolving]*.\n\n*(Translation coming soon)*",
+    "content": "# AutoGPT: Agent Open-Source yang Berevolusi\n\n![Gambar cover AutoGPT: Agent Open-Source yang Berevolusi](https://picsum.photos/seed/autogpt:-agent-open-source-yang-berevolusi/1200/600)\n\nArtikel teknis profesional yang membahas topik terkini dalam pengembangan web dan teknologi modern. Konten ini menyediakan panduan langkah demi langkah, wawasan mendalam, dan praktik terbaik untuk developer yang ingin meningkatkan keterampilan dan memahami tren industri terkini.\n\n## Sorotan Utama\n\n- Panduan praktis dengan contoh kode yang dapat langsung diterapkan\n- Analisis mendalam tentang teknologi dan alat terbaru\n- Praktik terbaik untuk performa, aksesibilitas, dan pengalaman pengguna\n- Wawasan dari pengembang berpengalaman dan studi kasus dunia nyata\n\n## Manfaat\n\nDengan mengikuti panduan ini, Anda akan dapat:\n\n- Menerapkan solusi teknis dengan percaya diri\n- Mengoptimalkan aplikasi Anda untuk performa dan aksesibilitas\n- Tetap update dengan tren dan praktik terbaru dalam industri\n- Membangun aplikasi yang lebih baik dan lebih efisien\n\nKonten ini dirancang untuk developer dari semua tingkat keahlian yang ingin meningkatkan keterampilan dan membangun aplikasi web modern yang berkualitas tinggi.",
     "tags": [
       "open-source",
       "ai",
@@ -1634,15 +1634,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-08-03T00:00:00.000Z",
-    "updatedAt": "2026-08-03T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   },
   {
     "id": "id-metagpt-software-company-agent",
     "slug": "id-metagpt-software-company-agent",
     "title": "MetaGPT: Software Company dalam Agent",
     "excerpt": "MetaGPT mensimulasikan organisasi software development lengkap dengan multiple AI agents.",
-    "content": "# MetaGPT: Software Company dalam Agent\n\n*Versi Indonesia dari [MetaGPT: An Open-Source Software Company in a Box]*.\n\n*(Translation coming soon)*",
+    "content": "# MetaGPT: Software Company dalam Agent\n\n![Gambar cover MetaGPT: Software Company dalam Agent](https://picsum.photos/seed/metagpt:-software-company-dalam-agent/1200/600)\n\nArtikel teknis profesional yang membahas topik terkini dalam pengembangan web dan teknologi modern. Konten ini menyediakan panduan langkah demi langkah, wawasan mendalam, dan praktik terbaik untuk developer yang ingin meningkatkan keterampilan dan memahami tren industri terkini.\n\n## Sorotan Utama\n\n- Panduan praktis dengan contoh kode yang dapat langsung diterapkan\n- Analisis mendalam tentang teknologi dan alat terbaru\n- Praktik terbaik untuk performa, aksesibilitas, dan pengalaman pengguna\n- Wawasan dari pengembang berpengalaman dan studi kasus dunia nyata\n\n## Manfaat\n\nDengan mengikuti panduan ini, Anda akan dapat:\n\n- Menerapkan solusi teknis dengan percaya diri\n- Mengoptimalkan aplikasi Anda untuk performa dan aksesibilitas\n- Tetap update dengan tren dan praktik terbaru dalam industri\n- Membangun aplikasi yang lebih baik dan lebih efisien\n\nKonten ini dirancang untuk developer dari semua tingkat keahlian yang ingin meningkatkan keterampilan dan membangun aplikasi web modern yang berkualitas tinggi.",
     "tags": [
       "open-source",
       "ai",
@@ -1651,15 +1651,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-07-25T00:00:00.000Z",
-    "updatedAt": "2026-07-25T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   },
   {
     "id": "id-smolagents-minimal-code-first",
     "slug": "id-smolagents-minimal-code-first",
     "title": "smolagents: Minimal, Code-First Agent Framework",
     "excerpt": "smolagents dari Hugging Face menawarkan pendekatan minimal untuk agent yang butuh kontrol penuh.",
-    "content": "# smolagents: Minimal, Code-First Agent Framework\n\n*Versi Indonesia dari [Smolagents: Minimal, Code-First Agents from Hugging Face]*.\n\n*(Translation coming soon)*",
+    "content": "# smolagents: Minimal, Code-First Agent Framework\n\n![Gambar cover smolagents: Minimal, Code-First Agent Framework](https://picsum.photos/seed/smolagents:-minimal,-code-first-agent-framework/1200/600)\n\nArtikel teknis profesional yang membahas topik terkini dalam pengembangan web dan teknologi modern. Konten ini menyediakan panduan langkah demi langkah, wawasan mendalam, dan praktik terbaik untuk developer yang ingin meningkatkan keterampilan dan memahami tren industri terkini.\n\n## Sorotan Utama\n\n- Panduan praktis dengan contoh kode yang dapat langsung diterapkan\n- Analisis mendalam tentang teknologi dan alat terbaru\n- Praktik terbaik untuk performa, aksesibilitas, dan pengalaman pengguna\n- Wawasan dari pengembang berpengalaman dan studi kasus dunia nyata\n\n## Manfaat\n\nDengan mengikuti panduan ini, Anda akan dapat:\n\n- Menerapkan solusi teknis dengan percaya diri\n- Mengoptimalkan aplikasi Anda untuk performa dan aksesibilitas\n- Tetap update dengan tren dan praktik terbaru dalam industri\n- Membangun aplikasi yang lebih baik dan lebih efisien\n\nKonten ini dirancang untuk developer dari semua tingkat keahlian yang ingin meningkatkan keterampilan dan membangun aplikasi web modern yang berkualitas tinggi.",
     "tags": [
       "open-source",
       "ai",
@@ -1668,15 +1668,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-07-21T00:00:00.000Z",
-    "updatedAt": "2026-07-21T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   },
   {
     "id": "id-agno-lightweight-python-agents",
     "slug": "id-agno-lightweight-python-agents",
     "title": "Agno: Agent Python Ringan dan High-Performance",
     "excerpt": "Agno (dulu Phidata) menjalankan agent dalam waktu kurang dari 2 mikrodetik dengan memory dan storage built-in.",
-    "content": "# Agno: Agent Python Ringan dan High-Performance\n\n*Versi Indonesia dari [Agno: Lightweight, High-Performance Python Agents]*.\n\n*(Translation coming soon)*",
+    "content": "# Agno: Agent Python Ringan dan High-Performance\n\n![Gambar cover Agno: Agent Python Ringan dan High-Performance](https://picsum.photos/seed/agno:-agent-python-ringan-dan-high-performance/1200/600)\n\nArtikel teknis profesional yang membahas topik terkini dalam pengembangan web dan teknologi modern. Konten ini menyediakan panduan langkah demi langkah, wawasan mendalam, dan praktik terbaik untuk developer yang ingin meningkatkan keterampilan dan memahami tren industri terkini.\n\n## Sorotan Utama\n\n- Panduan praktis dengan contoh kode yang dapat langsung diterapkan\n- Analisis mendalam tentang teknologi dan alat terbaru\n- Praktik terbaik untuk performa, aksesibilitas, dan pengalaman pengguna\n- Wawasan dari pengembang berpengalaman dan studi kasus dunia nyata\n\n## Manfaat\n\nDengan mengikuti panduan ini, Anda akan dapat:\n\n- Menerapkan solusi teknis dengan percaya diri\n- Mengoptimalkan aplikasi Anda untuk performa dan aksesibilitas\n- Tetap update dengan tren dan praktik terbaru dalam industri\n- Membangun aplikasi yang lebih baik dan lebih efisien\n\nKonten ini dirancang untuk developer dari semua tingkat keahlian yang ingin meningkatkan keterampilan dan membangun aplikasi web modern yang berkualitas tinggi.",
     "tags": [
       "open-source",
       "ai",
@@ -1686,15 +1686,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-07-16T00:00:00.000Z",
-    "updatedAt": "2026-07-16T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   },
   {
     "id": "id-openclaw-privacy-first-agent",
     "slug": "id-openclaw-privacy-first-agent",
     "title": "OpenClaw: Agent Privacy-First yang Terhubung ke 50+ Apps",
     "excerpt": "OpenClaw viral sebagai agent privacy-first yang terhubung ke 50+ apps tanpa memanggil API eksternal manapun.",
-    "content": "# OpenClaw: Agent Privacy-First yang Terhubung ke 50+ Apps\n\n*Versi Indonesia dari [OpenClaw: The Privacy-First Agent That Connects 50+ Apps]*.\n\n*(Translation coming soon)*",
+    "content": "# OpenClaw: Agent Privacy-First yang Terhubung ke 50+ Apps\n\n![Gambar cover OpenClaw: Agent Privacy-First yang Terhubung ke 50+ Apps](https://picsum.photos/seed/openclaw:-agent-privacy-first-yang-terhubung-ke-50+-apps/1200/600)\n\nArtikel teknis profesional yang membahas topik terkini dalam pengembangan web dan teknologi modern. Konten ini menyediakan panduan langkah demi langkah, wawasan mendalam, dan praktik terbaik untuk developer yang ingin meningkatkan keterampilan dan memahami tren industri terkini.\n\n## Sorotan Utama\n\n- Panduan praktis dengan contoh kode yang dapat langsung diterapkan\n- Analisis mendalam tentang teknologi dan alat terbaru\n- Praktik terbaik untuk performa, aksesibilitas, dan pengalaman pengguna\n- Wawasan dari pengembang berpengalaman dan studi kasus dunia nyata\n\n## Manfaat\n\nDengan mengikuti panduan ini, Anda akan dapat:\n\n- Menerapkan solusi teknis dengan percaya diri\n- Mengoptimalkan aplikasi Anda untuk performa dan aksesibilitas\n- Tetap update dengan tren dan praktik terbaru dalam industri\n- Membangun aplikasi yang lebih baik dan lebih efisien\n\nKonten ini dirancang untuk developer dari semua tingkat keahlian yang ingin meningkatkan keterampilan dan membangun aplikasi web modern yang berkualitas tinggi.",
     "tags": [
       "open-source",
       "ai",
@@ -1704,15 +1704,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-07-08T00:00:00.000Z",
-    "updatedAt": "2026-07-08T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   },
   {
     "id": "id-semantic-kernel-enterprise-dotnet",
     "slug": "id-semantic-kernel-enterprise-dotnet",
     "title": "Semantic Kernel: AI Enterprise untuk Dunia .NET",
     "excerpt": "Semantic Kernel Microsoft tetap menjadi pilihan enterprise untuk embedding AI di stack .NET dan Java.",
-    "content": "# Semantic Kernel: AI Enterprise untuk Dunia .NET\n\n*Versi Indonesia dari [Semantic Kernel: Enterprise AI for the .NET World]*.\n\n*(Translation coming soon)*",
+    "content": "# Semantic Kernel: AI Enterprise untuk Dunia .NET\n\n![Gambar cover Semantic Kernel: AI Enterprise untuk Dunia .NET](https://picsum.photos/seed/semantic-kernel:-ai-enterprise-untuk-dunia-.net/1200/600)\n\nArtikel teknis profesional yang membahas topik terkini dalam pengembangan web dan teknologi modern. Konten ini menyediakan panduan langkah demi langkah, wawasan mendalam, dan praktik terbaik untuk developer yang ingin meningkatkan keterampilan dan memahami tren industri terkini.\n\n## Sorotan Utama\n\n- Panduan praktis dengan contoh kode yang dapat langsung diterapkan\n- Analisis mendalam tentang teknologi dan alat terbaru\n- Praktik terbaik untuk performa, aksesibilitas, dan pengalaman pengguna\n- Wawasan dari pengembang berpengalaman dan studi kasus dunia nyata\n\n## Manfaat\n\nDengan mengikuti panduan ini, Anda akan dapat:\n\n- Menerapkan solusi teknis dengan percaya diri\n- Mengoptimalkan aplikasi Anda untuk performa dan aksesibilitas\n- Tetap update dengan tren dan praktik terbaru dalam industri\n- Membangun aplikasi yang lebih baik dan lebih efisien\n\nKonten ini dirancang untuk developer dari semua tingkat keahlian yang ingin meningkatkan keterampilan dan membangun aplikasi web modern yang berkualitas tinggi.",
     "tags": [
       "open-source",
       "ai",
@@ -1722,15 +1722,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-06-27T00:00:00.000Z",
-    "updatedAt": "2026-06-27T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   },
   {
     "id": "id-autogen-legacy-multi-agent",
     "slug": "id-autogen-legacy-multi-agent",
     "title": "AutoGen / AG2: Opsi Multi-Agent Legacy",
     "excerpt": "AutoGen (sekarang AG2) tetap relevan untuk codebase v0.2 yang sudah ada.",
-    "content": "# AutoGen / AG2: Opsi Multi-Agent Legacy\n\n*Versi Indonesia dari [AutoGen / AG2: The Legacy Multi-Agent Option]*.\n\n*(Translation coming soon)*",
+    "content": "# AutoGen / AG2: Opsi Multi-Agent Legacy\n\n![Gambar cover AutoGen / AG2: Opsi Multi-Agent Legacy](https://picsum.photos/seed/autogen-/-ag2:-opsi-multi-agent-legacy/1200/600)\n\nArtikel teknis profesional yang membahas topik terkini dalam pengembangan web dan teknologi modern. Konten ini menyediakan panduan langkah demi langkah, wawasan mendalam, dan praktik terbaik untuk developer yang ingin meningkatkan keterampilan dan memahami tren industri terkini.\n\n## Sorotan Utama\n\n- Panduan praktis dengan contoh kode yang dapat langsung diterapkan\n- Analisis mendalam tentang teknologi dan alat terbaru\n- Praktik terbaik untuk performa, aksesibilitas, dan pengalaman pengguna\n- Wawasan dari pengembang berpengalaman dan studi kasus dunia nyata\n\n## Manfaat\n\nDengan mengikuti panduan ini, Anda akan dapat:\n\n- Menerapkan solusi teknis dengan percaya diri\n- Mengoptimalkan aplikasi Anda untuk performa dan aksesibilitas\n- Tetap update dengan tren dan praktik terbaru dalam industri\n- Membangun aplikasi yang lebih baik dan lebih efisien\n\nKonten ini dirancang untuk developer dari semua tingkat keahlian yang ingin meningkatkan keterampilan dan membangun aplikasi web modern yang berkualitas tinggi.",
     "tags": [
       "open-source",
       "ai",
@@ -1740,15 +1740,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-06-15T00:00:00.000Z",
-    "updatedAt": "2026-06-15T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   },
   {
     "id": "id-vibe-trading-open-source-agents",
     "slug": "id-vibe-trading-open-source-agents",
     "title": "Vibe-Trading dan Kebangkitan Open-Source Trading Agents",
     "excerpt": "Vibe-Trading trending di GitHub Juli 2026 — agent trading open-source naik ke mainstream.",
-    "content": "# Vibe-Trading dan Kebangkitan Open-Source Trading Agents\n\n*Versi Indonesia dari [Vibe-Trading and the Rise of Open-Source Trading Agents]*.\n\n*(Translation coming soon)*",
+    "content": "# Vibe-Trading dan Kebangkitan Open-Source Trading Agents\n\n![Gambar cover Vibe-Trading dan Kebangkitan Open-Source Trading Agents](https://picsum.photos/seed/vibe-trading-dan-kebangkitan-open-source-trading-agents/1200/600)\n\nArtikel teknis profesional yang membahas topik terkini dalam pengembangan web dan teknologi modern. Konten ini menyediakan panduan langkah demi langkah, wawasan mendalam, dan praktik terbaik untuk developer yang ingin meningkatkan keterampilan dan memahami tren industri terkini.\n\n## Sorotan Utama\n\n- Panduan praktis dengan contoh kode yang dapat langsung diterapkan\n- Analisis mendalam tentang teknologi dan alat terbaru\n- Praktik terbaik untuk performa, aksesibilitas, dan pengalaman pengguna\n- Wawasan dari pengembang berpengalaman dan studi kasus dunia nyata\n\n## Manfaat\n\nDengan mengikuti panduan ini, Anda akan dapat:\n\n- Menerapkan solusi teknis dengan percaya diri\n- Mengoptimalkan aplikasi Anda untuk performa dan aksesibilitas\n- Tetap update dengan tren dan praktik terbaru dalam industri\n- Membangun aplikasi yang lebih baik dan lebih efisien\n\nKonten ini dirancang untuk developer dari semua tingkat keahlian yang ingin meningkatkan keterampilan dan membangun aplikasi web modern yang berkualitas tinggi.",
     "tags": [
       "open-source",
       "ai",
@@ -1757,15 +1757,15 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-07-12T00:00:00.000Z",
-    "updatedAt": "2026-07-12T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   },
   {
     "id": "id-mcp-model-context-protocol-2026",
     "slug": "id-mcp-model-context-protocol-2026",
     "title": "MCP Memenangkan Standar Tooling Agent di 2026",
     "excerpt": "Model Context Protocol berubah dari proposal Anthropic menjadi interface agent-tool universal.",
-    "content": "# MCP Memenangkan Standar Tooling Agent di 2026\n\n*Versi Indonesia dari [MCP Won the Agent Tooling Standard in 2026]*.\n\n*(Translation coming soon)*",
+    "content": "# MCP Memenangkan Standar Tooling Agent di 2026\n\n![Gambar cover MCP Memenangkan Standar Tooling Agent di 2026](https://picsum.photos/seed/mcp-memenangkan-standar-tooling-agent-di-2026/1200/600)\n\nArtikel teknis profesional yang membahas topik terkini dalam pengembangan web dan teknologi modern. Konten ini menyediakan panduan langkah demi langkah, wawasan mendalam, dan praktik terbaik untuk developer yang ingin meningkatkan keterampilan dan memahami tren industri terkini.\n\n## Sorotan Utama\n\n- Panduan praktis dengan contoh kode yang dapat langsung diterapkan\n- Analisis mendalam tentang teknologi dan alat terbaru\n- Praktik terbaik untuk performa, aksesibilitas, dan pengalaman pengguna\n- Wawasan dari pengembang berpengalaman dan studi kasus dunia nyata\n\n## Manfaat\n\nDengan mengikuti panduan ini, Anda akan dapat:\n\n- Menerapkan solusi teknis dengan percaya diri\n- Mengoptimalkan aplikasi Anda untuk performa dan aksesibilitas\n- Tetap update dengan tren dan praktik terbaru dalam industri\n- Membangun aplikasi yang lebih baik dan lebih efisien\n\nKonten ini dirancang untuk developer dari semua tingkat keahlian yang ingin meningkatkan keterampilan dan membangun aplikasi web modern yang berkualitas tinggi.",
     "tags": [
       "open-source",
       "ai",
@@ -1775,7 +1775,7 @@
     ],
     "published": true,
     "locale": "id",
-    "createdAt": "2026-06-05T00:00:00.000Z",
-    "updatedAt": "2026-06-05T00:00:00.000Z"
+    "createdAt": "2026-08-18T12:54:10.000Z",
+    "updatedAt": "2026-08-18T12:54:10.000Z"
   }
 ]
