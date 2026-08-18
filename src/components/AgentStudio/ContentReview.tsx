@@ -9,7 +9,7 @@ export default function ContentReview({ opportunities, selectedOpportunity, onSe
   selectedOpportunity: ContentOpportunity | null | undefined
   onSelectOpportunity: (o: ContentOpportunity) => void
   draft: GeneratedPost | null | undefined
-  media: { thumbnailUrl: string; inlineImages: string[] } | null | undefined
+  media: { thumbnailUrl: string; inlineImages: string[]; videoUrl?: string } | null | undefined
   onApprove: () => void
   onReject: () => void
 }) {
@@ -58,16 +58,26 @@ export default function ContentReview({ opportunities, selectedOpportunity, onSe
               </div>
             </div>
             {media && (
-              <div className="blog-post__thumbnail" style={{
-                backgroundImage: `url(${media.thumbnailUrl})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                width: '100%',
-                height: '200px',
-                borderRadius: '10px',
-                marginBottom: '1rem',
-                border: '1px solid var(--glass-border)'
-              }} />
+              <>
+                <div className="blog-post__thumbnail" style={{
+                  backgroundImage: `url(${media.thumbnailUrl})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  width: '100%',
+                  height: '300px',
+                  borderRadius: '10px',
+                  marginBottom: '1.5rem',
+                  border: '1px solid var(--glass-border)'
+                }} />
+                {media.videoUrl && (
+                  <div className="blog-post__video" style={{ marginBottom: '1.5rem' }}>
+                    <video controls width="100%" style={{ borderRadius: '10px', border: '1px solid var(--glass-border)' }}>
+                      <source src={media.videoUrl} type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                )}
+              </>
             )}
             <div className="blog-post__content markdown-body" dangerouslySetInnerHTML={{ __html: draft.content }} />
             <div className="blog-editor__actions">

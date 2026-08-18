@@ -17,6 +17,12 @@ export interface GeneratedMedia {
   thumbnailUrl: string
   inlineImages: string[]
   altTexts: string[]
+  videoUrl?: string
+}
+
+function buildVideoUrl(prompt: string, seed: string): string {
+  const encoded = encodeURIComponent(prompt)
+  return `https://video.pollinations.ai/prompt/${encoded}?seed=${encodeURIComponent(seed)}&nologo=true`
 }
 
 export async function runVisualist(input: VisualistInput): Promise<GeneratedMedia> {
@@ -45,7 +51,9 @@ export async function runVisualist(input: VisualistInput): Promise<GeneratedMedi
 
   await generateImage({ prompt: thumbnailPrompt, width: 800, height: 400, seed: `${slug}-cover` })
 
-  return { thumbnailUrl, inlineImages, altTexts }
+  const videoUrl = buildVideoUrl(thumbnailPrompt, `${slug}-video`)
+
+  return { thumbnailUrl, inlineImages, altTexts, videoUrl }
 }
 
 export function getThumbnailForPost(post: BlogPost): string {
@@ -56,4 +64,9 @@ export function getThumbnailForPost(post: BlogPost): string {
     height: 400,
     seed: `${slug}-cover`,
   })
+}
+
+export function getVideoUrlForPost(post: BlogPost): string {
+  const slug = post.slug
+  return buildVideoUrl(`${post.title} — cyberpunk neon tech aesthetic`, `${slug}-video`)
 }

@@ -9,13 +9,14 @@ import ContentReview from '@/components/AgentStudio/ContentReview'
 import ScheduleManager from '@/components/AgentStudio/ScheduleManager'
 import ReportsView from '@/components/AgentStudio/ReportsView'
 import { runAgentPipeline, type AgentJob, type AgentRunOptions } from '@/lib/agents/agent-orchestrator'
+import { runTrendResearcher, type TrendTopic } from '@/lib/agents/trend-researcher'
 import { callLLM, type LLMConfig } from '@/lib/ai/llm-client'
 import { createPost, getPublishedPosts } from '@/lib/blog-firestore'
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '@/lib/firebase'
 import type { ChatMessage } from '@/components/AgentStudio/AgentChat'
 import type { BlogPost } from '@/lib/blog-types'
-import { useScheduler } from '@/lib/agents/scheduler'
+import { useScheduler, createAutoGenerateJob, type ScheduledJob } from '@/lib/agents/scheduler'
 import { useReports, generateReport } from '@/lib/agents/report-generator'
 
 type Tab = 'agents' | 'schedule' | 'reports'
@@ -25,14 +26,15 @@ export default function AdminAgentsPage() {
   const [tab, setTab] = useState<Tab>('agents')
   const [config, setConfig] = useState<LLMConfig | null>(null)
   const [job, setJob] = useState<AgentJob | null>(null)
+  const [trends, setTrends] = useState<TrendTopic[]>([])
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [loading, setLoading] = useState(false)
-  const [scheduledJobs, setScheduledJobs] = useState<any[]>([])
+  const [scheduledJobs, setScheduledJobs] = useState<ScheduledJob[]>([])
   const [existingPosts, setExistingPosts] = useState<BlogPost[]>([])
   const configLoaded = useRef(false)
   const postsLoaded = useRef(false)
 
-  const { jobs: schedulerJobs, running: schedulerRunning, lastRun } = useScheduler(300000)
+  const { jobs: schedulerJobs, running: schedulerRunning, lastRun } = useScheduler(300000, existingPosts)
   const { reports, loading: reportsLoading, refetch: refetchReports } = useReports()
 
   useEffect(() => {
@@ -69,7 +71,14 @@ export default function AdminAgentsPage() {
 
     try {
       const lower = text.toLowerCase()
-      if (lower.includes('research') || lower.includes('riset') || lower.includes('topic')) {
+      if (lower.includes('trend') || lower.includes('tren') || lower.includes('whats hot')) {
+        const result = await runTrendResearcher(config, { locale: locale as 'en' | 'id', maxTopics: 8, existingPosts })
+        setTrends(result)
+        const reply = result.length
+          ? `Found ${result.length} trending topics:\n${result.map((t, i) => `${i + 1}. ${t.title} (${t.engagement})`).join('\n')}`
+          : 'No trending topics found.'
+        setMessages((prev) => [...prev, { id: `a-${Date.now()}`, role: 'assistant', content: reply, timestamp: Date.now() }])
+      } else if (lower.includes('research') || lower.includes('riset') || lower.includes('topic')) {
         const options: AgentRunOptions = { config, locale: locale as 'en' | 'id', maxOpportunities: 5, existingPosts }
         const pipeline = runAgentPipeline(options, (partial) => setJob((prev) => ({ ...prev, ...partial } as AgentJob)))
         const result = await pipeline
@@ -124,7 +133,7 @@ export default function AdminAgentsPage() {
     setJob(null)
   }
 
-  const handleCreateScheduledJob = async (jobData: any) => {
+  const handleCreateScheduledJob = async (jobData: Omit<ScheduledJob, 'id' | 'createdAt' | 'status'>) => {
     if (!db) return
     const docRef = await addDoc(collection(db, 'scheduledJobs'), {
       ...jobData,
@@ -132,6 +141,14 @@ export default function AdminAgentsPage() {
       createdAt: serverTimestamp(),
     })
     setScheduledJobs((prev) => [...prev, { ...jobData, id: docRef.id, status: 'pending', createdAt: Date.now() }])
+  }
+
+  const handleAutoSchedule = async (times: number[]) => {
+    if (!config) return
+    for (const t of times) {
+      await createAutoGenerateJob(t, config, locale as 'en' | 'id', 1)
+    }
+    setMessages((prev) => [...prev, { id: `a-${Date.now()}`, role: 'assistant', content: `Auto-schedule enabled: ${times.length} jobs created (07:00, 12:00, 19:00, 22:00).`, timestamp: Date.now() }])
   }
 
   const handleGenerateReport = async () => {
@@ -179,11 +196,31 @@ export default function AdminAgentsPage() {
                 onApprove={handleApprove}
                 onReject={handleReject}
               />
+              {trends.length > 0 && (
+                <div className="content-review">
+                  <h3 className="auth-title">Trending Topics</h3>
+                  <div className="content-review__list">
+                    {trends.map((t, i) => (
+                      <div key={i} className="glass-card content-review__item">
+                        <h4>{t.title}</h4>
+                        <p className="content-review__angle">{t.category}</p>
+                        <div className="content-review__meta">
+                          <span className={`blog-badge ${t.engagement === 'high' ? 'blog-badge--published' : 'blog-badge--draft'}`}>
+                            {t.engagement}
+                          </span>
+                          <span className="content-review__keywords">{t.sources.join(', ')}</span>
+                        </div>
+                        <p className="content-review__reason">{t.reason}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
           {tab === 'schedule' && (
-            <ScheduleManager jobs={scheduledJobs} onCreateJob={handleCreateScheduledJob} />
+            <ScheduleManager jobs={scheduledJobs} onCreateJob={handleCreateScheduledJob} onAutoSchedule={handleAutoSchedule} config={config} />
           )}
 
           {tab === 'reports' && (
