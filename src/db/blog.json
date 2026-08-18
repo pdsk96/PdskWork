@@ -28,5 +28,882 @@
     "locale": "id",
     "createdAt": "2026-07-02T00:00:00.000Z",
     "updatedAt": "2026-07-02T00:00:00.000Z"
+  },
+  {
+    "id": "nextjs-16-3-instant-navigations",
+    "slug": "nextjs-16-3-instant-navigations",
+    "title": "Next.js 16.3 Brings Instant Navigations to the React Ecosystem",
+    "excerpt": "Next.js 16.3 ships Instant Navigations, Partial Prefetching, and a leaner dev server — here is what changes for production teams.",
+    "content": "# Next.js 16.3 Brings Instant Navigations\n\n![Next.js 16.3 release overview](https://picsum.photos/seed/nextjs163/1200/600)\n\nNext.js 16.3, released in August 2026, is the most significant navigation overhaul since the App Router landed. The headline feature — **Instant Navigations** — finally closes the gap between client-side SPAs and server-rendered Next apps.\n\n## What is new\n\n- **Instant Navigations**: a route can Stream, Cache, or Block to make a click feel instant.\n- **Partial Prefetching**: a reusable shell per route, cached on the client so the first paint is immediate while the rest streams in.\n- **Navigation Inspector**: a new devtool that visually inspects a navigation's loading shell.\n- **Instant Insights**: surfaces slow navigations automatically during development.\n- A far less memory-hungry dev server — critical for large monorepos.\n\n## Why it matters\n\nFor years, perceived performance in Next apps depended on careful `loading.tsx` design and aggressive prefetching. 16.3 makes the framework itself responsible for the instant feel, so engineers can spend time on features instead of micro-optimizing route transitions.\n\n> A navigation that feels instant is not magic — it is a cached shell plus streamed content.\n\n## Upgrade notes\n\nPartial Prefetching requires `cacheComponents: true` at the top level of `next.config.ts`. Combined with `loading.tsx` files, you get the `◐ (Partial Prerender)` build marker indicating static HTML plus dynamic server-streamed content — the desired outcome.\n\nSee the official [Next.js 16.3 blog post](https://nextjs.org/blog/next-16-3) for the full changelog.",
+    "tags": [
+      "technology",
+      "nextjs",
+      "react",
+      "performance"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-08-04T00:00:00.000Z",
+    "updatedAt": "2026-08-04T00:00:00.000Z"
+  },
+  {
+    "id": "react-19-2-view-transitions",
+    "slug": "react-19-2-view-transitions",
+    "title": "React 19.2 Makes View Transitions First-Class",
+    "excerpt": "React 19.2 stabilizes View Transitions, useEffectEvent, and Activity — a quieter but deeply impactful release.",
+    "content": "# React 19.2 Makes View Transitions First-Class\n\n![React 19.2 View Transitions](https://picsum.photos/seed/react192/1200/600)\n\nReact 19.2, carried into Next.js 16 as a canary release, brings three features that change how we reason about UI continuity: **View Transitions**, **`useEffectEvent`**, and **Activity**.\n\n## View Transitions\n\nAnimate elements that update inside a Transition or navigation without leaving React's reconciliation model. Pair it with the browser's native View Transitions API for smooth, jank-free morphs between states.\n\n```tsx\nimport { useViewTransitionState } from 'react'\nimport { startTransition } from 'react'\n\nfunction toggleTheme(next) {\n  startTransition(() => setTheme(next))\n}\n```\n\n## useEffectEvent\n\nExtract non-reactive logic out of Effects into reusable Effect Event functions. This fixes the long-standing footgun where linters demanded dependencies that were not truly reactive, leading to unnecessary re-runs.\n\n## Activity\n\nRender \"background activity\" by hiding UI with `display: none` while preserving state and cleaning up Effects. Ideal for tabs and modals that should keep their position without staying mounted.\n\n## Takeaway\n\nReact 19.2 is less about new APIs and more about removing the defensive coding patterns developers had accumulated. Fewer effects, fewer guards, more trust in the framework.",
+    "tags": [
+      "technology",
+      "react",
+      "frontend"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-07-28T00:00:00.000Z",
+    "updatedAt": "2026-07-28T00:00:00.000Z"
+  },
+  {
+    "id": "turbopack-default-bundler-2026",
+    "slug": "turbopack-default-bundler-2026",
+    "title": "Turbopack as Default Bundler: A 2026 Retrospective",
+    "excerpt": "Turbopack replaced Webpack as Next.js's default bundler. A year on, here is how it changed the developer workflow.",
+    "content": "# Turbopack as Default Bundler: A 2026 Retrospective\n\n![Turbopack performance comparison](https://picsum.photos/seed/turbopack/1200/600)\n\nWhen Next.js 15 made Turbopack the default for `next dev` and `next build`, it was a bold move. By mid-2026, the bet has largely paid off for the majority of projects.\n\n## The wins\n\n- **Cold starts** dropped by 60–80% on medium apps in internal benchmarks.\n- **Incremental rebuilds** are nearly instantaneous for the common case of editing a single component.\n- Memory footprint in dev is significantly lower than the equivalent Webpack configuration — a relief for Docker and CI environments.\n\n## The caveats\n\nA long tail of Webpack loaders had no Turbopack equivalent. Most were either migrated to native Turbopack equivalents or replaced with lighter alternatives. Custom `webpack.config.js` overrides in `next.config.ts` are no longer the escape hatch they once were — teams that depended on deep Webpack customization had to adapt.\n\n> The lesson: defaults that are fast enough for the 90th percentile win, even if they cost the 10th percentile some migration pain.\n\n## Recommendation\n\nFor greenfield projects in 2026, there is no reason to reach for Webpack. For legacy projects, the migration is incremental — Turbopack is robust enough that you can flip the flag app-by-app.",
+    "tags": [
+      "technology",
+      "turbopack",
+      "tooling"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-07-20T00:00:00.000Z",
+    "updatedAt": "2026-07-20T00:00:00.000Z"
+  },
+  {
+    "id": "liquid-glass-design-era-2026",
+    "slug": "liquid-glass-design-era-2026",
+    "title": "The Liquid-Glass Design Era Is Here",
+    "excerpt": "Frosted glass, depth, and motion define the 2026 visual language. Here is what makes a design feel modern right now.",
+    "content": "# The Liquid-Glass Design Era Is Here\n\n![Liquid-glass UI mockup](https://picsum.photos/seed/liquidglass/1200/600)\n\nWalk through any design-forward product shipped in 2026 and you will notice a shared vocabulary: frosted translucent surfaces, layered depth, and motion that responds to scroll and pointer. Call it the **liquid-glass era**.\n\n## The ingredients\n\n1. **Translucent layers** — backdrop blur over rich, animated backgrounds.\n2. **Depth via parallax** — elements move at different rates to suggest a z-axis.\n3. **Reactive motion** — animations driven by scroll progress and pointer position, not just mount.\n4. **High contrast text** — neon-on-ink palettes that meet AA contrast even over busy backgrounds.\n\n## Why now\n\nGPU-accelerated backdrop filters are universally supported, WebGL is mainstream, and frameworks like Motion (formerly Framer Motion) make scroll-linked animation a few lines of code. The technical cost of depth has collapsed.\n\n## Accessibility guardrails\n\nLiquid-glass is gorgeous but dangerous for accessibility and performance. Always:\n\n- Honor `prefers-reduced-motion` — disable parallax and shader loops.\n- Keep text contrast at AA (4.5:1) over the glass.\n- Cap `dpr` on WebGL canvases for high-DPI mobile to avoid melting the GPU.\n\nThis very site, PdskWork, is built on these principles — a React Three Fiber hero with an FBM fresnel background shader, glass panels, and reduced-motion fallbacks.",
+    "tags": [
+      "technology",
+      "design",
+      "css",
+      "accessibility"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-07-12T00:00:00.000Z",
+    "updatedAt": "2026-07-12T00:00:00.000Z"
+  },
+  {
+    "id": "edge-runtime-maturity-2026",
+    "slug": "edge-runtime-maturity-2026",
+    "title": "Edge Runtimes Hit Production Maturity in 2026",
+    "excerpt": "V8 isolates, WASM, and Workers have moved from experiment to default. Here is the state of the edge in 2026.",
+    "content": "# Edge Runtimes Hit Production Maturity in 2026\n\n![Edge runtime topology](https://picsum.photos/seed/edge/1200/600)\n\nTwo years ago, \"edge\" meant clever hacks around V8 isolate limitations. In 2026, edge runtimes are a legitimate default for latency-sensitive workloads.\n\n## What matured\n\n- **WASM in Workers** is first-class, unlocking libraries that previously needed Node APIs.\n- **Server Fast Refresh** brings fine-grained hot reloading to the server side.\n- **Subresource Integrity** for JavaScript files is now built into bundlers.\n- **Tree shaking of dynamic imports** — unused exports are pruned from `import()` chunks.\n\n## When to choose the edge\n\nThe edge shines for read-heavy, globally-distributed, low-latency reads: auth checks, geo-personalization, A/B routing, and feature flags. It is the wrong tool for long-running compute or anything needing a full filesystem.\n\n## When to stay on the origin\n\nHeavy RAG inference, large file processing, and anything touching a relational database with connection pooling semantics still belongs on a containerized origin. The mature pattern is **edge for the shell, origin for the body** — a fast edge response streams while the origin computes.",
+    "tags": [
+      "technology",
+      "edge",
+      "performance"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-06-28T00:00:00.000Z",
+    "updatedAt": "2026-06-28T00:00:00.000Z"
+  },
+  {
+    "id": "ai-coding-agents-mainstream-2026",
+    "slug": "ai-coding-agents-mainstream-2026",
+    "title": "AI Coding Agents Cross Into Mainstream in 2026",
+    "excerpt": "From novelty to daily driver: AI coding agents are now part of the standard developer toolkit. What changed?",
+    "content": "# AI Coding Agents Cross Into Mainstream in 2026\n\n![AI coding agent workflow](https://picsum.photos/seed/aiagents/1200/600)\n\nIn 2024, an AI coding agent was a curiosity. In 2026, it is a teammate. The shift from autocomplete to autonomous task completion happened faster than most predicted.\n\n## What changed\n\n1. **Long-context models** (1M+ tokens) made whole-repo reasoning practical.\n2. **Sandboxed execution** — Docker and UnixLocal backends let agents run code safely.\n3. **Tool-use reliability** improved enough that agents complete multi-step refactors without hand-holding.\n4. **Open-source parity** — frameworks like OpenHands and Claude Agent SDK closed the gap with proprietary offerings.\n\n## The new workflow\n\nThe modern developer does not write every line. They write specs, review diffs, and steer agents. The valuable skills shifted: prompt clarity, test design, and code review sharpness matter more than typing speed.\n\n> The agent does not replace the engineer; it changes what the engineer spends time on.\n\n## Guardrails that work\n\n- Run agents on a branch, never on `main`.\n- Require tests for any non-trivial change.\n- Keep a human in the loop for anything touching production data or secrets.\n\nThe teams winning with agents treat them like junior engineers: capable, fast, but in need of review.",
+    "tags": [
+      "technology",
+      "ai",
+      "agents",
+      "news"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-06-20T00:00:00.000Z",
+    "updatedAt": "2026-06-20T00:00:00.000Z"
+  },
+  {
+    "id": "webgpu-comes-to-browsers-2026",
+    "slug": "webgpu-comes-to-browsers-2026",
+    "title": "WebGPU Is Finally Everywhere in 2026",
+    "excerpt": "After years of origin trials, WebGPU shipped across all major browsers. Here is what it unlocks for the web.",
+    "content": "# WebGPU Is Finally Everywhere in 2026\n\n![WebGPU compute pipeline](https://picsum.photos/seed/webgpu/1200/600)\n\nWebGPU — the successor to WebGL — reached cross-browser parity in 2026. Chrome, Safari, and Firefox all ship it enabled by default. This is a quiet revolution for what the web can do.\n\n## What WebGPU gives you\n\n- **Compute shaders** — run GPGPU workloads (ML inference, physics, particle sims) directly in the browser.\n- **Modern API** — a cleaner, lower-overhead design than WebGL, closer to Vulkan/Metal.\n- **Predictable performance** — explicit resource management instead of the WebGL driver lottery.\n\n## Real-world impact\n\n- In-browser LLM inference via WebGPU compute is now viable for small models, enabling fully private, offline AI features.\n- Three.js and React Three Fiber added first-class WebGPU renderers, so existing WebGL content can migrate incrementally.\n- Physics engines and procedural generation tools that once needed a native app now run on the web.\n\n## The caveat\n\nWebGPU is lower-level than the WebGL ecosystem developers are used to. For most product work, layering on top of Three.js or Babylong.js is still the right call — drop to raw WebGPU only when you need compute or极致 control.",
+    "tags": [
+      "technology",
+      "webgpu",
+      "graphics",
+      "browsers"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-06-14T00:00:00.000Z",
+    "updatedAt": "2026-06-14T00:00:00.000Z"
+  },
+  {
+    "id": "typescript-6-type-erasure-2026",
+    "slug": "typescript-6-type-erasure-2026",
+    "title": "TypeScript 6 and the Type Erasure Revolution",
+    "excerpt": "TypeScript 6 stabilizes the type annotations proposal, bringing runtime type info to a language that erased it for a decade.",
+    "content": "# TypeScript 6 and the Type Erasure Revolution\n\n![TypeScript 6 type system](https://picsum.photos/seed/typescript6/1200/600)\n\nFor over a decade, TypeScript's defining trait was that types vanished at runtime — erased, never shipped. TypeScript 6, stabilizing the **type annotations proposal**, changes that equation.\n\n## What type annotations enable\n\n- **Runtime type reflection** — validators, serializers, and DI containers can read the actual types instead of guessing.\n- **Single source of truth** — no more maintaining parallel Zod/io-ts schemas that drift from your interfaces.\n- **Smaller dependency surface** — the runtime validation library ecosystem shrinks because the language does the work.\n\n## The migration story\n\nExisting `.ts` files are unaffected — type erasure remains the default. The new syntax is opt-in, so adoption is incremental. Libraries can expose annotated entry points while keeping erased internals.\n\n## The tradeoff\n\nRuntime types mean runtime cost: bundle size grows when annotations are shipped. The smart pattern is annotating only the boundary — API responses, config files, external input — while keeping hot internal paths erased.\n\nThis is the most consequential TypeScript release since 2.0.",
+    "tags": [
+      "technology",
+      "typescript",
+      "programming"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-06-08T00:00:00.000Z",
+    "updatedAt": "2026-06-08T00:00:00.000Z"
+  },
+  {
+    "id": "vector-databases-commoditized-2026",
+    "slug": "vector-databases-commoditized-2026",
+    "title": "Vector Databases Got Commoditized in 2026",
+    "excerpt": "pgvector, SQLite-vec, and in-browser options turned vector search from a specialty product into a feature.",
+    "content": "# Vector Databases Got Commoditized in 2026\n\n![Vector search embedding space](https://picsum.photos/seed/vectordb/1200/600)\n\nIn 2023, you needed a dedicated vector database to do semantic search. In 2026, vector search is a checkbox feature in the tools you already use.\n\n## The commoditization story\n\n- **`pgvector`** matured to the point where Postgres handles production-scale similarity search for most workloads.\n- **`sqlite-vec`** brought vector search to embedded and edge environments — no server required.\n- **In-browser options** (transformers.js + local vectors) make fully offline semantic search real.\n- Generalist databases (MongoDB, Redis, Elastic) all added native vector indexes.\n\n## When you still need a specialist\n\nDedicated vector DBs remain the right call for: billion-vector scale, hybrid search with complex reranking, and workloads where millisecond latency on massive corpora is the product. For everyone else — that is, most teams — your existing database is enough.\n\n> The pattern that won: vector search as a feature of the database you already run, not a new database to operate.\n\n## Practical advice\n\nStart with `pgvector` on your existing Postgres. Measure. Only reach for a specialist when you hit a wall you can name — usually scale, not features.",
+    "tags": [
+      "technology",
+      "database",
+      "ai",
+      "infrastructure"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-06-02T00:00:00.000Z",
+    "updatedAt": "2026-06-02T00:00:00.000Z"
+  },
+  {
+    "id": "rust-in-the-frontend-toolchain-2026",
+    "slug": "rust-in-the-frontend-toolchain-2026",
+    "title": "Rust Quietly Took Over the Frontend Toolchain",
+    "excerpt": "SWC, Turbopack, Rspack, Oxc, Biome — Rust now powers the tools JavaScript developers use every day.",
+    "content": "# Rust Quietly Took Over the Frontend Toolchain\n\n![Rust-powered JS tooling](https://picsum.photos/seed/rusttooling/1200/600)\n\nOpen any modern frontend toolchain and you will find Rust underneath. SWC compiles your TypeScript. Turbopack bundles your app. Oxc lints your code. Biome formats it. The language did not change — the engine did.\n\n## Why Rust won this layer\n\n- **Speed** — 10–100x over the JS equivalents on hot paths.\n- **Memory safety** — no GC pauses during compilation.\n- **Parallelism** — fearless multi-threading for parse/transform passes.\n- **WASM friendliness** — the same code runs in browsers and Node.\n\n## What it means for JS developers\n\nYou do not need to write Rust. The tools expose JS/TS APIs and config. The win is that the slow parts of your build — the parts that scaled with project size — now scale with cores, not with V8 overhead.\n\n## The open question\n\nThe Rust-ification of tooling concentrates maintainership in fewer hands (those who can write both Rust and a JS API surface). It is a net positive for users but a real consideration for project sustainability. Funding the people behind these tools matters more than ever.",
+    "tags": [
+      "technology",
+      "rust",
+      "tooling",
+      "open-source"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-05-28T00:00:00.000Z",
+    "updatedAt": "2026-05-28T00:00:00.000Z"
+  },
+  {
+    "id": "tutorial-build-3d-cyberpunk-hero-r3f",
+    "slug": "tutorial-build-3d-cyberpunk-hero-r3f",
+    "title": "Tutorial: Build a Cyberpunk 3D Hero Scene With React Three Fiber",
+    "excerpt": "A step-by-step guide to building a WebGL hero scene with shaders, scroll-linked motion, and reduced-motion fallbacks.",
+    "content": "# Tutorial: Build a Cyberpunk 3D Hero Scene\n\n![Cyberpunk R3F hero scene](https://picsum.photos/seed/r3fhero/1200/600)\n\nThis tutorial walks through building a cyberpunk hero scene with React Three Fiber (R3F), a fragment-shader background, and scroll-linked camera motion — the same stack this site uses.\n\n## Prerequisites\n\n- Node 20.9+ and a Next.js 16 app.\n- `@react-three/fiber`, `@react-three/drei`, and `motion` installed.\n- A browser with WebGL support.\n\n## Step 1: Gate the Canvas on WebGL\n\nNever render `<Canvas>` unconditionally — it throws in WebGL-less environments.\n\n```tsx\nconst supported = useDetectGL()\nif (!supported) return <StaticFallback />\nreturn <Canvas>...</Canvas>\n```\n\n## Step 2: The FBM fresnel background\n\nA full-screen shader running 5-octave fractal Brownian motion gives the swirling neon void. Keep `dpr={[1, 1.75]}` on the background canvas — high-DPI mobile GPUs will thank you.\n\n## Step 3: Scroll-linked camera\n\nUse `useScroll` from Motion (not drei's) and drive `scrollYProgress` (0..1) into camera Z. Never use `scrollY` (pixels) — it breaks on resize.\n\n## Step 4: Performance guards\n\n```tsx\n<PerformanceMonitor onIncline={ onFps: (f) => setDpr([1, 2]) } />\n<AdaptiveDpr pixelated />\n```\n\n## Step 5: Reduced motion\n\n```tsx\nconst reduce = useReducedMotion()\n<Canvas dpr={ reduce ? [1, 1] : [1, 2] }>\n```\n\nDisable parallax and shader uniforms that animate when `reduce` is true.\n\n## Result\n\nA hero that feels alive on capable hardware and degrades gracefully everywhere else. The full source for this site's hero is in the repo — read it alongside this tutorial.",
+    "tags": [
+      "tutorial",
+      "react-three-fiber",
+      "webgl",
+      "shaders"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-08-02T00:00:00.000Z",
+    "updatedAt": "2026-08-02T00:00:00.000Z"
+  },
+  {
+    "id": "tutorial-nextjs-16-cache-components",
+    "slug": "tutorial-nextjs-16-cache-components",
+    "title": "Tutorial: Adopting Cache Components in Next.js 16",
+    "excerpt": "Cache Components and Partial Prefetching are the biggest caching shift in Next's history. A practical migration guide.",
+    "content": "# Tutorial: Adopting Cache Components in Next.js 16\n\n![Next.js cache components diagram](https://picsum.photos/seed/cachecomp/1200/600)\n\nCache Components replaced Next's implicit, often-confusing caching with an explicit `\"use cache\"` directive. This is a migration guide for existing apps.\n\n## Step 1: Enable the flags\n\nIn `next.config.ts`:\n\n```ts\nconst nextConfig = {\n  cacheComponents: true,\n  partialPrefetching: true,\n}\n```\n\nBoth are top-level — not under `experimental.*`.\n\n## Step 2: Remove incompatible patterns\n\n`export const dynamic = 'force-dynamic'` is **incompatible** with `cacheComponents`. Remove it from every page and route handler. Pages that read `cookies()` auto-become dynamic per-session — you do not need the flag.\n\n## Step 3: Opt into request-time where needed\n\nFor a GET route handler doing async file I/O or `Math.random()` that should never prerender, use `connection()`:\n\n```ts\nimport { connection } from 'next/server'\nexport async function GET() {\n  await connection() // force request-time\n  // ...\n}\n```\n\n## Step 4: Read the build output\n\n- `◐ (Partial Prerender)` — static HTML + dynamic server-streamed content. This is the goal.\n- `○ (Static)` — fully static.\n- `ƒ (Dynamic)` — fully dynamic.\n\n## Step 5: Add `loading.tsx`\n\n`loading.tsx` streams a fallback for fast LCP. **It is a Server Component** — do not use styled-jsx there; put styles in `globals.css`.\n\n## Result\n\nYou get instant navigations, partial prefetching, and explicit control over what caches where. Worth the migration.",
+    "tags": [
+      "tutorial",
+      "nextjs",
+      "caching",
+      "performance"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-07-30T00:00:00.000Z",
+    "updatedAt": "2026-07-30T00:00:00.000Z"
+  },
+  {
+    "id": "tutorial-motion-lazy-bundle",
+    "slug": "tutorial-motion-lazy-bundle",
+    "title": "Tutorial: Shrinking Your Motion Bundle With LazyMotion",
+    "excerpt": "Framer Motion rebranded to Motion. Here is how to ship a fraction of the client JS using LazyMotion and lazy components.",
+    "content": "# Tutorial: Shrinking Your Motion Bundle With LazyMotion\n\n![Motion bundle size chart](https://picsum.photos/seed/motionbundle/1200/600)\n\nThe `framer-motion` package rebranded to `motion`. Beyond the import change (`motion/react`), the bigger win is `LazyMotion` — strict mode that ships a fraction of the client JS.\n\n## Step 1: Install\n\n```bash\nnpm install motion\n```\n\nImports move from `framer-motion` to `motion/react`. `useReducedMotion`, `useScroll`, `useTransform`, `m`, `LazyMotion`, `domAnimation` all come from the new path.\n\n## Step 2: Wrap once in the root layout\n\n```tsx\nimport { LazyMotion, domAnimation } from 'motion/react'\n\n<LazyMotion strict features={domAnimation}>\n  {children}\n</LazyMotion>\n```\n\n## Step 3: Use `m.div`, not `motion.div`\n\nInside `LazyMotion`, components must use the lazy `m.*` variants. Using `motion.div` pulls in the full bundle and defeats the purpose.\n\n```tsx\nimport { m } from 'motion/react'\n<m.div animate={{ opacity: 1 }} transition={{ duration: 0.3 }} />\n```\n\n## Step 4: Hooks still work\n\n`useScroll`, `useTransform`, `useMotionValue`, `useSpring` — all fine inside LazyMotion. Only the component primitives are lazy.\n\n## Result\n\nA measurable drop in first-load JS. On this site, the Motion client bundle shrank enough to make the 3D hero's cost the dominant factor — exactly where you want the budget spent.",
+    "tags": [
+      "tutorial",
+      "motion",
+      "performance",
+      "frontend"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-07-26T00:00:00.000Z",
+    "updatedAt": "2026-07-26T00:00:00.000Z"
+  },
+  {
+    "id": "tutorial-static-export-firebase-hosting",
+    "slug": "tutorial-static-export-firebase-hosting",
+    "title": "Tutorial: Static Export a Next.js App to Firebase Hosting Free Tier",
+    "excerpt": "How to deploy a Next.js 16 app as a fully static export to Firebase Hosting on the free Spark plan — no Blaze upgrade needed.",
+    "content": "# Tutorial: Static Export to Firebase Hosting Free Tier\n\n![Firebase Hosting deployment](https://picsum.photos/seed/firebasehost/1200/600)\n\nFirebase Hosting on the **Spark (free) plan** can serve a static Next.js export at the default `*.web.app` URL — no Cloud Functions, no Blaze upgrade. This is the playbook.\n\n## Step 1: Configure for export\n\nIn `next.config.ts`:\n\n```ts\nconst nextConfig = {\n  output: 'export',\n  images: { unoptimized: true },\n  distDir: 'out',\n  trailingSlash: false,\n}\n```\n\nRemove `cacheComponents` and `partialPrefetching` — they are incompatible with export.\n\n## Step 2: No server runtime\n\nDelete anything requiring a server: middleware (Proxy), `app/api/**` route handlers, `cookies()`-based locale logic, fs-based stores. The export is pure HTML/CSS/JS.\n\n## Step 3: Handle dynamic routes\n\nUnknown slugs created post-deploy have no static HTML. Use `firebase.json` rewrites:\n\n```json\n{\n  \"hosting\": {\n    \"rewrites\": [\n      { \"source\": \"/blog/{slug}\", \"destination\": \"/blog/_\" },\n      { \"source\": \"/admin/blog/{id}/edit\", \"destination\": \"/admin/blog/_/edit\" }\n    ]\n  }\n}\n```\n\nThe client reads the real slug/id from `window.location.pathname`.\n\n## Step 4: `generateStaticParams` opt-in\n\nFor `/blog/[slug]`, return seed slugs plus a `_` placeholder. Metadata routes (`sitemap.ts`, `robots.ts`) need `export const dynamic = 'force-static'` under export.\n\n## Step 5: Deploy\n\n```bash\nnpm run build\nfirebase deploy --only hosting\n```\n\n## Result\n\nA globally-cached, free-tier static site. For dynamic data, use Firestore client SDK + Firebase Auth — both free. This is exactly how PdskWork runs.",
+    "tags": [
+      "tutorial",
+      "firebase",
+      "deployment",
+      "nextjs"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-07-22T00:00:00.000Z",
+    "updatedAt": "2026-07-22T00:00:00.000Z"
+  },
+  {
+    "id": "tutorial-web-audio-ambient-drone",
+    "slug": "tutorial-web-audio-ambient-drone",
+    "title": "Tutorial: Synthesize an Ambient Drone With the Web Audio API",
+    "excerpt": "No audio files, no dependencies — a from-scratch ambient drone using oscillators, detuning, and a slow LFO low-pass filter.",
+    "content": "# Tutorial: Synthesize an Ambient Drone With Web Audio\n\n![Web Audio API graph](https://picsum.photos/seed/webaudio/1200/600)\n\nYou do not need audio files to add atmosphere. The Web Audio API can synthesize a slow, evolving drone in a few dozen lines. This is how PdskWork's ambient sound is built.\n\n## Step 1: Lazy AudioContext\n\nNever create an `AudioContext` until the user gestures (browsers block autoplay).\n\n```ts\nconst ctx = new AudioContext()\nif (ctx.state === 'suspended') await ctx.resume()\n```\n\n## Step 2: Two detuned sawtooth oscillators\n\n```ts\nconst o1 = ctx.createOscillator(); o1.type = 'sawtooth'; o1.frequency.value = 55\nconst o2 = ctx.createOscillator(); o2.type = 'sawtooth'; o2.frequency.value = 55.5\n```\n\nThe 0.5Hz detune creates a slow, beating phasing — the foundation of the drone's movement.\n\n## Step 3: A low-pass filter with an LFO\n\n```ts\nconst filter = ctx.createBiquadFilter(); filter.type = 'lowpass'; filter.frequency.value = 400\nconst lfo = ctx.createOscillator(); lfo.frequency.value = 0.05\nconst lfoGain = ctx.createGain(); lfoGain.gain.value = 200\nlfo.connect(lfoGain).connect(filter.frequency)\n```\n\nThe 0.05Hz LFO sweeps the cutoff over ~20 seconds — a breathing timbre.\n\n## Step 4: Respect reduced motion\n\n```ts\nif (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {\n  lfoGain.gain.value = 0 // freeze the sweep\n}\n```\n\n## Result\n\nA generative ambient bed that costs zero bytes of audio, respects accessibility, and feels alive. Default to muted — let the user opt in.",
+    "tags": [
+      "tutorial",
+      "web-audio",
+      "javascript",
+      "accessibility"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-07-18T00:00:00.000Z",
+    "updatedAt": "2026-07-18T00:00:00.000Z"
+  },
+  {
+    "id": "tutorial-i18n-client-side-nextjs",
+    "slug": "tutorial-i18n-client-side-nextjs",
+    "title": "Tutorial: Client-Side i18n in a Static Next.js Export",
+    "excerpt": "When you cannot use server `cookies()` for locale, here is a cookie + context pattern that works in a static export.",
+    "content": "# Tutorial: Client-Side i18n in a Static Next.js Export\n\n![i18n locale switcher](https://picsum.photos/seed/i18n/1200/600)\n\nStatic exports have no server, so `cookies()` for locale is out. This is the pattern PdskWork uses — a cookie for persistence, React context for reactivity, all client-side.\n\n## Step 1: Dictionaries\n\n```ts\n// src/i18n/dictionaries.ts\nexport const dicts = {\n  en: { blog: { title: 'Blog', ... } },\n  id: { blog: { title: 'Blog', ... } },\n}\n```\n\n## Step 2: A LocaleProvider\n\n```tsx\n'use client'\nconst LocaleContext = createContext()\nexport function LocaleProvider({ children }) {\n  const [locale, setLocale] = useState<'en'|'id'>('en')\n  useEffect(() => {\n    const c = document.cookie.match(/pdsk-locale=(en|id)/)?.[1]\n    if (c) setLocale(c)\n  }, [])\n  // ... expose locale, dict, setLocale (sets cookie + state)\n}\nexport const useLocale = () => useContext(LocaleContext)\n```\n\n## Step 3: Consume in pages\n\n```tsx\nconst { locale, dict } = useLocale()\n<h1>{dict.blog.title}</h1>\n```\n\n## Step 4: A no-flash inline script\n\nTo avoid a flash of the wrong locale, inject an inline script in `<head>` that reads the cookie and sets a class before hydration.\n\n## Result\n\nFully client-side i18n that survives a static export, with no server round-trip and no flash. Pairs perfectly with a locale toggle in the nav.",
+    "tags": [
+      "tutorial",
+      "i18n",
+      "nextjs",
+      "frontend"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-07-14T00:00:00.000Z",
+    "updatedAt": "2026-07-14T00:00:00.000Z"
+  },
+  {
+    "id": "tutorial-rss-feed-static-nextjs",
+    "slug": "tutorial-rss-feed-static-nextjs",
+    "title": "Tutorial: Generate an RSS Feed for a Static Next.js Site",
+    "excerpt": "Next.js route handlers are gone in static export. Here is a prebuild script that generates `public/feed.xml` at build time.",
+    "content": "# Tutorial: Generate an RSS Feed for a Static Next.js Site\n\n![RSS feed generation pipeline](https://picsum.photos/seed/rssfeed/1200/600)\n\nIn a server runtime, an RSS feed is a route handler. In a static export, that is impossible. The solution: a prebuild script that reads your seed data and writes `public/feed.xml`.\n\n## Step 1: The script\n\n```js\n// scripts/gen-feed.mjs\nimport fs from 'node:fs'\nimport { read } from './blog-seed-reader.mjs'\n\nconst posts = read() // synchronous read of blog.json\nconst items = posts.filter(p => p.published).map(p => '  <item>...').join('')\n\nconst feed = '<?xml version=\"1.0\"?>\n<rss version=\"2.0\"><channel>...</channel></rss>'\nfs.writeFileSync('public/feed.xml', feed)\n```\n\nThe full script maps each published post into an `<item>` with `<title>`, `<link>`, `<guid>`, `<pubDate>`, and `<description>`, escapes XML special characters, and writes the combined RSS 2.0 document to `public/feed.xml`.\n\n## Step 2: Wire to prebuild\n\nIn `package.json`:\n\n```json\n{\n  \"scripts\": { \"prebuild\": \"node scripts/gen-feed.mjs\" }\n}\n```\n\n## Step 3: Link it in metadata\n\n```ts\nexport const metadata = {\n  alternates: { types: { 'application/rss+xml': '/feed.xml' } }\n}\n```\n\n## Step 4: Gitignore the generated file\n\n`public/feed.xml` is regenerated each build — add it to `.gitignore` so you never commit a stale copy.\n\n## Result\n\nA valid RSS 2.0 feed for a fully static site, rebuilt every deploy, linked from your metadata. Subscribers stay in sync.",
+    "tags": [
+      "tutorial",
+      "rss",
+      "nextjs",
+      "automation"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-07-10T00:00:00.000Z",
+    "updatedAt": "2026-07-10T00:00:00.000Z"
+  },
+  {
+    "id": "tutorial-firestore-client-sdk-static-site",
+    "slug": "tutorial-firestore-client-sdk-static-site",
+    "title": "Tutorial: Adding Firestore to a Static Next.js Export",
+    "excerpt": "Dynamic data without a server: the Firestore client SDK plus security rules give a static site a real backend, free.",
+    "content": "# Tutorial: Adding Firestore to a Static Next.js Export\n\n![Firestore client SDK architecture](https://picsum.photos/seed/firestore/1200/600)\n\nA static export has no server, but it can still have a real database. The Firestore client SDK runs in the browser, and security rules enforce access control. This is the pattern PdskWork uses for its blog CMS.\n\n## Step 1: Install and initialize\n\n```ts\nimport { initializeApp } from 'firebase/app'\nimport { getFirestore } from 'firebase/firestore'\nconst app = initializeApp(firebaseConfig)\nexport const db = getFirestore(app)\n```\n\n## Step 2: Security rules define access\n\n```\n// firestore.rules\nservice cloud.firestore {\n  match /databases/{database}/documents {\n    match /posts/{postId} {\n      allow read: if resource.data.published == true\n      allow write: if request.auth != null // admin only\n    }\n  }\n}\n```\n\nPublic reads of published posts; writes require auth. Optionally restrict writes to a single admin UID.\n\n## Step 3: Two data paths\n\n- **Build-time seed** (`src/lib/blog-seed.ts`): a synchronous `readFileSync` of a bundled JSON file, used by `generateStaticParams`, `generateMetadata`, `sitemap.ts`, and the RSS feed.\n- **Runtime Firestore** (`src/lib/blog-firestore.ts`): the client SDK, used by public pages and the admin CMS.\n\nBoth expose the same interface names so callers do not care which is which.\n\n## Step 4: Auth for the admin\n\nFirebase Auth (email/password, client SDK) plus a client-side `AdminGate` component that redirects to `/admin/login?next=` if unauthenticated. No httpOnly cookie, no server session — the rules enforce the boundary.\n\n## Result\n\nA free-tier static site with a real CMS backend: public reads are instant and cached, writes are secured by Firestore rules, and the build-time seed guarantees the static shell always exists.",
+    "tags": [
+      "tutorial",
+      "firebase",
+      "firestore",
+      "nextjs"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-07-06T00:00:00.000Z",
+    "updatedAt": "2026-07-06T00:00:00.000Z"
+  },
+  {
+    "id": "tutorial-reduced-motion-accessibility",
+    "slug": "tutorial-reduced-motion-accessibility",
+    "title": "Tutorial: Building for `prefers-reduced-motion`",
+    "excerpt": "Motion-heavy sites must respect reduced motion. A practical guide to graceful degradation without sacrificing the experience.",
+    "content": "# Tutorial: Building for `prefers-reduced-motion`\n\n![Accessibility motion preferences](https://picsum.photos/seed/reducedmotion/1200/600)\n\nA cyberpunk, motion-rich site is a liability for users with vestibular disorders. `prefers-reduced-motion` is the contract. Here is how to honor it without throwing away your design.\n\n## Step 1: Detect at the right layer\n\n```ts\nimport { useReducedMotion } from 'motion/react'\nconst reduce = useReducedMotion()\n```\n\nFor CSS, use the media query directly:\n\n```css\n@media (prefers-reduced-motion: reduce) {\n  * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }\n}\n```\n\n## Step 2: What to disable vs. diminish\n\n- **Disable**: parallax, shader loops, infinite animations, scroll-linked camera movement.\n- **Diminish, not remove**: essential transitions (opacity fades to 100ms), state changes.\n- **Keep**: semantic motion that conveys information (a loading bar).\n\n## Step 3: 3D and WebGL\n\n```tsx\n<Canvas dpr={ reduce ? [1, 1] : [1, 2] }>\n```\n\nZero out LFO gains, freeze shader uniforms, and drop the `dpr` to the minimum. The scene still renders, just static.\n\n## Step 4: Back-to-top and scroll features\n\n```tsx\nwindow.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' })\n```\n\nInstant scroll when reduced; smooth otherwise.\n\n## Result\n\nA site that is breathtaking for those who want motion and **safe** for those who do not. Accessibility is not optional; it is part of shipping professional work.",
+    "tags": [
+      "tutorial",
+      "accessibility",
+      "css",
+      "motion"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-06-30T00:00:00.000Z",
+    "updatedAt": "2026-06-30T00:00:00.000Z"
+  },
+  {
+    "id": "tutorial-seo-nextjs-16",
+    "slug": "tutorial-seo-nextjs-16",
+    "title": "Tutorial: Production SEO in Next.js 16",
+    "excerpt": "Metadata, sitemap, robots, OpenGraph, and RSS — a complete SEO setup for an App Router site.",
+    "content": "# Tutorial: Production SEO in Next.js 16\n\n![SEO checklist for Next.js](https://picsum.photos/seed/seonextjs/1200/600)\n\nNext.js 16's Metadata API is powerful but easy to misconfigure. This is a production-grade setup.\n\n## Step 1: Root metadata\n\n```ts\nexport const metadata: Metadata = {\n  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL!),\n  title: { default: 'PdskWork', template: '%s · PdskWork' },\n  alternates: { types: { 'application/rss+xml': '/feed.xml' } },\n}\n```\n\nAlways set `metadataBase` — without it, OG image URLs resolve to `localhost`.\n\n## Step 2: `sitemap.ts`\n\n```ts\nexport default async function sitemap() {\n  const posts = getSeedPosts()\n  return [\n    ...staticRoutes,\n    ...posts.map(p => ({ url: `/blog/${p.slug}`, lastModified: p.updatedAt })),\n  ]\n}\n```\n\nUnder static export, add `export const dynamic = 'force-static'`.\n\n## Step 3: `robots.ts`\n\n```ts\nexport default function robots() {\n  return { rules: { userAgent: '*', allow: '/' }, sitemap: `${BASE}/sitemap.xml` }\n}\n```\n\n## Step 4: Per-page metadata via `generateMetadata`\n\n```ts\nexport async function generateMetadata({ params }) {\n  const { slug } = await params // Next 16: params is a promise\n  const post = getPostBySlug(slug)\n  return { title: post.title, description: post.excerpt, openGraph: { images: [ogImage] } }\n}\n```\n\n## Step 5: The async gotcha\n\nIn Next.js 16, `params` and `searchParams` are **async** — you must `await` them. Forgetting this is the #1 metadata bug.\n\n## Result\n\nA site that search engines and social platforms understand: canonical URLs, fresh sitemap, valid OG cards, and a discoverable RSS feed.",
+    "tags": [
+      "tutorial",
+      "seo",
+      "nextjs",
+      "metadata"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-06-24T00:00:00.000Z",
+    "updatedAt": "2026-06-24T00:00:00.000Z"
+  },
+  {
+    "id": "tutorial-github-actions-deploy-firebase",
+    "slug": "tutorial-github-actions-deploy-firebase",
+    "title": "Tutorial: CI/CD for Firebase Hosting With GitHub Actions",
+    "excerpt": "Automate your static site deploys from GitHub to Firebase Hosting with preview channels and production promotion.",
+    "content": "# Tutorial: CI/CD for Firebase Hosting With GitHub Actions\n\n![GitHub Actions deploy pipeline](https://picsum.photos/seed/cicdfirebase/1200/600)\n\nManual deploys do not scale. This is a GitHub Actions workflow that builds, previews, and promotes a Next.js static export to Firebase Hosting.\n\n## Step 1: Cache credentials\n\nStore a Firebase service account JSON as a GitHub secret (`FIREBASE_SERVICE_ACCOUNT`). Use the `w9jds/firebase-action` or the official `firebase-tools` Docker image.\n\n## Step 2: The build job\n\n```yaml\n- run: npm ci\n- run: npm run build\n- uses: FirebaseExtended/action-hosting-deploy@v0\n  with:\n    repoToken: <GITHUB_TOKEN_SECRET>\n    firebaseServiceAccount: <FIREBASE_SERVICE_ACCOUNT_SECRET>\n    channelId: preview-on-pr-live-on-main\n    projectId: pdskwork\n```\n\nIn practice the `channelId` is computed: `preview` for pull requests, `live` for pushes to `main`. The exact interpolation syntax depends on your CI; the principle is \"preview on PRs, live on merge.\"\n\n## Step 3: Preview channels on PRs\n\nFirebase Hosting creates an ephemeral preview URL per PR. Post it as a comment so reviewers can click a live build.\n\n## Step 4: Promote on merge\n\nOn push to `main`, the workflow deploys to the `live` channel — your production URL. The preview channel expires automatically.\n\n## Step 5: Environment-aware env\n\nSet `NEXT_PUBLIC_SITE_URL` per environment: the production URL (`https://pdskwork.web.app`) on `main`, a preview URL otherwise. This ensures `metadataBase` and OG URLs are correct per environment.\n\n## Result\n\nEvery PR gets a live preview, every merge ships to production — no manual `firebase deploy`, no \"works on my machine\".\n",
+    "tags": [
+      "tutorial",
+      "github-actions",
+      "ci-cd",
+      "firebase"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-06-18T00:00:00.000Z",
+    "updatedAt": "2026-06-18T00:00:00.000Z"
+  },
+  {
+    "id": "programming-async-params-nextjs-16",
+    "slug": "programming-async-params-nextjs-16",
+    "title": "Next.js 16 Makes Async Request APIs Mandatory — Here Is How to Adapt",
+    "excerpt": "`cookies()`, `headers()`, `params`, and `searchParams` are now promises. A guide to the migration and why it matters.",
+    "content": "# Next.js 16 Makes Async Request APIs Mandatory\n\n![Async request API flow](https://picsum.photos/seed/asyncparams/1200/600)\n\nThe single most impactful breaking change in Next.js 16 is that **async Request APIs are mandatory**. `cookies()`, `headers()`, `params`, and `searchParams` all return promises you must `await`.\n\n## Why the change\n\nSync access to request-scoped data was a blocker for Partial Prerendering — the framework could not know at build time whether a component would need request data. Making them async lets the compiler distinguish static from dynamic without ambiguity.\n\n## The migration\n\nBefore:\n\n```ts\nexport default function Page({ params }) {\n  const { slug } = params\n  // ...\n}\n```\n\nAfter:\n\n```ts\nexport default async function Page({ params }) {\n  const { slug } = await params\n  // ...\n}\n```\n\n## `cookies()` and `headers()`\n\n```ts\nimport { cookies, headers } from 'next/server'\nconst cookieStore = await cookies()\nconst h = await headers()\n```\n\n## The common bug\n\nCalling `params.slug` without awaiting returns a promise object, not the string. TypeScript catches it if your types are right; JavaScript silently breaks. **Always `await`.**\n\n## Forcing request-time\n\nIf a page or route has no dynamic API but must not prerender, use `connection()`:\n\n```ts\nimport { connection } from 'next/server'\nawait connection()\n```\n\nThis is the explicit, documented opt-in — far cleaner than the old `dynamic = 'force-dynamic'`.",
+    "tags": [
+      "programming",
+      "nextjs",
+      "async",
+      "react"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-08-01T00:00:00.000Z",
+    "updatedAt": "2026-08-01T00:00:00.000Z"
+  },
+  {
+    "id": "programming-middleware-to-proxy-nextjs-16",
+    "slug": "programming-middleware-to-proxy-nextjs-16",
+    "title": "Next.js 16 Renamed Middleware to Proxy — What It Means",
+    "excerpt": "`middleware.ts` is now `proxy.ts`. The rename signals a narrower, clearer role for request-time interception.",
+    "content": "# Next.js 16 Renamed Middleware to Proxy\n\n![Middleware to Proxy rename](https://picsum.photos/seed/proxyrename/1200/600)\n\nNext.js 16 renamed **Middleware** to **Proxy**. The file moves from `middleware.ts` to `proxy.ts` (at the project root or `src/` root). This is not cosmetic — it reflects a scoped-down role.\n\n## Why the rename\n\n\"Middleware\" implied general-purpose request interception, which teams used for everything from auth to data fetching to redirects based on DB lookups. That scope creep caused performance problems (every request paid the cost) and confusion.\n\n**Proxy** signals the actual intent: lightweight, request-time routing and header manipulation — the kind of work a CDN edge proxy does.\n\n## What stays in scope\n\n- Redirects and rewrites based on the request.\n- Setting request headers.\n- Locale routing (with caveats).\n\n## What moved out\n\n- Auth (use server-side sessions and `AdminGate`-style client gates).\n- Data fetching (do it in Server Components or the client).\n- Anything that needs a database.\n\n## Practical impact\n\nIf you had a `middleware.ts` doing auth or DB work, that is a code smell the rename exposes. Move that logic to a Server Component or a client-side gate. PdskWork, as a static export, deleted its proxy entirely — there is no server to intercept.\n\n## The takeaway\n\nNames shape behavior. \"Proxy\" tells you exactly how much you should put in it: very little.",
+    "tags": [
+      "programming",
+      "nextjs",
+      "middleware",
+      "architecture"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-07-29T00:00:00.000Z",
+    "updatedAt": "2026-07-29T00:00:00.000Z"
+  },
+  {
+    "id": "programming-next-image-priority-deprecated",
+    "slug": "programming-next-image-priority-deprecated",
+    "title": "Next.js 16: `next/image` `priority` Is Deprecated — Use `preload`",
+    "excerpt": "The image component's `priority` prop is gone in favor of `preload`. What changed and how to migrate.",
+    "content": "# Next.js 16: `next/image` `priority` Is Deprecated\n\n![next/image preload migration](https://picsum.photos/seed/nextimage/1200/600)\n\nIn Next.js 16, the `priority` prop on `next/image` is **deprecated** in favor of `preload`. The behavior is similar, but the name aligns with the platform's loading primitives.\n\n## Why the change\n\n`priority` was overloaded — it meant \"load this first\" for the LCP image, but developers sprinkled it everywhere, defeating the purpose. `preload` is explicit: it tells the browser to fetch the resource early via the preload scanner.\n\n## The migration\n\nBefore:\n\n```tsx\nimport Image from 'next/image'\n<Image src=\"/hero.jpg\" priority width=1200 height=600 alt=\"Hero\" />\n```\n\nAfter:\n\n```tsx\n<Image src=\"/hero.jpg\" preload width=1200 height=600 alt=\"Hero\" />\n```\n\n## When to actually use it\n\nOnly on the single LCP image per route. Adding `preload` to every image is worse than not using it — you flood the network with high-priority requests and slow the actual LCP.\n\n## The broader image story\n\nUnder static export, `next/image` runs unoptimized (`images.unoptimized: true`) because there is no server to transform images. For dynamic deploys, the new image service is faster and supports modern formats automatically.\n\n## Takeaway\n\nUse `preload` on exactly one image per page — the one users see first. Leave the rest to lazy loading.",
+    "tags": [
+      "programming",
+      "nextjs",
+      "performance",
+      "images"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-07-24T00:00:00.000Z",
+    "updatedAt": "2026-07-24T00:00:00.000Z"
+  },
+  {
+    "id": "programming-eslint-flat-config-nextjs-16",
+    "slug": "programming-eslint-flat-config-nextjs-16",
+    "title": "Next.js 16: ESLint Flat Config and the End of `next lint`",
+    "excerpt": "`next lint` is removed. ESLint Flat Config is the default. Here is how to lint a Next 16 project correctly.",
+    "content": "# Next.js 16: ESLint Flat Config and the End of `next lint`\n\n![ESLint flat config setup](https://picsum.photos/seed/eslintflat/1200/600)\n\nNext.js 16 removed `next lint`. Linting is now the ESLint CLI's job, run directly. The configuration format is the new **Flat Config** (`eslint.config.mjs`).\n\n## Why `next lint` had to go\n\n`next lint` was a wrapper that papered over ESLint version mismatches and config complexity. As ESLint moved to flat config and stricter plugin contracts, the wrapper became a liability — crashes on circular structures, opaque errors.\n\n## The new setup\n\n`eslint.config.mjs`:\n\n```js\nimport next from 'eslint-config-next'\n\nexport default [\n  ...next.flatConfig.coreWebVitals,\n  {\n    rules: { 'react/no-unescaped-entities': 'off' },\n  },\n]\n```\n\nRun it directly:\n\n```bash\nnpx eslint .\n```\n\n## `next build` no longer lints\n\nThis is intentional. The build does TypeScript checking only. Linting is a separate concern — wire it into your CI as a distinct step, or run it in your editor.\n\n## The known caveat\n\nThe `eslint-config-next` vs ESLint 9 combination can crash with a circular-structure error on some setups. If you hit this, pin ESLint to a compatible version or rely on `next build`'s TS check as your gate (as PdskWork does).\n\n## Takeaway\n\nThe framework got out of the linting business. That is healthier — ESLint owns linting, TypeScript owns types, and `next build` owns the build. Clean separation.",
+    "tags": [
+      "programming",
+      "eslint",
+      "nextjs",
+      "tooling"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-07-19T00:00:00.000Z",
+    "updatedAt": "2026-07-19T00:00:00.000Z"
+  },
+  {
+    "id": "programming-server-components-boundaries",
+    "slug": "programming-server-components-boundaries",
+    "title": "Programming Server Components: Drawing the Right Boundaries",
+    "excerpt": "The 'use client' directive is a boundary, not a label. A framework for deciding what goes where.",
+    "content": "# Programming Server Components: Drawing the Right Boundaries\n\n![Server/Client component boundary](https://picsum.photos/seed/rscboundaries/1200/600)\n\nReact Server Components (RSC) are powerful, but the boundary between server and client is the hardest part of the model. Here is a decision framework.\n\n## The rule of thumb\n\nA component is a Client Component **only if** it:\n\n1. Uses browser APIs (`window`, `document`, `localStorage`, `matchMedia`).\n2. Uses React state, effects, or context (`useState`, `useEffect`, `createContext`).\n3. Handles user events (`onClick`, `onChange`) without server actions.\n4. Imports a library that does any of the above.\n\nEverything else is a Server Component by default.\n\n## Push the boundary down, not up\n\nThe instinct is to mark the whole page `'use client'`. That is usually wrong. Instead, push the directive to the **leaf** component that actually needs interactivity, and keep the page and layout server-side.\n\n```tsx\n// page.tsx (server) — fetches data, renders shell\nimport InteractiveWidget from './InteractiveWidget' // 'use client'\n<InteractiveWidget data={data} />\n```\n\n## The serialization wall\n\nProps passed from server to client components must be serializable — no functions, no class instances, no `Date` objects unless you convert them. This wall is real and forces clean data design.\n\n## Static export nuance\n\nUnder `output: 'export'`, there is no server, so \"Server Components\" become static-at-build-time components. The boundary discipline still pays off: components without `'use client'` ship zero client JS.\n\n## Takeaway\n\nThe `'use client'` directive is a public API for your component. Treat it with the same care you'd give any exported function's contract.",
+    "tags": [
+      "programming",
+      "react",
+      "rsc",
+      "architecture"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-07-15T00:00:00.000Z",
+    "updatedAt": "2026-07-15T00:00:00.000Z"
+  },
+  {
+    "id": "programming-react-compiler-2026",
+    "slug": "programming-react-compiler-2026",
+    "title": "The React Compiler Is Real in 2026 — What It Changes",
+    "excerpt": "Auto-memoization lands in React, making `useMemo` and `useCallback` opt-in rather than mandatory. A practical look.",
+    "content": "# The React Compiler Is Real in 2026\n\n![React Compiler memoization](https://picsum.photos/seed/reactcompiler/1200/600)\n\nThe React Compiler, long promised, stabilized in 2026. It auto-memoizes component output based on input equality, making manual `useMemo` and `useCallback` largely unnecessary.\n\n## What the compiler does\n\nIt analyzes your component and inserts memoization where it is sound — at the granularity of individual values, not whole components. You write plain code; the compiler emits the optimized version.\n\n## What you can delete\n\n- `useMemo` around expensive computations.\n- `useCallback` around handlers passed to memoized children.\n- `React.memo` wrappers around leaf components (in most cases).\n\n## What you still need\n\n- `useState` and `useReducer` — the compiler does not manage state.\n- `useEffect` for side effects — though `useEffectEvent` handles non-reactive logic.\n- Reference equality for context values where stability matters.\n\n## The migration\n\nEnable the compiler in your build config. It is opt-in per-app. Existing manual memoization is harmless (the compiler is idempotent), so you can migrate incrementally — delete manual memo as you gain confidence.\n\n## The real win\n\nIt is not raw performance. It is **cognitive load**. Junior developers can write plain components and get the performance characteristics that previously required expert-level knowledge of React's rendering model. That is a leveling of the field.",
+    "tags": [
+      "programming",
+      "react",
+      "compiler",
+      "performance"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-07-11T00:00:00.000Z",
+    "updatedAt": "2026-07-11T00:00:00.000Z"
+  },
+  {
+    "id": "programming-error-handling-typescript",
+    "slug": "programming-error-handling-typescript",
+    "title": "TypeScript Error Handling: Beyond `try/catch`",
+    "excerpt": "Typed errors, Result types, and the `never` check — practical patterns for safe, predictable error handling.",
+    "content": "# TypeScript Error Handling: Beyond `try/catch`\n\n![TypeScript error handling patterns](https://picsum.photos/seed/tscerrors/1200/600)\n\n`try/catch` in TypeScript catches `unknown`. That is correct but ergonomically painful. Here are patterns that make errors predictable and typed.\n\n## Pattern 1: Narrow the unknown\n\n```ts\ntry {\n  await risky()\n} catch (e) {\n  if (e instanceof MyError) handleMyError(e)\n  else throw e // rethrow what you cannot handle\n}\n```\n\nAlways rethrow what you do not handle — swallowing errors is worse than crashing.\n\n## Pattern 2: Result types for expected failures\n\nFor operations where failure is a normal outcome (parsing, validation, lookups), return a discriminated union instead of throwing:\n\n```ts\ntype Result<T, E> = { ok: true; value: T } | { ok: false; error: E }\nfunction parseUser(input: string): Result<User, ParseError> { ... }\n```\n\nThis forces callers to handle the error case — the compiler ensures exhaustiveness.\n\n## Pattern 3: Custom error classes with `instanceof`\n\n```ts\nclass ReadOnlyDataError extends Error {\n  constructor() { super('Blog data directory is read-only'); this.name = 'ReadOnlyDataError' }\n}\n```\n\nAPI routes catch `ReadOnlyDataError` and return HTTP 503 specifically, letting other errors bubble to the generic 500 handler.\n\n## Pattern 4: The `never` exhaustiveness check\n\n```ts\nfunction handle(e: KnownError) {\n  switch (e.kind) {\n    case 'A': return ...\n    case 'B': return ...\n    default:\n      const _exhaustive: never = e\n      throw new Error(`Unhandled: ${JSON.stringify(e)}`)\n  }\n}\n```\n\nIf you add a new error kind, the compiler errors at the `never` assignment until you handle it.\n\n## Takeaway\n\nPredictable errors come from typing them. `try/catch` is a last resort, not the default.",
+    "tags": [
+      "programming",
+      "typescript",
+      "error-handling",
+      "patterns"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-06-26T00:00:00.000Z",
+    "updatedAt": "2026-06-26T00:00:00.000Z"
+  },
+  {
+    "id": "programming-state-machines-react",
+    "slug": "programming-state-machines-react",
+    "title": "Modeling UI State With State Machines in React",
+    "excerpt": "When `useState` sprawls into impossible states, a state machine brings clarity. XState or a hand-rolled reducer — your call.",
+    "content": "# Modeling UI State With State Machines in React\n\n![UI state machine diagram](https://picsum.photos/seed/statemachine/1200/600)\n\nEvery UI has implicit state machines — loading, idle, error, success. Modeling them explicitly eliminates the \"impossible states\" that cause bugs.\n\n## The problem\n\n```ts\nconst [loading, setLoading] = useState(false)\nconst [error, setError] = useState<string | null>(null)\nconst [data, setData] = useState<Data | null>(null)\n```\n\nThis allows `loading=true && error !== null` — an impossible state that your UI has to defensively handle.\n\n## The fix: a discriminated union\n\n```ts\ntype State =\n  | { status: 'idle' }\n  | { status: 'loading' }\n  | { status: 'error'; error: string }\n  | { status: 'success'; data: Data }\n\nconst [state, dispatch] = useReducer(reducer, { status: 'idle' })\n```\n\nNow each state has exactly the fields it needs. The compiler prevents accessing `data` when `status` is `'loading'`.\n\n## When to reach for XState\n\nA `useReducer` handles most UI state machines. Reach for XState when:\n\n- You have nested or parallel states (e.g., \"form is valid AND submission is in-flight\").\n- You need visual debugging of the state chart.\n- The machine is shared across components or even apps.\n\n## The mental shift\n\nStop asking \"what booleans do I need?\" and start asking \"what states can this be in, and what events cause transitions?\" The latter question surfaces the actual domain; the former surfaces incidental flags.\n\n## Takeaway\n\nImpossible states are not bugs to handle — they are bugs to make unrepresentable.",
+    "tags": [
+      "programming",
+      "react",
+      "state",
+      "patterns"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-06-22T00:00:00.000Z",
+    "updatedAt": "2026-06-22T00:00:00.000Z"
+  },
+  {
+    "id": "programming-testing-react-server-components",
+    "slug": "programming-testing-react-server-components",
+    "title": "Testing React Server Components in 2026",
+    "excerpt": "RSC breaks the old testing model. Here is how to test data fetching, streaming, and the server/client boundary.",
+    "content": "# Testing React Server Components in 2026\n\n![Testing RSC components](https://picsum.photos/seed/rsctesting/1200/600)\n\nReact Server Components broke the assumption that a component is a pure function of props. `render(<Component />)` no longer works for server components — they may fetch, await, and stream. Here is the testing model that replaced it.\n\n## Level 1: Test the leaves\n\nClient Components (the `'use client'` leaves) are still pure functions of props. Test them with `@testing-library/react` as before. This is where most of your logic should live, and most of your tests.\n\n## Level 2: Test the data layer\n\nServer Components fetch data. Mock the data layer, not the fetch:\n\n```ts\nvi.mock('@/lib/blog-seed', () => ({ getPostBySlug: () => mockPost }))\n```\n\nThen render the page in a server context. Tools like `@testing-library/react`'s RSC support or framework-level test utilities render the component tree server-side.\n\n## Level 3: Integration tests\n\nFor critical flows, write an integration test that hits a real (or in-memory) database and renders the full page. Slow but trustworthy.\n\n## What to skip\n\nDo not unit test that a Server Component calls `fetch`. Test that given certain data, it renders certain HTML. The \"how\" is the framework's job.\n\n## The async gotcha\n\nServer Components are async. Your tests must `await` the render:\n\n```ts\nconst result = await renderToHtml(<Page params={ slug: 'x' } />)\nexpect(result).toContain('Expected text')\n```\n\n## Takeaway\n\nThe testing pyramid inverts slightly: more logic in testable leaves, fewer but more integration-focused tests for the server boundary. Trust the framework; test your code.",
+    "tags": [
+      "programming",
+      "react",
+      "testing",
+      "rsc"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-06-16T00:00:00.000Z",
+    "updatedAt": "2026-06-16T00:00:00.000Z"
+  },
+  {
+    "id": "programming-css-container-queries-2026",
+    "slug": "programming-css-container-queries-2026",
+    "title": "Container Queries Changed How I Write CSS in 2026",
+    "excerpt": "Component-scoped responsive design is here. Container queries replaced most of my media queries — here is the new mental model.",
+    "content": "# Container Queries Changed How I Write CSS in 2026\n\n![Container query layout](https://picsum.photos/seed/containerqueries/1200/600)\n\nFor a decade, responsive CSS meant media queries against the viewport. In 2026, **container queries** are the default mental model, and they change how components are written.\n\n## The shift\n\nA media query asks \"how wide is the window?\" A container query asks \"how wide is my container?\" The latter is what you actually want — a card component does not care about the viewport, it cares about its own space.\n\n## The syntax\n\n```css\n.card { container-type: inline-size; }\n\n@container (min-width: 400px) {\n  .card__title { font-size: 1.5rem; }\n}\n```\n\nThe card now adapts to wherever it is placed — a sidebar, a grid, a modal — without the parent needing to know its breakpoints.\n\n## What this enables\n\n- **Truly reusable components** — a `<Card>` looks right in any container.\n- **No prop drilling** of viewport flags.\n- **Server-rendered components** can be responsive without knowing the client viewport at render time.\n\n## What media queries are still for\n\n- Top-level layout (`<main>` vs sidebar width).\n- Anything that genuinely depends on the viewport (full-screen modals, mobile nav).\n\n## The practical win\n\nI deleted most of my `useMediaQuery` hooks and viewport-based `useEffect` logic. The CSS handles it. That is less JS, fewer re-renders, and a calmer component tree.\n\n> The best responsive JS is the responsive CSS you did not have to write.",
+    "tags": [
+      "programming",
+      "css",
+      "responsive",
+      "frontend"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-06-10T00:00:00.000Z",
+    "updatedAt": "2026-06-10T00:00:00.000Z"
+  },
+  {
+    "id": "open-source-langgraph-1-0-stable",
+    "slug": "open-source-langgraph-1-0-stable",
+    "title": "LangGraph 1.0 Is Stable — The Stateful Agent Standard",
+    "excerpt": "LangGraph 1.0 shipped with native MCP support and is now the de facto standard for stateful production agent workflows.",
+    "content": "# LangGraph 1.0 Is Stable — The Stateful Agent Standard\n\n![LangGraph agent graph](https://picsum.photos/seed/langgraph/1200/600)\n\nLangGraph 1.0, released in early 2026 under the MIT license, reached general availability. It is the framework most production teams now reach for when they need **stateful, graph-based agent workflows**.\n\n## What makes LangGraph the standard\n\n- **Explicit graph model** — agents are nodes, transitions are edges, and state flows between them deterministically.\n- **Checkpoints and pause/resume** — an agent can halt mid-run, persist state, and resume later (even across server restarts) without losing context.\n- **Native MCP support** — first-class connection to the Model Context Protocol, so tools from any MCP server are available.\n- **Loop and branch primitives** — model-led reasoning and strict deterministic flows coexist.\n\n## When to pick it\n\nLangGraph shines for workflows where state matters: long-running research, multi-step coding agents, and any pipeline where an LLM call should not be a black box. If you need observability into \"what did the agent decide and when,\" LangGraph's graph structure makes that legible.\n\n## The 1.0 signal\n\nStable 1.0 means the API is committed. Teams that held off because of breaking changes between 0.x versions can now build on a stable surface.\n\n## The competition\n\nCrewAI is faster to prototype a multi-agent \"crew.\" Claude Agent SDK is tighter if you are Anthropic-native. But for enterprise state management and graph-shaped workflows, LangGraph 1.0 is the reference implementation.",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "langgraph"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-08-05T00:00:00.000Z",
+    "updatedAt": "2026-08-05T00:00:00.000Z"
+  },
+  {
+    "id": "open-source-crewai-1-14-memory",
+    "slug": "open-source-crewai-1-14-memory",
+    "title": "CrewAI 1.14 Ships Pluggable Memory and Knowledge Backends",
+    "excerpt": "The fastest multi-agent prototyping framework added pluggable memory, RAG, and a Chat API in the 1.14 line.",
+    "content": "# CrewAI 1.14 Ships Pluggable Memory and Knowledge Backends\n\n![CrewAI multi-agent crew](https://picsum.photos/seed/crewai/1200/600)\n\nCrewAI 1.14.6 (stable) and the subsequent June 2026 releases brought the framework to enterprise readiness. Under the MIT license, it remains the fastest path to a role-based multi-agent prototype.\n\n## What 1.14 added\n\n- **Pluggable memory** — short-term, long-term, and entity memory backends are swappable.\n- **Pluggable knowledge/RAG** — bring your own vector store and retrieval logic.\n- **Pluggable flow backends** — the orchestration layer is no longer opinionated.\n- **Chat API** — a unified interface for streaming agent output.\n- **Snowflake Cortex integration** — for teams already on Snowflake.\n\n## The role-based model\n\nCrewAI's signature is modeling agents as team members with roles, goals, and tools. A \"researcher\" agent and a \"writer\" agent collaborate, handing off context. This maps cleanly onto how non-technical stakeholders think about workflows.\n\n## When to pick it\n\n- You want a multi-agent crew running in an afternoon.\n- Your domain is naturally decomposable into roles.\n- You value readability of the agent topology over raw control.\n\n## When to look elsewhere\n\nIf you need strict deterministic flows with checkpoint/resume semantics, LangGraph is the better fit. CrewAI's strength is flexibility and speed, not rigorous state management.\n\n## The 2026 take\n\nCrewAI matured from a prototyping toy into a credible production framework. The pluggable backends are the key — they let you swap in your own infrastructure instead of being locked into the framework's defaults.",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "crewai"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-07-31T00:00:00.000Z",
+    "updatedAt": "2026-07-31T00:00:00.000Z"
+  },
+  {
+    "id": "open-source-microsoft-agent-framework-1-0",
+    "slug": "open-source-microsoft-agent-framework-1-0",
+    "title": "Microsoft Agent Framework 1.0: Semantic Kernel Meets AutoGen",
+    "excerpt": "Microsoft merged Semantic Kernel and AutoGen into a single MIT-licensed Agent Framework with native MCP and A2A.",
+    "content": "# Microsoft Agent Framework 1.0: Semantic Kernel Meets AutoGen\n\n![Microsoft Agent Framework architecture](https://picsum.photos/seed/msagentframework/1200/600)\n\nIn April 2026, Microsoft shipped **Agent Framework 1.0** (MIT license), the long-awaited merger of Semantic Kernel and AutoGen. The result is a unified framework for .NET, Python, and Java teams building enterprise agents.\n\n## The merger logic\n\nSemantic Kernel brought the \"skills as AI prompts + code functions\" model and the Planner that chains them into workflows. AutoGen brought multi-agent conversation and the message-passing loop. Agent Framework 1.0 combines both: a single runtime where a Planner can orchestrate multiple conversational agents.\n\n## What shipped in 1.0\n\n- **Native MCP support** — connect any Model Context Protocol server.\n- **Native A2A (agent-to-agent) protocol** — agents talk to each other and to external agents.\n- **Three-language parity** — C#, Python, and Java all first-class.\n- **Deep Azure OpenAI integration** — for organizations already on Azure.\n\n## Who it is for\n\nTeams embedded in the Microsoft ecosystem — .NET shops, Azure-heavy enterprises, and organizations where Java is still the backbone. The framework meets them where they are instead of demanding a Python migration.\n\n## The honest tradeoff\n\nFor greenfield Python-only projects, LangGraph or CrewAI often have a faster on-ramp and a larger community. Microsoft Agent Framework's value proposition is enterprise integration and multi-language parity, not being the lightest option.\n\n## The signal\n\nMicrosoft consolidating its AI story into one MIT-licensed framework is significant. It removes the \"which one do I use?\" confusion that plagued the SK/AutoGen era.",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "microsoft"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-07-27T00:00:00.000Z",
+    "updatedAt": "2026-07-27T00:00:00.000Z"
+  },
+  {
+    "id": "open-source-google-adk-2-0",
+    "slug": "open-source-google-adk-2-0",
+    "title": "Google ADK 2.0: Four-Language Agent Parity",
+    "excerpt": "Google's open-source Agent Development Kit hit 2.0 with Python, TypeScript, Java, and Go all at parity.",
+    "content": "# Google ADK 2.0: Four-Language Agent Parity\n\n![Google ADK multi-language](https://picsum.photos/seed/googleadk/1200/600)\n\nGoogle's open-source **Agent Development Kit (ADK)** reached 2.0 in 2026, and it is the only major agent framework with **four language SDKs at parity**: Python and TypeScript (both 2.0), Java 1.0 (March 2026), and Go 2.0 (June 2026).\n\n## The unified Workflow Runtime\n\nADK 2.0's headline is a graph-based Workflow Runtime with a slider from **dynamic, model-led reasoning** to **strict, deterministic flows**. You choose how much autonomy the agent has per step — a genuinely useful dial that other frameworks force you to pick a side on.\n\n## Native A2A\n\nAgent-to-agent protocol support is baked in, not bolted on. Agents can delegate to and coordinate with other agents, including those built on different frameworks.\n\n## Ecosystem connectors\n\nThe February 2026 Tools & Integrations release added GitHub, Jira, MongoDB, and five observability platforms as first-class connectors. The Agent Designer in the Google Cloud console gives a visual builder for those who want it.\n\n## The Gemini angle\n\nThe best experience is inside the Gemini Enterprise Agent Platform, which raises the fair question of how \"open\" the open-source story is when the polish lives in the proprietary product. The ADK itself is genuinely open and works with any LLM, but the gravitational pull toward Gemini is real.\n\n## Who it is for\n\nTeams that want multi-language parity and a single framework across polyglot organizations. If you are Python-only, LangGraph is more battle-tested; if you are TS-only, Mastra is lighter. ADK's win is breadth.",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "google"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-07-23T00:00:00.000Z",
+    "updatedAt": "2026-07-23T00:00:00.000Z"
+  },
+  {
+    "id": "open-source-mastra-1-0-typescript",
+    "slug": "open-source-mastra-1-0-typescript",
+    "title": "Mastra 1.0: The TypeScript-First Agent Framework",
+    "excerpt": "Built by the Gatsby team, Mastra hit 1.0 in January 2026 and became the go-to for TS/JS teams building edge agents.",
+    "content": "# Mastra 1.0: The TypeScript-First Agent Framework\n\n![Mastra TypeScript agents](https://picsum.photos/seed/mastra/1200/600)\n\nMastra, built by the team behind Gatsby and backed by Y Combinator and a $13M seed, hit version 1.0 in January 2026. It has since pulled over 1.77 million monthly NPM downloads. Its niche: **TypeScript-first agent development**.\n\n## Why TypeScript-first matters\n\nMost agent frameworks are Python-first, with TS as a port. Mastra inverts that. For JS/TS teams — which is most of the web — this means no context-switching, native ESM, and edge-deployment as a first-class target.\n\n## The API surface\n\nMastra's fluent API reads like promises:\n\n```ts\nagent\n  .then(stepA)\n  .branch({ cond: stepB })\n  .parallel([stepC, stepD])\n  .network(otherAgent)\n```\n\nThis composes naturally into existing TS codebases without the ceremony of graph definitions.\n\n## Edge deployment\n\nBecause it is TS and lightweight, Mastra agents run on edge runtimes — Cloudflare Workers, Vercel Edge, Deno Deploy. That is a genuine differentiator for latency-sensitive, globally-distributed agent workloads.\n\n## When to pick it\n\n- Your stack is TypeScript end-to-end.\n- You want to deploy agents to the edge.\n- You prefer fluent, promise-like APIs over graph definitions.\n\n## The honest caveat\n\nMastra is younger than LangGraph and has fewer production war stories. For the most demanding stateful workflows, LangGraph's maturity still wins. Mastra's bet is that TS-native DX and edge deployment matter more for a large class of agent apps — and the download numbers suggest the bet is paying off.",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "typescript",
+      "mastra"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-07-17T00:00:00.000Z",
+    "updatedAt": "2026-07-17T00:00:00.000Z"
+  },
+  {
+    "id": "open-source-openai-agents-sdk-sandbox",
+    "slug": "open-source-openai-agents-sdk-sandbox",
+    "title": "OpenAI Agents SDK Adds Sandbox Execution and TypeScript Parity",
+    "excerpt": "The official lightweight agent framework now runs code in Docker and UnixLocal sandboxes, with TS at parity.",
+    "content": "# OpenAI Agents SDK Adds Sandbox Execution\n\n![OpenAI Agents SDK sandbox](https://picsum.photos/seed/openaiagents/1200/600)\n\nIn April 2026, OpenAI's **Agents SDK** — the small, official Python framework for multi-agent workflows — shipped sandboxed execution and TypeScript parity. It remains the quickest path for a single agent that calls a few tools.\n\n## Sandboxed execution\n\nThe SDK can now run agent-generated code in three backends:\n\n- **UnixLocal** — process-level isolation on the same machine.\n- **Docker** — container isolation, the production default.\n- **Hosted backends** — managed sandboxes for teams that do not want to operate infra.\n\nThis unlocks the \"agent that writes and runs code\" pattern safely — the core capability behind coding agents.\n\n## Built-in tracing\n\nThe SDK ships observability: every tool call, handoff, and model invocation is traced. For teams building their first agent, this is the difference between a black box and a debuggable system.\n\n## Input/output guardrails\n\nDefine validators that run on agent input and output. A guardrail can reject a response before it reaches the user — useful for content policy, format enforcement, and safety.\n\n## TypeScript parity\n\nThe TS port reached feature parity, so JS teams get the same primitives without waiting for a Python port lag.\n\n## When to pick it\n\n- You want the official, minimal path.\n- You have a single agent with a few tools (no complex graph).\n- You value tracing and guardrails without a third-party observability stack.\n\n## When to look elsewhere\n\nFor complex multi-agent orchestration, CrewAI or LangGraph offer more. For type-safe Python DX, Pydantic AI is sharper. The Agents SDK's virtue is smallness and officialness — it does the basics extremely well.",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "openai"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-07-13T00:00:00.000Z",
+    "updatedAt": "2026-07-13T00:00:00.000Z"
+  },
+  {
+    "id": "open-source-claude-agent-sdk-subagents",
+    "slug": "open-source-claude-agent-sdk-subagents",
+    "title": "Claude Agent SDK Adds Hierarchical Subagents and Fallback Chains",
+    "excerpt": "Anthropic's MIT-licensed SDK gained three-level subagents, fallback model chains, and an MCP marketplace.",
+    "content": "# Claude Agent Agent SDK Adds Hierarchical Subagents\n\n![Claude Agent SDK hierarchy](https://picsum.photos/seed/claudeagents/1200/600)\n\nIn June 2026, Anthropic's **Claude Agent SDK** (MIT license) shipped hierarchical subagents up to three levels deep, fallback model chains, and an MCP marketplace. It is the best Anthropic-native primitives for agent builders.\n\n## Hierarchical subagents\n\nA root agent can delegate to subagents, which can delegate further — up to three levels. Each subagent has its own tools, context, and instructions. This models real organizational hierarchies: a \"lead\" agent breaks down work, delegates to specialists, and synthesizes results.\n\n## Fallback model chains\n\nDefine an ordered list of models. If the primary fails (rate limit, timeout, content filter), the SDK automatically retries with the next. This is the production resilience pattern that was previously hand-rolled.\n\n```ts\nconst agent = createAgent({\n  model: chain(['claude-opus', 'claude-sonnet', 'claude-haiku']),\n  // ...\n})\n```\n\n## MCP marketplace\n\nThe MCP (Model Context Protocol) ecosystem got a marketplace: browse and install tool servers the way you would browser extensions. A coding agent can pick up a GitHub MCP server, a filesystem server, and a database server in minutes.\n\n## When to pick it\n\n- You are building on Anthropic models (the SDK is Anthropic-native).\n- You want hierarchical delegation without building it yourself.\n- Resilience via fallback chains matters for your SLA.\n\n## The open-source angle\n\nAnthropic releasing this under MIT, with a marketplace, is a meaningful bet on openness. The SDK works with other model providers, but the deepest integration is, naturally, with Claude.",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "anthropic",
+      "claude"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-07-09T00:00:00.000Z",
+    "updatedAt": "2026-07-09T00:00:00.000Z"
+  },
+  {
+    "id": "open-source-llamaindex-workflows-1-0",
+    "slug": "open-source-llamaindex-workflows-1-0",
+    "title": "LlamaIndex Workflows 1.0: Event-Driven, Async-First Agents",
+    "excerpt": "The RAG-grounded agent framework hit 1.0 with an event-driven, async-first runtime in Python and TypeScript.",
+    "content": "# LlamaIndex Workflows 1.0: Event-Driven, Async-First Agents\n\n![LlamaIndex Workflows event loop](https://picsum.photos/seed/llamaindex/1200/600)\n\nLlamaIndex Workflows 1.0, released in June 2026, is the **RAG-grounded** agent framework. Where LangGraph is graph-shaped and CrewAI is role-shaped, LlamaIndex Workflows is **event-driven and async-first**.\n\n## The event-driven model\n\nWorkflows are composed of event handlers. A handler receives an event, does work, and emits the next event. This maps naturally onto streaming, human-in-the-loop, and any system where work is triggered by external signals.\n\n```python\n@workflow.event_handler(QueryEvent)\nasync def on_query(ev: QueryEvent) -> ResponseEvent:\n    docs = await retriever.retrieve(ev.query)\n    answer = await llm.complete(ev.query, context=docs)\n    return ResponseEvent(answer)\n```\n\n## RAG is the center\n\nLlamaIndex's heritage is retrieval. Workflows 1.0 bakes retrieval, reranking, and citation into the agent loop. If your agent's job is to answer from your documents, this is the most batteries-included option.\n\n## Python and TypeScript parity\n\nBoth SDKs shipped at 1.0 together — no port lag. The TS version is not a second-class citizen, which matters for full-stack teams.\n\n## When to pick it\n\n- Your agent is fundamentally a RAG agent (answer questions from your data).\n- You need streaming and event-driven control flow.\n- You want retrieval and citation handled, not hand-rolled.\n\n## When to look elsewhere\n\nFor agents that are primarily tool-calling or coding (not retrieval), LangGraph or the OpenAI Agents SDK are leaner. LlamaIndex Workflows' strength is exactly its name: grounded, retrieval-first workflows.",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "llamaindex",
+      "rag"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-06-29T00:00:00.000Z",
+    "updatedAt": "2026-06-29T00:00:00.000Z"
+  },
+  {
+    "id": "open-source-pydantic-ai-v2",
+    "slug": "open-source-pydantic-ai-v2",
+    "title": "Pydantic AI V2: Type-Safe Agent Development Done Right",
+    "excerpt": "From the team behind Pydantic, V2 brings structured validated output, self-correction, and real testing tools.",
+    "content": "# Pydantic AI V2: Type-Safe Agent Development Done Right\n\n![Pydantic AI type-safe agents](https://picsum.photos/seed/pydanticai/1200/600)\n\nPydantic AI V2 (MIT license), from the team behind Pydantic, is the standout for developers who care about **type safety and clean DX**. It leans on Python type hints for structured, validated output and self-correction.\n\n## Structured, validated output\n\nDefine your expected output as a Pydantic model. The agent's response is validated against it; if validation fails, the SDK can self-correct by re-prompting. No more parsing JSON and praying.\n\n```python\nclass ResearchSummary(BaseModel):\n    summary: str\n    sources: list[str]\n    confidence: float\n\nresult = await agent.run(\"Summarize...\", result_type=ResearchSummary)\n# result.data is a typed ResearchSummary, validated\n```\n\n## TestModel: unit-test agents without burning LLM calls\n\nPydantic AI V2 ships `TestModel`, a mock that lets you unit-test agent logic without real API calls. This is the testing story agent frameworks have desperately needed — fast, deterministic, free tests.\n\n## Self-correction\n\nWhen the model's output fails validation, the SDK automatically feeds the validation error back and asks for a corrected response, up to a configurable retry limit. This dramatically improves reliability for structured tasks.\n\n## When to pick it\n\n- You are Python-first and value type safety.\n- Structured, validated output is core to your use case.\n- You want real unit tests for agent logic.\n\n## When to look elsewhere\n\nPydantic AI is Python-only. For TS, Mastra or the OpenAI Agents SDK are the typed options. For complex multi-agent orchestration, CrewAI or LangGraph offer more topology primitives.\n\n## The 2026 take\n\nPydantic AI V2 is the framework for engineers who treat agents like production software — typed, tested, validated. That discipline is what separates toy agents from reliable ones.",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "python",
+      "pydantic"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-06-19T00:00:00.000Z",
+    "updatedAt": "2026-06-19T00:00:00.000Z"
+  },
+  {
+    "id": "open-source-deer-flow-bytedance",
+    "slug": "open-source-deer-flow-bytedance",
+    "title": "ByteDance Open-Sources Deer-Flow 2.0, Tops GitHub Trending",
+    "excerpt": "ByteDance's Deer-Flow 2.0 hit #1 on GitHub Trending within 24 hours of release — a research agent framework at scale.",
+    "content": "# ByteDance Open-Sources Deer-Flow 2.0\n\n![Deer-Flow research agent](https://picsum.photos/seed/deerflow/1200/600)\n\nIn mid-2026, ByteDance open-sourced **Deer-Flow 2.0**, a research-focused agent framework that topped GitHub Trending within 24 hours and crossed 77,000 stars by July. It is the most-starred new agent project of the year.\n\n## What Deer-Flow is\n\nDeer-Flow is built for **deep research workflows** — the kind where an agent must browse, read, synthesize, and cite across many sources over an extended run. Think \"produce a literature review\" or \"compile a competitive landscape report,\" not \"answer a quick question.\"\n\n## Why it went viral\n\n- It solved a real, felt problem: long-horizon research that single-shot LLMs handle poorly.\n- The open-source release included the full stack — not a teaser — including the planning and citation components.\n- ByteDance's credibility (TikTok's recommendation ML pedigree) signaled production-grade engineering.\n\n## The architecture\n\nDeer-Flow separates **planning** (decompose the research question into sub-queries), **execution** (run sub-agents that browse and read), and **synthesis** (merge and cite). Each stage is observable, which is critical for trust in research outputs.\n\n## The citation angle\n\nA research agent without citations is a fancy hallucination machine. Deer-Flow's synthesis stage produces source-linked output, which is the difference between a tool you can ship and one you cannot.\n\n## The honest caveat\n\nVirality is not the same as production maturity. As of mid-2026, Deer-Flow has fewer enterprise war stories than LangGraph. But for the research-workload niche, it is the most capable open-source option, and the community momentum is real.",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "bytedance",
+      "research"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-06-12T00:00:00.000Z",
+    "updatedAt": "2026-06-12T00:00:00.000Z"
+  },
+  {
+    "id": "openhands-open-source-dev-agent",
+    "slug": "openhands-open-source-dev-agent",
+    "title": "OpenHands: The Open-Source Devin Heir",
+    "excerpt": "OpenHands (72k+ stars) is the legitimate open-source heir to the autonomous coding agent concept. Here is what it offers.",
+    "content": "# OpenHands: The Open-Source Devin Heir\n\n![OpenHands autonomous coding agent](https://picsum.photos/seed/openhands/1200/600)\n\nOpenHands, from All-Hands-AI, sits at over 72,000 GitHub stars in 2026 and is widely regarded as the **legitimate open-source heir to the Devin concept** — autonomous software development that does not lock you into a proprietary service.\n\n## Four deployment modes\n\nOpenHands is uniquely flexible in how you run it:\n\n1. **Python SDK** — define programmable agents for integration into your own systems.\n2. **CLI** — terminal use, comparable to Claude Code or Codex, for the individual developer.\n3. **Desktop GUI** — a React frontend for those who want a visual interface.\n4. **Cloud platform** — with Slack, Jira, and Linear integrations for team workflows.\n\n## The deployment flexibility story\n\nA freelancer can start with the CLI and the free cloud tier. An agency can scale up to self-hosted Kubernetes with multi-user support. The same agent code scales from a laptop to a fleet — that is rare and valuable.\n\n## What it excels at\n\nAutonomous software development tasks: debugging, refactoring entire codebases, implementing features from specs, writing tests. The agent can read a repo, make a plan, execute it, and open a PR.\n\n## The open-source moat\n\nBeing open-source means you can audit the agent's behavior, run it on your own infrastructure (critical for code that touches proprietary repos), and contribute back. The cloud tier is a convenience, not a lock-in.\n\n## Honest limits\n\nLike all coding agents, OpenHands is best on a branch with human review. It is a force multiplier for a skilled engineer, not a replacement for one. The teams winning with it treat it like a fast, capable junior who still needs review.\n\n> The future of coding is not agents replacing engineers — it is engineers steering agents. OpenHands is the open way to do that.",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "openhands",
+      "coding"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-08-06T00:00:00.000Z",
+    "updatedAt": "2026-08-06T00:00:00.000Z"
+  },
+  {
+    "id": "autogpt-open-source-agent-2026",
+    "slug": "autogpt-open-source-agent-2026",
+    "title": "AutoGPT: The Original Open-Source Agent, Still Evolving",
+    "excerpt": "AutoGPT remains one of the most-starred open-source agent projects. A look at where it is in 2026.",
+    "content": "# AutoGPT: The Original Open-Source Agent, Still Evolving\n\n![AutoGPT autonomous agent](https://picsum.photos/seed/autogpt/1200/600)\n\nAutoGPT — the project that ignited the \"give an LLM a goal and let it run\" wave in 2023 — remains one of the most-starred open-source agent projects on GitHub in 2026. It has evolved considerably from the viral demo that made it famous.\n\n## The original idea\n\nAutoGPT's pitch was simple and electrifying: give a language model a goal in natural language, and let it plan, use tools, and iterate toward that goal autonomously. The early versions were rough — loops that spiraled, tools that failed silently — but the concept was undeniable.\n\n## Where it is in 2026\n\nThe project matured:\n\n- **Better planning** — the planning loop is more robust, with checkpoints and recovery.\n- **Stable tool interfaces** — the footguns that caused early agents to fail are addressed.\n- **Deployment options** — run locally or via managed infrastructure.\n- **A community of patterns** — three years of \"what works\" distilled into documentation.\n\n## The honest assessment\n\nAutoGPT's influence outsized its reliability. Many teams that tried it in 2023 moved to LangGraph or CrewAI for production. But the project kept iterating, and for certain open-ended, goal-driven tasks, it remains a compelling choice — especially if you want the pure \"autonomous agent\" mental model.\n\n## The legacy\n\nEven teams that do not run AutoGPT owe it a debt: it popularized the agent loop, the tool-use pattern, and the idea that an LLM could drive its own execution. The entire 2026 agent ecosystem grew from the seed AutoGPT planted.",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "autogpt"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-08-03T00:00:00.000Z",
+    "updatedAt": "2026-08-03T00:00:00.000Z"
+  },
+  {
+    "id": "metagpt-software-company-agent",
+    "slug": "metagpt-software-company-agent",
+    "title": "MetaGPT: An Open-Source Software Company in a Box",
+    "excerpt": "MetaGPT models an entire software company — PM, architect, engineer — as collaborating agents. 67k stars and counting.",
+    "content": "# MetaGPT: An Open-Source Software Company in a Box\n\n![MetaGPT multi-agent software company](https://picsum.photos/seed/metagpt/1200/600)\n\nMetaGPT, at over 67,000 GitHub stars in 2026, takes the multi-agent metaphor to its logical extreme: it models an **entire software company** as collaborating agents — a product manager, an architect, engineers, even QA.\n\n## The metaphor\n\nWhere CrewAI lets you define arbitrary roles, MetaGPT ships a pre-built org chart. You give it a requirement; the \"PM\" agent writes a PRD, the \"architect\" designs the system, \"engineers\" implement, and \"QA\" tests. Each agent has a defined responsibility and produces a standard artifact.\n\n## Standardized outputs\n\nThe genius is in the standardization. The PM produces a PRD in a known format, which the architect consumes to produce a design doc in a known format, which engineers consume to produce code. The artifacts chain together because their shapes are agreed.\n\n## When it works\n\n- Greenfield projects where you want a full vertical slice from requirement to code.\n- Prototyping — MetaGPT can produce a working scaffold fast.\n- Teaching — the role decomposition is a great mental model for how software gets built.\n\n## The honest limits\n\nReal software development is messier than an org chart. Existing codebases, legacy constraints, and unspoken requirements do not fit the clean PM→architect→engineer flow. MetaGPT shines on greenfield and struggles on the messy middle of real engineering.\n\n## The takeaway\n\nMetaGPT's contribution is the demonstration that structured multi-agent collaboration, with standardized handoff artifacts, produces more coherent results than a single agent trying to do everything. That lesson applies even if you never run MetaGPT itself.",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "metagpt",
+      "multi-agent"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-07-25T00:00:00.000Z",
+    "updatedAt": "2026-07-25T00:00:00.000Z"
+  },
+  {
+    "id": "smolagents-minimal-code-first",
+    "slug": "smolagents-minimal-code-first",
+    "title": "Smolagents: Minimal, Code-First Agents from Hugging Face",
+    "excerpt": "Hugging Face's smolagents keeps the agent loop tiny and code-first — the anti-framework for single-agent simplicity.",
+    "content": "# Smolagents: Minimal, Code-First Agents\n\n![Smolagents minimal agent loop](https://picsum.photos/seed/smolagents/1200/600)\n\nSmolagents, from Hugging Face, is the **minimalist** of the open-source agent world. Where other frameworks add graphs, roles, and runtimes, smolagents keeps the agent loop tiny and code-first. It is the anti-framework for single-agent simplicity.\n\n## The code-first philosophy\n\nInstead of JSON tool schemas and configuration files, smolagents agents write and execute Python code as their action. The \"tool\" is the Python interpreter itself, plus whatever functions you expose. This is more flexible and less brittle than schema-driven tool use.\n\n```python\nfrom smolagents import CodeAgent, HfApiModel\n\nagent = CodeAgent(tools=[search, calculator], model=HfApiModel())\nagent.run(\"What is 23 * 47 plus the population of France?\")\n```\n\n## Why minimalism wins\n\nFor a single agent that calls a few tools, the ceremony of a full framework is pure overhead. Smolagents gets you running in minutes, with a codebase small enough to actually read and understand.\n\n## The Hugging Face angle\n\nBeing from Hugging Face means first-class integration with the HF model hub — you can run agents on open models without an API key to a proprietary provider. For privacy-sensitive or offline work, this is significant.\n\n## When to pick it\n\n- Single agent, a few tools, no complex topology.\n- You value a small, auditable codebase.\n- You want to run on open models via Hugging Face.\n\n## When to look elsewhere\n\nFor multi-agent orchestration, stateful graphs, or enterprise integration, smolagents is the wrong tool — by design. It is the scalpel to LangGraph's Swiss army knife.\n\n## The takeaway\n\nNot every agent needs a framework. Sometimes the minimal loop — model, tools, iterate — is exactly right. Smolagents is the reminder that simplicity is a feature.",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "smolagents",
+      "huggingface"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-07-21T00:00:00.000Z",
+    "updatedAt": "2026-07-21T00:00:00.000Z"
+  },
+  {
+    "id": "agno-lightweight-python-agents",
+    "slug": "agno-lightweight-python-agents",
+    "title": "Agno: Lightweight, High-Performance Python Agents",
+    "excerpt": "Agno (formerly Phidata) runs agents in under 2 microseconds with built-in memory, storage, and multimodal tools.",
+    "content": "# Agno: Lightweight, High-Performance Python Agents\n\n![Agno high-performance agent runtime](https://picsum.photos/seed/agno/1200/600)\n\nAgno (formerly Phidata) is the **lightweight, high-performance** option for Python agent teams. Its headline: agents that run in under 2 microseconds, with built-in memory, storage, and multimodal tool support.\n\n## The performance bet\n\nAgno's pitch is that most agent overhead is framework, not model. By keeping the runtime minimal, it lets the model call dominate latency — meaning your agent's perceived speed is bounded by the LLM, not the glue code.\n\n## Built-in primitives\n\n- **Memory** — short-term conversation and long-term recall, no extra service.\n- **Storage** — persist agent state across runs.\n- **Multimodal tools** — image, audio, and structured data handling.\n\n## The AgentOS runtime\n\nBeyond the SDK, Agno ships **AgentOS**, a self-hostable runtime for teams that want memory, tracing, and APIs running entirely on their own infrastructure. No vendor lock-in, no data leaving your network.\n\n## When to pick it\n\n- Performance is a hard requirement (high-throughput agent serving).\n- You need self-hosted everything (compliance, privacy).\n- You want memory and storage without bolting on a vector DB and a session store.\n\n## When to look elsewhere\n\nAgno is Python-only and lightweight by design. For complex multi-agent orchestration, CrewAI or LangGraph have richer topology primitives. For TS, look to Mastra.\n\n## The 2026 positioning\n\nAgno (alongside OpenClaw) represents the \"minimal but complete\" end of the agent spectrum — fewer abstractions, more primitives, raw speed. For teams whose agent workload is \"many fast calls\" rather than \"few complex graphs,\" it is the right fit.",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "agno",
+      "python"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-07-16T00:00:00.000Z",
+    "updatedAt": "2026-07-16T00:00:00.000Z"
+  },
+  {
+    "id": "openclaw-privacy-first-agent",
+    "slug": "openclaw-privacy-first-agent",
+    "title": "OpenClaw: The Privacy-First Agent That Connects 50+ Apps",
+    "excerpt": "OpenClaw is a viral, privacy-first agent that connects 50+ apps without calling any external API.",
+    "content": "# OpenClaw: The Privacy-First Agent That Connects 50+ Apps\n\n![OpenClaw privacy-first agent integrations](https://picsum.photos/seed/openclaw/1200/600)\n\nOpenClaw went viral in 2026 as a **privacy-first agent** that connects over 50 apps — email, calendar, files, chat — **without calling any external API**. All processing happens locally; no data leaves your machine.\n\n## The privacy proposition\n\nMost \"personal AI\" agents route your data through a cloud LLM. OpenClaw inverts this: integrations run locally, and the LLM call (if any) is to a model you control. For users and organizations with data sovereignty requirements, this is the difference between \"useful tool\" and \"non-starter.\"\n\n## The 50+ integrations\n\nOpenClaw's breadth is its strength. A single agent can read your email, check your calendar, search your files, and message your team — all from a local runtime. The integrations are open and community-contributed.\n\n## Why it went viral\n\n- Privacy anxiety is at an all-time high; \"your data never leaves your machine\" is a powerful pitch.\n- The integration breadth rivals commercial personal-assistant products.\n- Being open-source means the privacy claims are auditable, not marketing.\n\n## When to pick it\n\n- Data sovereignty is non-negotiable (regulated industries, personal privacy).\n- You want a personal assistant that touches many local apps.\n- You are willing to run a local LLM or accept the latency that implies.\n\n## The honest tradeoff\n\nLocal-first means you shoulder the compute. A local model is slower and less capable than frontier cloud models. OpenClaw's value is privacy and integration breadth, not raw intelligence — and for a large class of personal-assistant tasks, that is exactly the right trade.",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "openclaw",
+      "privacy"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-07-08T00:00:00.000Z",
+    "updatedAt": "2026-07-08T00:00:00.000Z"
+  },
+  {
+    "id": "semantic-kernel-enterprise-dotnet",
+    "slug": "semantic-kernel-enterprise-dotnet",
+    "title": "Semantic Kernel: Enterprise AI for the .NET World",
+    "excerpt": "Microsoft's Semantic Kernel remains the enterprise choice for embedding AI in .NET and Java stacks.",
+    "content": "# Semantic Kernel: Enterprise AI for the .NET World\n\n![Semantic Kernel enterprise architecture](https://picsum.photos/seed/semantickernel/1200/600)\n\nSemantic Kernel, Microsoft's enterprise-oriented agent framework at over 28,000 stars, remains the primary choice for organizations embedding AI into **existing enterprise infrastructure** — particularly .NET and Java shops.\n\n## The \"skills\" model\n\nSemantic Kernel organizes AI capabilities as **skills** — a mix of AI prompts and regular code functions. A **Planner** component chains these skills into multi-step workflows. This maps cleanly onto how enterprises already think about capabilities and composition.\n\n## Three-language support\n\nIt is the only major agent framework with first-class support for **C#, Python, and Java**. For organizations where .NET is the backbone and Java still runs critical systems, this is not a nice-to-have — it is the requirement that rules out Python-only frameworks.\n\n## Deep Azure integration\n\nSemantic Kernel integrates deeply with Azure OpenAI Service. For organizations already on Azure — and there are many — this means identity, logging, and compliance flow through existing pipelines instead of new ones.\n\n## The Agent Framework merger\n\nIn 2026, Semantic Kernel was folded into the broader **Microsoft Agent Framework 1.0**, which merged it with AutoGen. Semantic Kernel's skills model and AutoGen's multi-agent conversation now coexist under one runtime. Existing SK code paths forward-compatible.\n\n## When to pick it\n\n- You are a .NET or Java shop.\n- Azure is your cloud.\n- You need AI to fit into existing enterprise patterns, not the other way around.\n\n## The honest caveat\n\nFor greenfield Python or TS projects, Semantic Kernel is heavier than the alternatives. Its value is enterprise integration and multi-language parity, not being the lightest or fastest to prototype.",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "semantic-kernel",
+      "dotnet"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-06-27T00:00:00.000Z",
+    "updatedAt": "2026-06-27T00:00:00.000Z"
+  },
+  {
+    "id": "autogen-legacy-multi-agent",
+    "slug": "autogen-legacy-multi-agent",
+    "title": "AutoGen / AG2: The Legacy Multi-Agent Option",
+    "excerpt": "AutoGen (now AG2) pioneered message-passing multi-agent loops. Still relevant for existing v0.2 codebases in 2026.",
+    "content": "# AutoGen / AG2: The Legacy Multi-Agent Option\n\n![AutoGen message-passing agents](https://picsum.photos/seed/autogen/1200/600)\n\nAutoGen — now maintained as AG2 under Apache 2.0 — is the **legacy option** for teams with existing v0.2 multi-agent code. It pioneered the message-passing multi-agent loop and remains relevant in 2026, even as newer frameworks have surpassed it.\n\n## The original contribution\n\nAutoGen's breakthrough was modeling multiple agents that communicate by passing messages in a loop. Each agent can respond, reflect, or call tools based on its internal logic. This was the foundation of the \"agents talking to agents\" paradigm that defines the field.\n\n## Async collaboration\n\nAutoGen's asynchronous agent collaboration made it particularly useful for **research and prototyping** — scenarios where agent behavior requires experimentation or iterative refinement. You could let agents argue, reflect, and converge.\n\n## Where it stands in 2026\n\n- For **new projects**, most teams now choose CrewAI (role-based) or LangGraph (graph-based) over AutoGen.\n- For **existing v0.2 codebases**, AutoGen/AG2 remains the migration-friendly path — rewriting working multi-agent code in a new framework is risky.\n- **MCP integration** landed via an extension module, so AutoGen agents can connect to MCP servers.\n\n## The Microsoft merger\n\nMuch of AutoGen's forward energy was absorbed into Microsoft Agent Framework 1.0, which merged it with Semantic Kernel. AG2 continues as the community-maintained line for those not on the Microsoft framework.\n\n## When to pick it\n\n- You have existing AutoGen v0.2 code and want incremental evolution, not a rewrite.\n- You need the message-passing loop model specifically.\n\n## The takeaway\n\nAutoGen's influence is cemented even if its mindshare has waned. The patterns it pioneered — agents as message-passing peers, reflective loops — are now table stakes across every framework.",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "autogen",
+      "multi-agent"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-06-15T00:00:00.000Z",
+    "updatedAt": "2026-06-15T00:00:00.000Z"
+  },
+  {
+    "id": "vibe-trading-open-source-agents",
+    "slug": "vibe-trading-open-source-agents",
+    "title": "Vibe-Trading and the Rise of Open-Source Trading Agents",
+    "excerpt": "Vibe-Trading topped GitHub Trending in July 2026 — open-source agents for autonomous trading crossed 23k stars.",
+    "content": "# Vibe-Trading and the Rise of Open-Source Trading Agents\n\n![Open-source trading agent architecture](https://picsum.photos/seed/vibetrading/1200/600)\n\nIn July 2026, **Vibe-Trading** topped GitHub Trending, jumping from 3,200 to over 23,000 stars in days. AI-Trader sat at over 20,000. Open-source autonomous trading agents crossed from niche to mainstream in a matter of weeks.\n\n## What these projects do\n\nThey are agent frameworks — built on the open-source agent stack (LangGraph, CrewAI, or custom loops) — that connect to exchanges, read market data, form hypotheses, and place trades autonomously. The \"vibe\" framing signals the casual, experimental spirit: let an agent trade based on its read of the market.\n\n## Why the sudden spike\n\n- The underlying agent frameworks matured enough that financial use cases became feasible.\n- Open financial data (crypto exchanges, public market APIs) meant no expensive data licenses were required to prototype.\n- The \"vibe coding\" movement generalized into \"vibe X\" — including trading.\n\n## The serious caveats\n\nAutonomous trading with real money is dangerous. Open-source trading agents are research projects, not financial products:\n\n- **No backtesting guarantees** — past performance, future results, etc.\n- **Execution risk** — bugs cost real money, immediately.\n- **Market impact** — an agent's orders move the very market it is trading.\n\n## The responsible take\n\nThese projects are fascinating for understanding how agents handle uncertain, adversarial, real-time environments. They are educational and research tools. Running one with real capital, without exhaustive backtesting and risk controls you understand, is a fast way to lose money.\n\n> The market is the most ruthless eval an agent will ever face. Treat it accordingly.",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "trading",
+      "news"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-07-12T00:00:00.000Z",
+    "updatedAt": "2026-07-12T00:00:00.000Z"
+  },
+  {
+    "id": "mcp-model-context-protocol-2026",
+    "slug": "mcp-model-context-protocol-2026",
+    "title": "MCP Won the Agent Tooling Standard in 2026",
+    "excerpt": "The Model Context Protocol went from Anthropic proposal to universal agent-tool interface in under two years.",
+    "content": "# MCP Won the Agent Tooling Standard in 2026\n\n![MCP ecosystem diagram](https://picsum.photos/seed/mcp/1200/600)\n\nThe **Model Context Protocol (MCP)**, originally an Anthropic proposal, became the de facto standard for connecting agents to tools and data sources in 2026. Every major agent framework now ships native or first-class MCP support.\n\n## What MCP is\n\nMCP is a protocol — not a framework — that standardizes how an agent discovers and calls external tools. An MCP server exposes a set of tools; any MCP-compatible agent can use them. This decouples tool authoring from agent authoring.\n\n## Why it won\n\n- **Anthropic open-sourced it** early, avoiding vendor lock-in stigma.\n- **The problem was real** — every framework had its own tool-definition format, fragmenting the ecosystem.\n- **Network effects** — once a few frameworks adopted it, tool authors wrote to MCP, which pulled in more frameworks.\n\n## The 2026 state\n\n- LangGraph, CrewAI, AutoGen, Claude Agent SDK, OpenAI Agents SDK, Microsoft Agent Framework, Google ADK — all ship native MCP.\n- An **MCP marketplace** emerged (via the Claude Agent SDK) for browsing and installing tool servers.\n- Common tools — GitHub, filesystem, databases, browsers — are available as drop-in MCP servers.\n\n## What this means for builders\n\nYou write a tool once, as an MCP server, and any agent can use it. You no longer maintain N framework-specific integrations. This is the same consolidation that ODBC brought to databases, applied to agent tooling.\n\n## The honest caveat\n\nMCP standardizes the wire, not the semantics. A tool that returns malformed data will still confuse an agent. Protocol adoption does not absolve you of writing good tool descriptions and validating I/O.\n\n> A standard is only as good as the tools that implement it. MCP's win is making those tools portable.",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "mcp",
+      "standards"
+    ],
+    "published": true,
+    "locale": "en",
+    "createdAt": "2026-06-05T00:00:00.000Z",
+    "updatedAt": "2026-06-05T00:00:00.000Z"
   }
 ]
