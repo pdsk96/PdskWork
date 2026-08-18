@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useLocale } from '@/i18n/LocaleProvider'
 import { getPaginatedPosts, type BlogPost, POSTS_PER_PAGE } from '@/lib/blog-firestore'
 import { formatDate, readingTime } from '@/lib/blog-utils'
+import { getPostThumbnail } from '@/lib/thumbnail-generator'
 import RouteTransition from '@/components/RouteTransition'
 
 export default function BlogPage() {
@@ -144,13 +145,32 @@ export default function BlogPage() {
               {showingAll && <p className="blog-list__fallback">{dict.blog.noPostsMatch}</p>}
               {posts.map((post) => (
                 <article key={post.id} className="glass-card blog-card">
+                  {/* Thumbnail for blog card */}
+                  <div className="blog-card__thumbnail" style={{
+                    backgroundImage: `url(${getPostThumbnail(post)})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    width: '100%',
+                    height: '180px',
+                    borderRadius: '10px',
+                    marginBottom: '1rem',
+                    border: '1px solid var(--glass-border)'
+                  }}>
+                  </div>
                   <div className="blog-card__meta">
                     <time dateTime={post.createdAt}>{formatDate(post.createdAt, locale)}</time>
                     <span className="blog-card__dot" aria-hidden="true">·</span>
                     <span>{readingTime(post.content, dict.blog.minRead)}</span>
                   </div>
                   <h2 className="blog-card__title">
-                    <Link href={`/blog/${post.slug}`} className="blog-card__link" transitionTypes={['nav-forward']}>
+                    <Link href={`/blog/${post.slug}`} className="blog-card__link" transitionTypes={['nav-forward']} style={{
+                      background: 'linear-gradient(120deg, var(--cyan), var(--magenta), var(--violet))',
+                      WebkitBackgroundClip: 'text',
+                      backgroundClip: 'text',
+                      color: 'transparent',
+                      textShadow: '0 0 10px rgba(0, 240, 255, 0.2)',
+                      fontWeight: '600'
+                    }}>
                       {post.title}
                     </Link>
                   </h2>

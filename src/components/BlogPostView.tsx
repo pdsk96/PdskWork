@@ -6,6 +6,7 @@ import { useLocale } from '@/i18n/LocaleProvider'
 import { getPostBySlug, type BlogPost } from '@/lib/blog-firestore'
 import { renderMarkdown } from '@/lib/markdown'
 import { formatDate, readingTime } from '@/lib/blog-utils'
+import { getPostThumbnail } from '@/lib/thumbnail-generator'
 import RouteTransition from '@/components/RouteTransition'
 import ShareButtons from '@/components/ShareButtons'
 
@@ -36,7 +37,7 @@ export default function BlogPostView() {
     let active = true
     const slug = readSlugFromPath()
     setPost(undefined)
-    void getPostBySlug(slug)
+    void getPostBySlug(slug, locale)
       .then((p) => {
         if (active) setPost(p)
       })
@@ -46,7 +47,7 @@ export default function BlogPostView() {
     return () => {
       active = false
     }
-  }, [])
+  }, [locale])
 
   if (post === undefined) {
     return (
@@ -87,12 +88,34 @@ export default function BlogPostView() {
           </Link>
 
           <header className="blog-post__header">
+            {/* Thumbnail image */}
+            <div className="blog-post__thumbnail" style={{
+              backgroundImage: `url(${getPostThumbnail(post)})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              width: '100%',
+              height: '300px',
+              borderRadius: '10px',
+              marginBottom: '1.5rem',
+              border: '1px solid var(--glass-border)'
+            }}>
+            </div>
             <div className="blog-card__meta">
               <time dateTime={post.createdAt}>{formatDate(post.createdAt, locale)}</time>
               <span className="blog-card__dot" aria-hidden="true">·</span>
               <span>{readingTime(post.content, dict.blog.minRead)}</span>
             </div>
-            <h1 className="blog-post__title">{post.title}</h1>
+            <h1 className="blog-post__title" style={{
+              background: 'linear-gradient(120deg, var(--cyan), var(--magenta), var(--violet))',
+              WebkitBackgroundClip: 'text',
+              backgroundClip: 'text',
+              color: 'transparent',
+              textShadow: '0 0 20px rgba(0, 240, 255, 0.3)',
+              fontWeight: '700',
+              letterSpacing: '-0.02em'
+            }}>
+              {post.title}
+            </h1>
             {post.excerpt && <p className="blog-post__excerpt">{post.excerpt}</p>}
             {post.tags.length > 0 && (
               <ul className="blog-card__tags" aria-label={dict.blog.tags}>

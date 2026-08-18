@@ -147,8 +147,21 @@ export async function getPaginatedPosts(
 }
 
 /** Find a single published post by slug. */
-export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
-  const q = query(collection(db, COLLECTION), where('slug', '==', slug), where('published', '==', true))
+export async function getPostBySlug(slug: string, locale?: string): Promise<BlogPost | null> {
+  let q = query(collection(db, COLLECTION), where('slug', '==', slug), where('published', '==', true))
+  
+  // If locale is provided, try to find post in that locale first
+  if (locale) {
+    const localeQuery = query(q, where('locale', '==', locale))
+    const localeSnap = await getDocs(localeQuery)
+    if (!localeSnap.empty) {
+      const d = localeSnap.docs[0]
+      return snapToPost(d.id, d.data() as Record<string, unknown>)
+    }
+  }
+  
+  // Fallback: if no locale specified or no post found in specified locale,
+  // return any post with matching slug (for backward compatibility)
   const snap = await getDocs(q)
   if (snap.empty) return null
   const d = snap.docs[0]
