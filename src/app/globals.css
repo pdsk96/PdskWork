@@ -1776,3 +1776,112 @@ a {
     grid-template-columns: 1fr;
   }
 }
+
+/* ──────────────────────────────────────────────────────
+   Blog Pagination
+   ────────────────────────────────────────────────────── */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 2.5rem 0 1.5rem;
+  flex-wrap: wrap;
+}
+
+.pagination__numbers {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.pagination__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.4rem;
+  height: 2.4rem;
+  padding: 0 0.6rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--fg);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pagination__btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: var(--accent);
+}
+
+.pagination__btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.pagination__btn--number {
+  font-variant-numeric: tabular-nums;
+}
+
+.pagination__btn--active {
+  background: rgba(0, 212, 255, 0.15);
+  border-color: var(--cyan);
+  color: var(--cyan);
+  font-weight: 600;
+}
+
+.pagination__btn--active:hover {
+  background: rgba(0, 212, 255, 0.25);
+}
+
+.pagination__btn--prev,
+.pagination__btn--next {
+  padding: 0 1rem;
+  font-size: 0.85rem;
+}
+
+.pagination__ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  color: var(--fg-muted);
+  font-size: 0.85rem;
+  user-select: none;
+}
+
+.pagination__info {
+  text-align: center;
+  color: var(--fg-muted);
+  font-size: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .pagination {
+    gap: 0.35rem;
+  }
+
+  .pagination__btn {
+    min-width: 2rem;
+    height: 2rem;
+    font-size: 0.85rem;
+    padding: 0 0.4rem;
+  }
+
+  .pagination__btn--prev,
+  .pagination__btn--next {
+    padding: 0 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .pagination__ellipsis {
+    width: 1.5rem;
+    font-size: 0.75rem;
+  }
+}

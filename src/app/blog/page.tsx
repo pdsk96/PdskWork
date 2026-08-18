@@ -1,9 +1,9 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
 import { useLocale } from '@/i18n/LocaleProvider'
-import { getPublishedPosts, type BlogPost } from '@/lib/blog-firestore'
+import { getPaginatedPosts, type BlogPost, POSTS_PER_PAGE } from '@/lib/blog-firestore'
 import { formatDate, readingTime } from '@/lib/blog-utils'
 import RouteTransition from '@/components/RouteTransition'
 
@@ -11,31 +11,109 @@ export default function BlogPage() {
   const { locale, dict } = useLocale()
   const [posts, setPosts] = useState<BlogPost[] | null>(null)
   const [showingAll, setShowingAll] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [hasMore, setHasMore] = useState(false)
+  const [totalCount, setTotalCount] = useState(0)
+  const [isLoading, setIsLoading] = useState(true)
+
+  const totalPages = Math.ceil(totalCount / POSTS_PER_PAGE)
+
+  const fetchPosts = useCallback(async (page: number) => {
+    setIsLoading(true)
+    try {
+      const result = await getPaginatedPosts(locale, page, POSTS_PER_PAGE)
+      setPosts(result.posts)
+      setHasMore(result.hasMore)
+      setTotalCount(result.totalCount)
+      setCurrentPage(page)
+      // Check if we fell back to all locales
+      if (result.posts.length > 0 && result.posts.every(p => p.locale !== locale)) {
+        setShowingAll(true)
+      } else {
+        setShowingAll(false)
+      }
+    } catch {
+      setPosts([])
+    } finally {
+      setIsLoading(false)
+    }
+  }, [locale])
 
   useEffect(() => {
     let active = true
-    // Show posts in the current locale first; fall back to all if none match.
-    void getPublishedPosts(locale)
-      .then((localePosts) => {
+    void getPaginatedPosts(locale, 1, POSTS_PER_PAGE)
+      .then((result) => {
         if (!active) return
-        if (localePosts.length > 0) {
-          setPosts(localePosts)
-          setShowingAll(false)
+        if (result.posts.length > 0) {
+          setPosts(result.posts)
+          setHasMore(result.hasMore)
+          setTotalCount(result.totalCount)
+          setCurrentPage(1)
+          // Check if we fell back to all locales
+          if (result.posts.every(p => p.locale !== locale)) {
+            setShowingAll(true)
+          } else {
+            setShowingAll(false)
+          }
         } else {
-          void getPublishedPosts().then((all) => {
-            if (!active) return
-            setPosts(all)
-            setShowingAll(all.length > 0)
-          })
+          setPosts([])
         }
       })
       .catch(() => {
         if (active) setPosts([])
       })
+      .finally(() => {
+        if (active) setIsLoading(false)
+      })
     return () => {
       active = false
     }
   }, [locale])
+
+  const handlePageChange = (page: number) => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    void fetchPosts(page)
+  }
+
+  // Generate page numbers to display
+  const getPageNumbers = () => {
+    const pages: (number | string)[] = []
+    const maxVisible = 5
+    
+    if (totalPages <= maxVisible) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i)
+      }
+    } else {
+      // Always show first page
+      pages.push(1)
+      
+      if (currentPage > 3) {
+        pages.push('...')
+      }
+      
+      // Show pages around current
+      const start = Math.max(2, currentPage - 1)
+      const end = Math.min(totalPages - 1, currentPage + 1)
+      
+      for (let i = start; i <= end; i++) {
+        if (!pages.includes(i)) {
+          pages.push(i)
+        }
+      }
+      
+      if (currentPage < totalPages - 2) {
+        pages.push('...')
+      }
+      
+      // Always show last page
+      if (!pages.includes(totalPages)) {
+        pages.push(totalPages)
+      }
+    }
+    
+    return pages
+  }
 
   return (
     <RouteTransition>
@@ -45,48 +123,97 @@ export default function BlogPage() {
           <p className="page-lead">{dict.blog.subtitle}</p>
         </section>
 
-        {posts === null ? (
+        {posts === null || isLoading ? (
           <section className="blog-list" aria-busy="true">
-            <div className="glass-card blog-card">
-              <div className="skeleton skeleton--lead" />
-              <div className="skeleton skeleton--title" />
-              <div className="skeleton skeleton--lead" />
-              <div className="skeleton skeleton--lead" />
-            </div>
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="glass-card blog-card">
+                <div className="skeleton skeleton--lead" />
+                <div className="skeleton skeleton--title" />
+                <div className="skeleton skeleton--lead" />
+                <div className="skeleton skeleton--lead" />
+              </div>
+            ))}
           </section>
         ) : posts.length === 0 ? (
           <section className="page-card">
             <p className="blog-empty">{dict.blog.noPosts}</p>
           </section>
         ) : (
-          <section className="blog-list" aria-label={dict.blog.title}>
-            {showingAll && <p className="blog-list__fallback">{dict.blog.noPostsMatch}</p>}
-            {posts.map((post) => (
-              <article key={post.id} className="glass-card blog-card">
-                <div className="blog-card__meta">
-                  <time dateTime={post.createdAt}>{formatDate(post.createdAt, locale)}</time>
-                  <span className="blog-card__dot" aria-hidden="true">·</span>
-                  <span>{readingTime(post.content, dict.blog.minRead)}</span>
-                </div>
-                <h2 className="blog-card__title">
-                  <Link href={`/blog/${post.slug}`} className="blog-card__link" transitionTypes={['nav-forward']}>
-                    {post.title}
+          <>
+            <section className="blog-list" aria-label={dict.blog.title}>
+              {showingAll && <p className="blog-list__fallback">{dict.blog.noPostsMatch}</p>}
+              {posts.map((post) => (
+                <article key={post.id} className="glass-card blog-card">
+                  <div className="blog-card__meta">
+                    <time dateTime={post.createdAt}>{formatDate(post.createdAt, locale)}</time>
+                    <span className="blog-card__dot" aria-hidden="true">·</span>
+                    <span>{readingTime(post.content, dict.blog.minRead)}</span>
+                  </div>
+                  <h2 className="blog-card__title">
+                    <Link href={`/blog/${post.slug}`} className="blog-card__link" transitionTypes={['nav-forward']}>
+                      {post.title}
+                    </Link>
+                  </h2>
+                  <p className="blog-card__excerpt">{post.excerpt}</p>
+                  {post.tags.length > 0 && (
+                    <ul className="blog-card__tags" aria-label={dict.blog.tags}>
+                      {post.tags.map((tag) => (
+                        <li key={tag} className="blog-tag">#{tag}</li>
+                      ))}
+                    </ul>
+                  )}
+                  <Link href={`/blog/${post.slug}`} className="blog-card__readmore" transitionTypes={['nav-forward']}>
+                    {dict.blog.readMore} →
                   </Link>
-                </h2>
-                <p className="blog-card__excerpt">{post.excerpt}</p>
-                {post.tags.length > 0 && (
-                  <ul className="blog-card__tags" aria-label={dict.blog.tags}>
-                    {post.tags.map((tag) => (
-                      <li key={tag} className="blog-tag">#{tag}</li>
-                    ))}
-                  </ul>
-                )}
-                <Link href={`/blog/${post.slug}`} className="blog-card__readmore" transitionTypes={['nav-forward']}>
-                  {dict.blog.readMore} →
-                </Link>
-              </article>
-            ))}
-          </section>
+                </article>
+              ))}
+            </section>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <nav className="pagination" aria-label="Blog pagination">
+                <button
+                  className="pagination__btn pagination__btn--prev"
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  aria-label="Previous page"
+                >
+                  ← {dict.blog.prev || 'Previous'}
+                </button>
+
+                <div className="pagination__numbers">
+                  {getPageNumbers().map((page, index) => (
+                    typeof page === 'number' ? (
+                      <button
+                        key={page}
+                        className={`pagination__btn pagination__btn--number ${currentPage === page ? 'pagination__btn--active' : ''}`}
+                        onClick={() => handlePageChange(page)}
+                        aria-current={currentPage === page ? 'page' : undefined}
+                      >
+                        {page}
+                      </button>
+                    ) : (
+                      <span key={`ellipsis-${index}`} className="pagination__ellipsis">...</span>
+                    )
+                  ))}
+                </div>
+
+                <button
+                  className="pagination__btn pagination__btn--next"
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={!hasMore && currentPage === totalPages}
+                  aria-label="Next page"
+                >
+                  {dict.blog.next || 'Next'} →
+                </button>
+              </nav>
+            )}
+
+            {/* Results info */}
+            <p className="pagination__info">
+              {dict.blog.showing || 'Showing'} {(currentPage - 1) * POSTS_PER_PAGE + 1}–{Math.min(currentPage * POSTS_PER_PAGE, totalCount)} {dict.blog.of || 'of'} {totalCount} {dict.blog.posts || 'posts'}
+            </p>
+          </>
         )}
       </main>
     </RouteTransition>

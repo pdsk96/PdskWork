@@ -5,9 +5,11 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  limit,
   orderBy,
   query,
   setDoc,
+  startAfter,
   updateDoc,
   where,
 } from 'firebase/firestore'
@@ -31,6 +33,16 @@ import { slugify, type BlogInput, type BlogPost } from './blog-types'
  */
 
 const COLLECTION = 'posts'
+
+/** Default posts per page */
+export const POSTS_PER_PAGE = 6
+
+/** Result of a paginated query */
+export interface PaginatedPosts {
+  posts: BlogPost[]
+  hasMore: boolean
+  totalCount: number
+}
 
 function newId(): string {
   if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
@@ -77,6 +89,61 @@ export async function getPublishedPosts(locale?: 'en' | 'id'): Promise<BlogPost[
       )
   const snap = await getDocs(q)
   return snap.docs.map((d) => snapToPost(d.id, d.data() as Record<string, unknown>))
+}
+
+/** Return paginated published posts, optionally filtered by locale. */
+export async function getPaginatedPosts(
+  locale?: 'en' | 'id',
+  page: number = 1,
+  perPage: number = POSTS_PER_PAGE,
+): Promise<PaginatedPosts> {
+  const postsQuery = locale
+    ? query(
+        collection(db, COLLECTION),
+        where('published', '==', true),
+        where('locale', '==', locale),
+        orderBy('createdAt', 'desc'),
+      )
+    : query(
+        collection(db, COLLECTION),
+        where('published', '==', true),
+        orderBy('createdAt', 'desc'),
+      )
+
+  // Get total count first
+  const countSnap = await getDocs(postsQuery)
+  const totalCount = countSnap.size
+
+  if (page === 1) {
+    // First page: just apply limit
+    const q = query(postsQuery, limit(perPage))
+    const snap = await getDocs(q)
+    const posts = snap.docs.map((d) => snapToPost(d.id, d.data() as Record<string, unknown>))
+    return { posts, hasMore: posts.length === perPage, totalCount }
+  }
+
+  // For subsequent pages, we need to get all docs up to the offset
+  // Firestore doesn't support offset, so we fetch all docs up to (page * perPage)
+  // and slice. For large datasets, consider using cursor-based pagination with startAfter.
+  const allDocs = countSnap.docs
+  const startIndex = (page - 1) * perPage
+  const pageDocs = allDocs.slice(startIndex, startIndex + perPage)
+
+  if (pageDocs.length === 0) {
+    return { posts: [], hasMore: false, totalCount }
+  }
+
+  // Get the last doc of the previous page for cursor-based approach on next page
+  const lastDocOfPrevPage = allDocs[startIndex - 1]
+  const q = query(postsQuery, startAfter(lastDocOfPrevPage), limit(perPage))
+  const snap = await getDocs(q)
+  const posts = snap.docs.map((d) => snapToPost(d.id, d.data() as Record<string, unknown>))
+
+  return {
+    posts,
+    hasMore: startIndex + posts.length < totalCount,
+    totalCount,
+  }
 }
 
 /** Find a single published post by slug. */
