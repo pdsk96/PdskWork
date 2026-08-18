@@ -127,5 +127,15 @@ for the build, and verifies `out/index.html` exists before deploying.
   `<FirebaseAnalytics />` in the root layout; measurementId `G-XH5XF12NSD`.
 - `next/image` is set to `unoptimized` (no server optimizer). Use plain
   `<img>` or pre-optimized images.
+
+## Admin credentials
+
+The default admin account is created in Firebase Authentication.
+
+- Email: `pdskproject@gmail.com`
+- Password: set in the Firebase Console → Authentication → Users
+
+Do NOT commit passwords or service account keys to the repository. Store
+secrets in GitHub Actions secrets or local env files only.
 - The admin pages are `noindex` (see `admin/layout.tsx`).
 - Locales: still cookie + context based (`LocaleProvider`), fully client-side.
