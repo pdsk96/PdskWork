@@ -128,9 +128,9 @@ for the build, and verifies `out/index.html` exists before deploying.
 - `next/image` is set to `unoptimized` (no server optimizer). Use plain
   `<img>` or pre-optimized images.
 
-## Admin credentials
+## Admin account
 
-The default admin account is created in Firebase Authentication.
+Create an admin user in Firebase Authentication:
 
 - Email: `pdskproject@gmail.com`
 - Password: set in the Firebase Console → Authentication → Users
