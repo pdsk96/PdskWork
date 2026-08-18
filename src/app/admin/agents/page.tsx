@@ -15,6 +15,8 @@ import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '@/lib/firebase'
 import type { ChatMessage } from '@/components/AgentStudio/AgentChat'
 import type { BlogPost } from '@/lib/blog-types'
+import { useScheduler } from '@/lib/agents/scheduler'
+import { useReports, generateReport } from '@/lib/agents/report-generator'
 
 type Tab = 'agents' | 'schedule' | 'reports'
 
@@ -26,10 +28,12 @@ export default function AdminAgentsPage() {
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [loading, setLoading] = useState(false)
   const [scheduledJobs, setScheduledJobs] = useState<any[]>([])
-  const [reports, setReports] = useState<any[]>([])
   const [existingPosts, setExistingPosts] = useState<BlogPost[]>([])
   const configLoaded = useRef(false)
   const postsLoaded = useRef(false)
+
+  const { jobs: schedulerJobs, running: schedulerRunning, lastRun } = useScheduler(300000)
+  const { reports, loading: reportsLoading, refetch: refetchReports } = useReports()
 
   useEffect(() => {
     if (postsLoaded.current) return
@@ -47,6 +51,10 @@ export default function AdminAgentsPage() {
       if (saved) setConfig(JSON.parse(saved))
     } catch { /* ignore */ }
   }, [])
+
+  useEffect(() => {
+    setScheduledJobs(schedulerJobs)
+  }, [schedulerJobs])
 
   const updateConfig = (next: LLMConfig) => {
     setConfig(next)
@@ -126,6 +134,17 @@ export default function AdminAgentsPage() {
     setScheduledJobs((prev) => [...prev, { ...jobData, id: docRef.id, status: 'pending', createdAt: Date.now() }])
   }
 
+  const handleGenerateReport = async () => {
+    if (!db) return
+    try {
+      await generateReport(db, locale as 'en' | 'id')
+      await refetchReports()
+      setMessages((prev) => [...prev, { id: `a-${Date.now()}`, role: 'assistant', content: 'Report generated.', timestamp: Date.now() }])
+    } catch (err) {
+      setMessages((prev) => [...prev, { id: `a-${Date.now()}`, role: 'assistant', content: `Report failed: ${err instanceof Error ? err.message : 'Unknown'}`, timestamp: Date.now() }])
+    }
+  }
+
   return (
     <AdminGate>
       <main className="auth-shell">
@@ -134,6 +153,10 @@ export default function AdminAgentsPage() {
             <div>
               <h1 className="auth-title">AI Agent Studio</h1>
               <p className="admin-welcome">Research, write, and auto-post with AI agents.</p>
+              {schedulerRunning && <p className="admin-welcome">Scheduler: running...</p>}
+              {lastRun && !schedulerRunning && (
+                <p className="admin-welcome">Scheduler: last checked {new Date(lastRun).toLocaleTimeString()}</p>
+              )}
             </div>
             <AgentConfig config={config} onChange={updateConfig} />
           </div>
@@ -163,7 +186,14 @@ export default function AdminAgentsPage() {
             <ScheduleManager jobs={scheduledJobs} onCreateJob={handleCreateScheduledJob} />
           )}
 
-          {tab === 'reports' && <ReportsView reports={reports} />}
+          {tab === 'reports' && (
+            <div>
+              <button type="button" className="primary-btn" onClick={handleGenerateReport} style={{ marginBottom: '1rem' }}>
+                Generate Report
+              </button>
+              <ReportsView reports={reports} />
+            </div>
+          )}
         </section>
       </main>
     </AdminGate>
