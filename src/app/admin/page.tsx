@@ -32,6 +32,8 @@ function AdminConsole() {
 
         <nav className="admin-nav" aria-label={dict.admin.title}>
           <Link href="/admin/blog" className="primary-btn">{dict.blog.adminTitle}</Link>
+          <Link href="/admin/media" className="ghost-btn">Media Gallery</Link>
+          <Link href="/admin/agents" className="ghost-btn">AI Agent Studio</Link>
         </nav>
 
         <button type="button" className="ghost-btn" onClick={onLogout}>

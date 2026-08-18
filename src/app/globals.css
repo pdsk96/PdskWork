@@ -1912,6 +1912,41 @@ a {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
   z-index: 200;
 }
+
+/* Media Gallery */
+.media-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.media-gallery__item {
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--glass-bg);
+}
+.media-gallery__preview {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+  background: rgba(5, 6, 10, 0.6);
+}
+.media-gallery__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.6rem 0.8rem;
+}
+.media-gallery__name {
+  font-size: 0.82rem;
+  color: var(--fg-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .blog-badge {
   padding: 2px 8px;
   border-radius: 6px;

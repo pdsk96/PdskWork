@@ -2,6 +2,7 @@ import { initializeApp, getApps, getApp } from 'firebase/app'
 import { getAnalytics, isSupported } from 'firebase/analytics'
 import { getAuth } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
+import { getStorage } from 'firebase/storage'
 
 // Firebase client config for the pdskwork project. Values are public by design
 // (Firebase web config is safe to ship to the browser); secrets live server-side.
@@ -23,6 +24,7 @@ export const app = getApps().length ? getApp() : initializeApp(firebaseConfig)
 // because this module is only imported by client components.
 export const auth = getAuth(app)
 export const db = getFirestore(app)
+export const storage = getStorage(app)
 
 // Analytics requires a browser environment with `window`. `isSupported()`
 // returns false in SSR / non-browser contexts, so we lazily enable it.

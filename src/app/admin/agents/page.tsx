@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import Link from 'next/link'
 import { useLocale } from '@/i18n/LocaleProvider'
 import AdminGate from '@/components/AdminGate'
 import AgentChat from '@/components/AgentStudio/AgentChat'
@@ -182,6 +183,7 @@ export default function AdminAgentsPage() {
             <button className={`admin-tabs__btn ${tab === 'agents' ? 'is-active' : ''}`} onClick={() => setTab('agents')}>Agents</button>
             <button className={`admin-tabs__btn ${tab === 'schedule' ? 'is-active' : ''}`} onClick={() => setTab('schedule')}>Schedule</button>
             <button className={`admin-tabs__btn ${tab === 'reports' ? 'is-active' : ''}`} onClick={() => setTab('reports')}>Reports</button>
+            <Link href="/admin/media" className="admin-tabs__btn">Media</Link>
           </div>
 
           {tab === 'agents' && (
