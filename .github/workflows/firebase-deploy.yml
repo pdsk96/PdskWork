@@ -55,6 +55,45 @@ jobs:
           test -f out/index.html
           echo "Static export present in out/"
 
+      # Seed Firestore so the blog posts appear on the live site.
+      # The service-account JSON is written to a temp file so firebase-admin can
+      # authenticate via GOOGLE_APPLICATION_CREDENTIALS — the same secret is used
+      # for both hosting deploy and the Admin SDK seed.
+      - name: Seed Firestore with blog posts
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: /tmp/firebase-svc-account.json
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          set -e
+          mkdir -p /tmp
+          
+          # Decode base64 secret if needed, otherwise use raw JSON
+          if echo "$FIREBASE_SERVICE_ACCOUNT" | base64 -d > "$GOOGLE_APPLICATION_CREDENTIALS" 2>/dev/null; then
+            echo "✓ Service account decoded from base64"
+          else
+            echo "$FIREBASE_SERVICE_ACCOUNT" > "$GOOGLE_APPLICATION_CREDENTIALS"
+            echo "✓ Service account written as raw JSON"
+          fi
+          
+          # Verify the JSON is valid
+          if ! node -e "JSON.parse(require('fs').readFileSync('$GOOGLE_APPLICATION_CREDENTIALS'))"; then
+            echo "ERROR: Invalid service account JSON"
+            exit 1
+          fi
+          echo "✓ Service account JSON is valid"
+          
+          # Count posts to be seeded
+          POST_COUNT=$(node -e "console.log(JSON.parse(require('fs').readFileSync('src/db/blog.json')).length)")
+          echo "Posts to seed: $POST_COUNT"
+          
+          # Run seed script
+          echo "Seeding Firestore..."
+          npm run seed:firestore
+          
+          # Clean up credentials
+          rm -f "$GOOGLE_APPLICATION_CREDENTIALS"
+          echo "✓ Firestore seeding complete"
+
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
