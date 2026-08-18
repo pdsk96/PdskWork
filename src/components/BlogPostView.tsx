@@ -9,6 +9,7 @@ import { formatDate, readingTime } from '@/lib/blog-utils'
 import { getPostThumbnail } from '@/lib/thumbnail-generator'
 import RouteTransition from '@/components/RouteTransition'
 import ShareButtons from '@/components/ShareButtons'
+import DOMPurify from 'dompurify'
 
 function readSlugFromPath(): string {
   if (typeof window === 'undefined') return ''
@@ -79,7 +80,8 @@ export default function BlogPostView() {
     )
   }
 
-  const html = renderMarkdown(post.content)
+  const rawHtml = renderMarkdown(post.content)
+  const html = DOMPurify.sanitize(rawHtml)
 
   return (
     <RouteTransition>
@@ -87,7 +89,7 @@ export default function BlogPostView() {
         <article className="glass-card page-card blog-post">
           <Link href={`/blog?page=${currentPage}`} className="blog-post__back">
              ← {dict.blog.backToBlog}
-          </Link>
+           </Link>
 
           <header className="blog-post__header">
             <div className="blog-card__meta">
@@ -149,3 +151,4 @@ export default function BlogPostView() {
     </RouteTransition>
   )
 }
+

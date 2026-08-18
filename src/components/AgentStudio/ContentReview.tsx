@@ -3,6 +3,7 @@
 import { useLocale } from '@/i18n/LocaleProvider'
 import type { ContentOpportunity } from '@/lib/agents/researcher'
 import type { GeneratedPost } from '@/lib/agents/writer'
+import DOMPurify from 'dompurify'
 
 export default function ContentReview({ opportunities, selectedOpportunity, onSelectOpportunity, draft, media, onApprove, onReject }: {
   opportunities: ContentOpportunity[] | undefined
@@ -79,7 +80,7 @@ export default function ContentReview({ opportunities, selectedOpportunity, onSe
                 )}
               </>
             )}
-            <div className="blog-post__content markdown-body" dangerouslySetInnerHTML={{ __html: draft.content }} />
+            <div className="blog-post__content markdown-body" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(draft.content) }} />
             <div className="blog-editor__actions">
               <button type="button" className="primary-btn" onClick={onApprove}>Approve & Publish</button>
               <button type="button" className="ghost-btn ghost-btn--danger" onClick={onReject}>Reject</button>

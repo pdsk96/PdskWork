@@ -168,7 +168,7 @@ export default function BlogPage() {
                     borderRadius: '10px',
                     marginBottom: '1rem',
                     border: '1px solid var(--glass-border)'
-                  }}>
+                  }} role="img" aria-label={post.title}>
                   </div>
                   <div className="blog-card__meta">
                     <time dateTime={post.createdAt}>{formatDate(post.createdAt, locale)}</time>

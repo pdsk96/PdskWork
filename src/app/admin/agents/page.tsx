@@ -20,6 +20,7 @@ import type { ChatMessage } from '@/components/AgentStudio/AgentChat'
 import type { BlogPost } from '@/lib/blog-types'
 import { useScheduler, createAutoGenerateJob, type ScheduledJob } from '@/lib/agents/scheduler'
 import { useReports, generateReport } from '@/lib/agents/report-generator'
+import { loadAgentSettings, saveAgentSettings } from '@/lib/agents/agent-settings'
 
 type Tab = 'agents' | 'schedule' | 'reports'
 
@@ -50,19 +51,23 @@ export default function AdminAgentsPage() {
   useEffect(() => {
     if (configLoaded.current) return
     configLoaded.current = true
-    try {
-      const saved = localStorage.getItem('agent-llm-config')
-      if (saved) setConfig(JSON.parse(saved))
-    } catch { /* ignore */ }
+    loadAgentSettings().then((settings) => {
+      setConfig({
+        provider: settings.provider,
+        apiKey: settings.apiKey,
+        model: settings.model,
+        temperature: settings.temperature,
+        maxTokens: settings.maxTokens,
+      })
+    }).catch(() => setConfig(null))
   }, [])
 
-  useEffect(() => {
-    setScheduledJobs(schedulerJobs)
-  }, [schedulerJobs])
-
-  const updateConfig = (next: LLMConfig) => {
+  const updateConfig = async (next: LLMConfig) => {
     setConfig(next)
-    try { localStorage.setItem('agent-llm-config', JSON.stringify(next)) } catch { /* ignore */ }
+    const current = await loadAgentSettings().catch(() => null)
+    if (current) {
+      await saveAgentSettings({ ...current, ...next })
+    }
   }
 
   const handleSend = async (text: string) => {

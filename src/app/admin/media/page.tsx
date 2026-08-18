@@ -83,7 +83,7 @@ export default function AdminMediaPage() {
               {items.map((item) => (
                 <div key={item.fullPath} className="media-gallery__item">
                   {item.contentType?.startsWith('video/') ? (
-                    <video controls src={item.url} className="media-gallery__preview" />
+                    <video controls src={item.url} className="media-gallery__preview" aria-label={item.name} />
                   ) : (
                     <img src={item.url} alt={item.name} className="media-gallery__preview" loading="lazy" />
                   )}
