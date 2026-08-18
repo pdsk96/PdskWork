@@ -11,13 +11,21 @@ const ADMIN_NAV = [
   { href: '/admin/agents', labelKey: 'agentsTitle' },
 ]
 
+const AGENT_SUB_NAV = [
+  { href: '/admin/agents', labelKey: 'agentsTitle', exact: false },
+  { href: '/admin/agents/config', labelKey: 'agentsConfigTitle' },
+]
+
 export default function AdminNav() {
   const pathname = usePathname()
   const { dict } = useLocale()
 
+  const isAgentsSection = pathname === '/admin/agents' || pathname.startsWith('/admin/agents/')
+  const navItems = isAgentsSection ? AGENT_SUB_NAV : ADMIN_NAV
+
   return (
     <nav className="admin-nav" aria-label="Admin">
-      {ADMIN_NAV.map((item) => {
+      {navItems.map((item) => {
         const active = item.exact ? pathname === item.href : pathname === item.href || pathname.startsWith(`${item.href}/`)
         const label = item.labelKey.includes('.')
           ? item.labelKey.split('.').reduce((acc: any, k: string) => acc?.[k], dict as any) || item.href

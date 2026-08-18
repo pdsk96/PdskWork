@@ -177,7 +177,10 @@ export default function AdminAgentsPage() {
                 <p className="admin-welcome">Scheduler: last checked {new Date(lastRun).toLocaleTimeString()}</p>
               )}
             </div>
-            <AgentConfig config={config} onChange={updateConfig} />
+            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+              <Link href="/admin/agents/config" className="ghost-btn">⚙️ Agent Config</Link>
+              <AgentConfig config={config} onChange={updateConfig} />
+            </div>
           </div>
 
           <AdminNav />
