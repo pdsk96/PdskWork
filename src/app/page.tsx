@@ -28,10 +28,10 @@ export default function HomePage() {
           </m.h1>
           <p className="hero__subtitle">{dict.hero.subtitle}</p>
           <div className="hero__actions">
-            <Link href="/work" className="primary-btn" transitionTypes={['nav-forward']}>
+            <Link href="/work" className="primary-btn">
               {dict.hero.cta}
             </Link>
-            <Link href="/welcome" className="ghost-btn" transitionTypes={['nav-forward']}>
+            <Link href="/welcome" className="ghost-btn">
               {dict.welcome.title}
             </Link>
           </div>

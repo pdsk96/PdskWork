@@ -32,6 +32,6 @@ export function getPostThumbnail(post: BlogPost): string {
   // Use picsum.photos with seed based on post slug for consistent thumbnails
   const width = 800
   const height = 400
-  
-  return `https://picsum.photos/seed/${post.slug}-thumbnail/${width}/${height}`
+
+  return `https://picsum.photos/seed/${post.slug}/${width}/${height}`
 }

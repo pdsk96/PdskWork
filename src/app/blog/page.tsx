@@ -163,7 +163,7 @@ export default function BlogPage() {
                     <span>{readingTime(post.content, dict.blog.minRead)}</span>
                   </div>
                   <h2 className="blog-card__title">
-                    <Link href={`/blog/${post.slug}`} className="blog-card__link" transitionTypes={['nav-forward']} style={{
+                    <Link href={`/blog/${post.slug}`} className="blog-card__link" style={{
                       background: 'linear-gradient(120deg, var(--cyan), var(--magenta), var(--violet))',
                       WebkitBackgroundClip: 'text',
                       backgroundClip: 'text',
@@ -182,7 +182,7 @@ export default function BlogPage() {
                       ))}
                     </ul>
                   )}
-                  <Link href={`/blog/${post.slug}`} className="blog-card__readmore" transitionTypes={['nav-forward']}>
+                  <Link href={`/blog/${post.slug}`} className="blog-card__readmore">
                     {dict.blog.readMore} →
                   </Link>
                 </article>

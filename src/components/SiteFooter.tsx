@@ -35,7 +35,7 @@ export default function SiteFooter() {
           <ul className="site-footer__list">
             {NAV_LINKS.map((item) => (
               <li key={item.href}>
-                <Link href={item.href} className="site-footer__link" transitionTypes={[item.transitionType]}>
+                <Link href={item.href} className="site-footer__link">
                   {dict.nav[item.navKey]}
                 </Link>
               </li>
@@ -47,22 +47,22 @@ export default function SiteFooter() {
           <h2 className="site-footer__heading">{dict.ui.footerSupport}</h2>
           <ul className="site-footer__list">
             <li>
-              <Link href="/faq" className="site-footer__link" transitionTypes={['nav-forward']}>
+              <Link href="/faq" className="site-footer__link">
                 {dict.nav.faq}
               </Link>
             </li>
             <li>
-              <Link href="/privacy" className="site-footer__link" transitionTypes={['nav-forward']}>
+              <Link href="/privacy" className="site-footer__link">
                 {dict.privacy.title}
               </Link>
             </li>
             <li>
-              <Link href="/terms" className="site-footer__link" transitionTypes={['nav-forward']}>
+              <Link href="/terms" className="site-footer__link">
                 {dict.terms.title}
               </Link>
             </li>
             <li>
-              <Link href="/contact" className="site-footer__link" transitionTypes={['nav-forward']}>
+              <Link href="/contact" className="site-footer__link">
                 {dict.nav.contact}
               </Link>
             </li>
@@ -84,10 +84,10 @@ export default function SiteFooter() {
       <div className="site-footer__bar">
         <span>{year ? `© ${year} PdskWork. ${dict.ui.footerRights}` : `© PdskWork. ${dict.ui.footerRights}`}</span>
         <nav className="site-footer__bar-links" aria-label={dict.ui.footerLegal}>
-          <Link href="/privacy" className="site-footer__bar-link" transitionTypes={['nav-forward']}>
+          <Link href="/privacy" className="site-footer__bar-link">
             {dict.privacy.title}
           </Link>
-          <Link href="/terms" className="site-footer__bar-link" transitionTypes={['nav-forward']}>
+          <Link href="/terms" className="site-footer__bar-link">
             {dict.terms.title}
           </Link>
         </nav>

@@ -30,7 +30,7 @@ import { NAV_LINKS } from '@/lib/nav'
  * Transitions route transitions (home = back, others = forward).
  */
 export default function LiquidGlassNav() {
-  const { dict } = useLocale()
+  const { dict, locale } = useLocale()
   const pathname = usePathname()
   const reduceMotion = useReducedMotion()
 
@@ -97,8 +97,8 @@ export default function LiquidGlassNav() {
         </defs>
       </svg>
 
-      <nav className="lgnav__inner" aria-label={dict.nav.home === 'Home' ? 'Primary' : 'Utama'}>
-        <Link href="/" className="lgnav__brand" aria-label="PdskWork home" transitionTypes={['nav-back']}>
+      <nav className="lgnav__inner" aria-label={locale === 'en' ? 'Primary' : 'Utama'}>
+        <Link href="/" className="lgnav__brand" aria-label="PdskWork home">
           <PdskLogo size={26} animated={false} />
         </Link>
 
@@ -114,7 +114,6 @@ export default function LiquidGlassNav() {
                   href={link.href}
                   className={`lgnav__link${active ? ' is-active' : ''}`}
                   aria-current={active ? 'page' : undefined}
-                  transitionTypes={[link.transitionType]}
                 >
                   {dict.nav[link.navKey]}
                   {active && <span className="lgnav__active-pill" aria-hidden="true" />}

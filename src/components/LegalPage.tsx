@@ -1,17 +1,23 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import { useLocale } from '@/i18n/LocaleProvider'
 import RouteTransition from '@/components/RouteTransition'
 
-/**
- * LegalPage — renders a localized list of {heading, paragraph} sections.
- * Shared by /privacy and /terms. `sectionKey` selects which dictionary block
- * ('privacy' | 'terms') to render.
- */
 export default function LegalPage({ sectionKey }: { sectionKey: 'privacy' | 'terms' }) {
-  const { dict } = useLocale()
+  const { dict, locale } = useLocale()
   const data = dict[sectionKey]
-  const locale = dict.nav.home === 'Home' ? 'en-US' : 'id-ID'
+  const [updated, setUpdated] = useState('')
+
+  useEffect(() => {
+    setUpdated(
+      new Date().toLocaleDateString(locale === 'id' ? 'id-ID' : 'en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      }),
+    )
+  }, [locale])
 
   return (
     <RouteTransition>
@@ -19,7 +25,7 @@ export default function LegalPage({ sectionKey }: { sectionKey: 'privacy' | 'ter
         <section className="glass-card page-card">
           <h1 className="page-title">{data.title}</h1>
           <p className="page-lead legal-updated">
-            {data.updated}: {new Date().toLocaleDateString(locale, { year: 'numeric', month: 'long', day: 'numeric' })}
+            {data.updated}: {updated}
           </p>
           <p className="page-lead">{data.lead}</p>
         </section>

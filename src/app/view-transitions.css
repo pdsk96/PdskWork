@@ -62,6 +62,9 @@
 }
 
 /* ---- Anchor the navbar so it doesn't slide with content ---- */
+.lgnav {
+  view-transition-name: lgnav;
+}
 ::view-transition-group(lgnav),
 ::view-transition-group(navbar) {
   animation: none;

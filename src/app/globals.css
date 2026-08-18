@@ -103,6 +103,36 @@ a {
   pointer-events: none;
 }
 
+/* Composite class used across pages/forms/cards. */
+.glass-card {
+  position: relative;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+  box-shadow:
+    inset 0 1px 0 var(--glass-highlight),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 18px 50px -20px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+  padding: 24px;
+}
+
+.glass-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 240, 255, 0.08),
+    transparent 30%,
+    transparent 70%,
+    rgba(255, 43, 214, 0.05)
+  );
+  pointer-events: none;
+}
+
 /* ---- Cursor-follow spotlight ---- */
 .cursor-spotlight {
   position: fixed;

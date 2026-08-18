@@ -21,6 +21,9 @@ export const metadata: Metadata = {
   description:
     'PdskWork portfolio. Cyberpunk creations built with Next.js, React Three Fiber and Motion.',
   applicationName: 'PdskWork',
+  icons: {
+    icon: '/icon.svg',
+  },
   alternates: {
     canonical: '/',
     types: {

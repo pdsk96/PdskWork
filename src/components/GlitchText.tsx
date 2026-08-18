@@ -43,7 +43,7 @@ export default function GlitchText({
   const reduceMotion = useReducedMotion()
   const [display, setDisplay] = useState(text)
   const frame = useRef(0)
-  const raf = useRef<number | null>(null)
+  const timeoutId = useRef<number | null>(null)
 
   useEffect(() => {
     if (reduceMotion || !loop) {
@@ -72,7 +72,7 @@ export default function GlitchText({
         frame.current += 1
         counter += 1
         if (counter <= total) {
-          raf.current = window.setTimeout(step, intervalMs) as unknown as number
+          timeoutId.current = window.setTimeout(step, intervalMs) as unknown as number
         } else {
           setDisplay(text)
           if (loop) timeout = setTimeout(scramble, 2600)
@@ -88,7 +88,7 @@ export default function GlitchText({
 
     resolve()
     return () => {
-      if (raf.current) clearTimeout(raf.current)
+      if (timeoutId.current) clearTimeout(timeoutId.current)
       clearTimeout(timeout)
     }
     // text/glyphs/intervalMs are stable enough for this effect; loop/reduceMotion

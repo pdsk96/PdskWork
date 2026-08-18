@@ -83,9 +83,9 @@ export default function BlogPostView() {
     <RouteTransition>
       <main className="page">
         <article className="glass-card page-card blog-post">
-          <Link href="/blog" className="blog-post__back" transitionTypes={['nav-back']}>
-            ← {dict.blog.backToBlog}
-          </Link>
+          <Link href="/blog" className="blog-post__back">
+             ← {dict.blog.backToBlog}
+           </Link>
 
           <header className="blog-post__header">
             {/* Thumbnail image */}

@@ -7,17 +7,16 @@ import { useLocale } from '@/i18n/LocaleProvider'
 import RouteTransition from '@/components/RouteTransition'
 import GlitchText from '@/components/GlitchText'
 import { NAV_LINKS } from '@/lib/nav'
+import { useEffect, useState } from 'react'
 
-/**
- * Custom 404 — cyberpunk "signal lost" themed not-found page.
- *
- * Next.js renders `not-found.tsx` at the root for any unmatched route (and
- * for thrown notFound()). Bilingual, accessible, with quick links back.
- */
 export default function NotFound() {
-  const { dict } = useLocale()
+  const { dict, locale } = useLocale()
   const reduceMotion = useReducedMotion()
-  const code = dict.nav.home === 'Home' ? 'en-US' : 'id-ID'
+  const [path, setPath] = useState('/')
+
+  useEffect(() => {
+    setPath(window.location.pathname)
+  }, [])
 
   return (
     <RouteTransition>
@@ -36,27 +35,27 @@ export default function NotFound() {
           <p className="page-lead">{dict.notFound.lead}</p>
 
           <div className="not-found__actions">
-            <Link href="/" className="primary-btn" transitionTypes={['nav-back']}>
+            <Link href="/" className="primary-btn">
               {dict.notFound.home}
             </Link>
-            <Link href="/blog" className="ghost-btn" transitionTypes={['nav-forward']}>
+            <Link href="/blog" className="ghost-btn">
               {dict.nav.blog}
             </Link>
-            <Link href="/faq" className="ghost-btn" transitionTypes={['nav-forward']}>
+            <Link href="/faq" className="ghost-btn">
               {dict.nav.faq}
             </Link>
           </div>
 
           <nav className="not-found__links" aria-label={dict.ui.footerNav}>
             {NAV_LINKS.filter((l) => l.href !== '/').map((link) => (
-              <Link key={link.href} href={link.href} className="not-found__link" transitionTypes={[link.transitionType]}>
+              <Link key={link.href} href={link.href} className="not-found__link">
                 {dict.nav[link.navKey]}
               </Link>
             ))}
           </nav>
 
           <p className="not-found__meta" aria-live="polite">
-            {dict.notFound.path}: <code>{typeof window !== 'undefined' ? window.location.pathname : '/'}</code>
+            {dict.notFound.path}: <code>{path}</code>
           </p>
         </section>
       </main>

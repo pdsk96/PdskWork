@@ -57,20 +57,20 @@ export default function WelcomePage() {
             <button type="button" className="primary-btn" onClick={requestFs}>
               {w.enter}
             </button>
-            <Link href="/work" className="ghost-btn" transitionTypes={['nav-forward']}>
-              {w.explore}
-            </Link>
-          </div>
-          <p className="welcome__cta-hint">{w.enterHint}</p>
-        </section>
+              <Link href="/work" className="ghost-btn">
+                {w.explore}
+              </Link>
+            </div>
+            <p className="welcome__cta-hint">{w.enterHint}</p>
+          </section>
 
-        <section className="welcome__section glass-card" aria-labelledby="welcome-greeting">
-          <h2 id="welcome-greeting" className="section-title">{w.greeting}</h2>
-          <p className="section-lead">{w.greetingBody}</p>
-          <PdskLogo size={24} />
-        </section>
+          <section className="welcome__section glass-card" aria-labelledby="welcome-greeting">
+            <h2 id="welcome-greeting" className="section-title">{w.greeting}</h2>
+            <p className="section-lead">{w.greetingBody}</p>
+            <PdskLogo size={24} />
+          </section>
 
-        <section className="welcome__section" aria-labelledby="welcome-pillars">
+          <section className="welcome__section" aria-labelledby="welcome-pillars">
           <h2 id="welcome-pillars" className="section-title welcome__section-title">{w.pillarsTitle}</h2>
           <div className="welcome__pillars">
             {w.pillars.map((pillar, i) => (
@@ -106,13 +106,13 @@ export default function WelcomePage() {
           <h2 id="welcome-closing" className="section-title">{w.closingTitle}</h2>
           <p className="section-lead">{w.closingBody}</p>
           <div className="welcome__cta">
-            <Link href="/work" className="primary-btn" transitionTypes={['nav-forward']}>
+            <Link href="/work" className="primary-btn">
               {w.explore}
             </Link>
-            <Link href="/blog" className="ghost-btn" transitionTypes={['nav-forward']}>
+            <Link href="/blog" className="ghost-btn">
               {w.readBlog}
             </Link>
-            <Link href="/contact" className="ghost-btn" transitionTypes={['nav-forward']}>
+            <Link href="/contact" className="ghost-btn">
               {w.sayHi}
             </Link>
           </div>
