@@ -1466,6 +1466,37 @@ a {
 .blog-card {
   padding: 1.4rem 1.6rem;
 }
+
+.blog-card__thumbnail {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  background: rgba(5, 6, 10, 0.6);
+  border: 1px solid var(--glass-border);
+}
+
+.blog-card__thumbnail::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(122, 92, 255, 0.1));
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .blog-card__thumbnail {
+    height: 140px;
+  }
+}
+
+@media (max-width: 480px) {
+  .blog-card__thumbnail {
+    height: 120px;
+  }
+}
 .blog-card__meta {
   display: flex;
   align-items: center;
@@ -1532,6 +1563,31 @@ a {
   margin: 0 auto;
   padding: 2rem 1.8rem;
 }
+
+@media (max-width: 768px) {
+  .blog-post {
+    padding: 1.5rem 1rem;
+  }
+  
+  .blog-post__title {
+    font-size: clamp(1.4rem, 6vw, 2rem);
+  }
+  
+  .blog-post__content {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+}
+
+@media (max-width: 480px) {
+  .blog-post {
+    padding: 1.2rem 0.8rem;
+  }
+  
+  .blog-post__content {
+    font-size: 0.95rem;
+  }
+}
 .blog-post__back {
   display: inline-block;
   margin-bottom: 1.2rem;
@@ -1550,6 +1606,37 @@ a {
   margin: 0.4rem 0 0.5rem;
   font-size: clamp(1.6rem, 4vw, 2.4rem);
   line-height: 1.15;
+}
+
+.blog-post__thumbnail {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  background: rgba(5, 6, 10, 0.6);
+  border: 1px solid var(--glass-border);
+}
+
+.blog-post__thumbnail::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(122, 92, 255, 0.1));
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .blog-post__thumbnail {
+    height: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .blog-post__thumbnail {
+    height: 150px;
+  }
 }
 .blog-post__excerpt {
   margin: 0;
@@ -1619,6 +1706,31 @@ a {
   border: none;
   border-top: 1px solid var(--glass-border);
   margin: 2rem 0;
+}
+
+/* Video embeds */
+.video-embed {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 1rem 0;
+  background: rgba(5, 6, 10, 0.6);
+  border: 1px solid var(--glass-border);
+}
+
+.video-embed iframe,
+.video-embed video {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+@media (max-width: 768px) {
+  .video-embed {
+    aspect-ratio: 16/10;
+  }
 }
 .blog-post__footer {
   display: flex;
