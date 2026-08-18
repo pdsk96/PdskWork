@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
+import { useSearchParams, useRouter } from 'next/navigation'
 import { useLocale } from '@/i18n/LocaleProvider'
 import { getPaginatedPosts, type BlogPost, POSTS_PER_PAGE } from '@/lib/blog-firestore'
 import { formatDate, readingTime } from '@/lib/blog-utils'
@@ -10,14 +11,29 @@ import RouteTransition from '@/components/RouteTransition'
 
 export default function BlogPage() {
   const { locale, dict } = useLocale()
+  const router = useRouter()
+  const searchParams = useSearchParams()
   const [posts, setPosts] = useState<BlogPost[] | null>(null)
   const [showingAll, setShowingAll] = useState(false)
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState(() => {
+    const p = searchParams.get('page')
+    return p ? Math.max(1, parseInt(p, 10) || 1) : 1
+  })
   const [hasMore, setHasMore] = useState(false)
   const [totalCount, setTotalCount] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
 
   const totalPages = Math.ceil(totalCount / POSTS_PER_PAGE)
+
+  const updatePageInURL = (page: number) => {
+    const params = new URLSearchParams(searchParams.toString())
+    if (page <= 1) {
+      params.delete('page')
+    } else {
+      params.set('page', String(page))
+    }
+    router.replace(`/blog${params.toString() ? `?${params.toString()}` : ''}`, { scroll: false })
+  }
 
   const fetchPosts = useCallback(async (page: number) => {
     setIsLoading(true)
@@ -27,8 +43,7 @@ export default function BlogPage() {
       setHasMore(result.hasMore)
       setTotalCount(result.totalCount)
       setCurrentPage(page)
-      // Check if we fell back to all locales
-      if (result.posts.length > 0 && result.posts.every(p => p.locale !== locale)) {
+      if (result.posts.length > 0 && result.posts.every((p) => p.locale !== locale)) {
         setShowingAll(true)
       } else {
         setShowingAll(false)
@@ -42,16 +57,17 @@ export default function BlogPage() {
 
   useEffect(() => {
     let active = true
-    void getPaginatedPosts(locale, 1, POSTS_PER_PAGE)
+    const pageFromURL = searchParams.get('page')
+    const initialPage = pageFromURL ? Math.max(1, parseInt(pageFromURL, 10) || 1) : 1
+    void getPaginatedPosts(locale, initialPage, POSTS_PER_PAGE)
       .then((result) => {
         if (!active) return
         if (result.posts.length > 0) {
           setPosts(result.posts)
           setHasMore(result.hasMore)
           setTotalCount(result.totalCount)
-          setCurrentPage(1)
-          // Check if we fell back to all locales
-          if (result.posts.every(p => p.locale !== locale)) {
+          setCurrentPage(initialPage)
+          if (result.posts.every((p) => p.locale !== locale)) {
             setShowingAll(true)
           } else {
             setShowingAll(false)
@@ -69,10 +85,11 @@ export default function BlogPage() {
     return () => {
       active = false
     }
-  }, [locale])
+  }, [locale, searchParams])
 
   const handlePageChange = (page: number) => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
+    updatePageInURL(page)
     void fetchPosts(page)
   }
 
@@ -80,39 +97,36 @@ export default function BlogPage() {
   const getPageNumbers = () => {
     const pages: (number | string)[] = []
     const maxVisible = 5
-    
+
     if (totalPages <= maxVisible) {
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i)
       }
     } else {
-      // Always show first page
       pages.push(1)
-      
+
       if (currentPage > 3) {
         pages.push('...')
       }
-      
-      // Show pages around current
+
       const start = Math.max(2, currentPage - 1)
       const end = Math.min(totalPages - 1, currentPage + 1)
-      
+
       for (let i = start; i <= end; i++) {
         if (!pages.includes(i)) {
           pages.push(i)
         }
       }
-      
+
       if (currentPage < totalPages - 2) {
         pages.push('...')
       }
-      
-      // Always show last page
+
       if (!pages.includes(totalPages)) {
         pages.push(totalPages)
       }
     }
-    
+
     return pages
   }
 
@@ -145,7 +159,6 @@ export default function BlogPage() {
               {showingAll && <p className="blog-list__fallback">{dict.blog.noPostsMatch}</p>}
               {posts.map((post) => (
                 <article key={post.id} className="glass-card blog-card">
-                  {/* Thumbnail for blog card */}
                   <div className="blog-card__thumbnail" style={{
                     backgroundImage: `url(${getPostThumbnail(post)})`,
                     backgroundSize: 'cover',
@@ -189,7 +202,6 @@ export default function BlogPage() {
               ))}
             </section>
 
-            {/* Pagination */}
             {totalPages > 1 && (
               <nav className="pagination" aria-label="Blog pagination">
                 <button
@@ -229,7 +241,6 @@ export default function BlogPage() {
               </nav>
             )}
 
-            {/* Results info */}
             <p className="pagination__info">
               {dict.blog.showing || 'Showing'} {(currentPage - 1) * POSTS_PER_PAGE + 1}–{Math.min(currentPage * POSTS_PER_PAGE, totalCount)} {dict.blog.of || 'of'} {totalCount} {dict.blog.posts || 'posts'}
             </p>

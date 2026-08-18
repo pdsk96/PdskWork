@@ -1629,6 +1629,35 @@ a {
 .blog-post__back:hover {
   color: var(--cyan);
 }
+.blog-post__nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--glass-border);
+}
+.blog-post__nav-link {
+  flex: 1;
+  padding: 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  color: var(--fg);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.blog-post__nav-link:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+.blog-post__nav-link--prev {
+  text-align: left;
+}
+.blog-post__nav-link--next {
+  text-align: right;
+}
 .blog-post__header {
   margin-bottom: 1.6rem;
 }

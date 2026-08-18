@@ -3,26 +3,13 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useLocale } from '@/i18n/LocaleProvider'
-import { getPostBySlug, type BlogPost } from '@/lib/blog-firestore'
+import { getPostBySlug, getPaginatedPosts, type BlogPost } from '@/lib/blog-firestore'
 import { renderMarkdown } from '@/lib/markdown'
 import { formatDate, readingTime } from '@/lib/blog-utils'
 import { getPostThumbnail } from '@/lib/thumbnail-generator'
 import RouteTransition from '@/components/RouteTransition'
 import ShareButtons from '@/components/ShareButtons'
 
-/**
- * BlogPostView — client-side blog post renderer.
- *
- * Reads the slug from the URL pathname and fetches the post from Firestore on
- * mount. Seed slugs are pre-rendered to static HTML at build (see
- * generateStaticParams in the page) so the initial HTML + metadata exist for
- * SEO; this component hydrates and (re)loads live content from Firestore so
- * admin edits appear.
- *
- * For slugs created post-deploy that have no static HTML, Firebase Hosting
- * rewrites `/blog/{slug}` → `/blog/_` (placeholder page), which renders this
- * component; it then reads the real slug from `window.location.pathname`.
- */
 function readSlugFromPath(): string {
   if (typeof window === 'undefined') return ''
   const m = window.location.pathname.match(/\/blog\/([^/]+)(?:\/)?$/)
@@ -32,14 +19,29 @@ function readSlugFromPath(): string {
 export default function BlogPostView() {
   const { locale, dict } = useLocale()
   const [post, setPost] = useState<BlogPost | null | undefined>(undefined)
+  const [prevPost, setPrevPost] = useState<BlogPost | null>(null)
+  const [nextPost, setNextPost] = useState<BlogPost | null>(null)
+  const [currentPage, setCurrentPage] = useState(1)
 
   useEffect(() => {
     let active = true
     const slug = readSlugFromPath()
     setPost(undefined)
+    setPrevPost(null)
+    setNextPost(null)
     void getPostBySlug(slug, locale)
-      .then((p) => {
-        if (active) setPost(p)
+      .then(async (p) => {
+        if (!active) return
+        setPost(p)
+        if (p) {
+          try {
+            const result = await getPaginatedPosts(locale, 1, 100)
+            const idx = result.posts.findIndex((x) => x.id === p.id)
+            if (idx > 0) setPrevPost(result.posts[idx - 1])
+            if (idx < result.posts.length - 1) setNextPost(result.posts[idx + 1])
+            setCurrentPage(Math.floor(idx / 6) + 1)
+          } catch { /* ignore */ }
+        }
       })
       .catch(() => {
         if (active) setPost(null)
@@ -83,23 +85,11 @@ export default function BlogPostView() {
     <RouteTransition>
       <main className="page">
         <article className="glass-card page-card blog-post">
-          <Link href="/blog" className="blog-post__back">
+          <Link href={`/blog?page=${currentPage}`} className="blog-post__back">
              ← {dict.blog.backToBlog}
-           </Link>
+          </Link>
 
           <header className="blog-post__header">
-            {/* Thumbnail image */}
-            <div className="blog-post__thumbnail" style={{
-              backgroundImage: `url(${getPostThumbnail(post)})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              width: '100%',
-              height: '300px',
-              borderRadius: '10px',
-              marginBottom: '1.5rem',
-              border: '1px solid var(--glass-border)'
-            }}>
-            </div>
             <div className="blog-card__meta">
               <time dateTime={post.createdAt}>{formatDate(post.createdAt, locale)}</time>
               <span className="blog-card__dot" aria-hidden="true">·</span>
@@ -130,6 +120,23 @@ export default function BlogPostView() {
             className="blog-post__content markdown-body"
             dangerouslySetInnerHTML={{ __html: html }}
           />
+
+          <nav className="blog-post__nav" aria-label="Post navigation">
+            {prevPost ? (
+              <Link href={`/blog/${prevPost.slug}`} className="blog-post__nav-link blog-post__nav-link--prev">
+                ← {prevPost.title}
+              </Link>
+            ) : (
+              <span />
+            )}
+            {nextPost ? (
+              <Link href={`/blog/${nextPost.slug}`} className="blog-post__nav-link blog-post__nav-link--next">
+                {nextPost.title} →
+              </Link>
+            ) : (
+              <span />
+            )}
+          </nav>
 
           <footer className="blog-post__footer">
             <p className="blog-post__updated">
