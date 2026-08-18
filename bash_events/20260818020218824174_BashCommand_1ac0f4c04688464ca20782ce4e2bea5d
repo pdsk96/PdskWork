@@ -1,0 +1,8 @@
+{
+  "command": "mkdir -p .git/hooks && chmod +x .openhands/pre-commit.sh",
+  "cwd": "/workspace/project",
+  "timeout": 30,
+  "id": "1ac0f4c04688464ca20782ce4e2bea5d",
+  "timestamp": "2026-08-18T02:02:18.824174Z",
+  "kind": "BashCommand"
+}

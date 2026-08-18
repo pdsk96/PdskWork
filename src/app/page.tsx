@@ -3,7 +3,6 @@
 import { m, useReducedMotion } from 'motion/react'
 import Link from 'next/link'
 import { useLocale } from '@/i18n/LocaleProvider'
-import HeroScene from '@/components/HeroScene'
 import CyberHero from '@/components/CyberHero'
 import GlitchText from '@/components/GlitchText'
 import RouteTransition from '@/components/RouteTransition'
@@ -15,7 +14,6 @@ export default function HomePage() {
   return (
     <RouteTransition>
       <main className="page page--home">
-        <HeroScene />
         <CyberHero />
 
         <section className="hero" aria-labelledby="hero-title">

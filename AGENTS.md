@@ -1,5 +1,5 @@
 # PdskWork — Agent Memory
-
+Selalu gunakan bahasa indonesia
 Cyberpunk-themed portfolio/work app. Stack: Next.js 16.3 (App Router, Turbopack), React 19,
 React Three Fiber, **Motion** (formerly Framer Motion). Iteration-driven development from `.hermes/pdsk_work_master_spec.md`.
 

@@ -7,7 +7,7 @@
     "prebuild": "node scripts/gen-feed.mjs",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "seed:firestore": "node scripts/seed-firestore.mjs"
   },
   "dependencies": {
