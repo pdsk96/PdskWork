@@ -16,51 +16,6 @@
   pointer-events: none;
 }
 
-/* ---- Directional navigation (nav-forward / nav-back) ---- */
-::view-transition-old(.nav-forward) {
-  --slide-offset: calc(-1 * var(--vt-slide));
-  animation:
-    var(--vt-exit) ease-in both fade reverse,
-    var(--vt-move) ease-in-out both slide reverse;
-}
-::view-transition-new(.nav-forward) {
-  --slide-offset: var(--vt-slide);
-  animation:
-    var(--vt-enter) ease-out var(--vt-exit) both fade,
-    var(--vt-move) ease-in-out both slide;
-}
-
-::view-transition-old(.nav-back) {
-  --slide-offset: var(--vt-slide);
-  animation:
-    var(--vt-exit) ease-in both fade reverse,
-    var(--vt-move) ease-in-out both slide reverse;
-}
-::view-transition-new(.nav-back) {
-  --slide-offset: calc(-1 * var(--vt-slide));
-  animation:
-    var(--vt-enter) ease-out var(--vt-exit) both fade,
-    var(--vt-move) ease-in-out both slide;
-}
-
-@keyframes fade {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slide {
-  from {
-    translate: var(--slide-offset);
-  }
-  to {
-    translate: 0;
-  }
-}
-
 /* ---- Anchor the navbar so it doesn't slide with content ---- */
 .lgnav {
   view-transition-name: lgnav;
