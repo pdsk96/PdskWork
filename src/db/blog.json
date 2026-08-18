@@ -905,5 +905,877 @@
     "locale": "en",
     "createdAt": "2026-06-05T00:00:00.000Z",
     "updatedAt": "2026-06-05T00:00:00.000Z"
+  },
+  {
+    "id": "id-nextjs-16-3-instant-navigations",
+    "slug": "id-nextjs-16-3-instant-navigations",
+    "title": "Next.js 16.3 Hadirkan Navigasi Instan untuk Ekosistem React",
+    "excerpt": "Next.js 16.3 membawa Navigasi Instan, Partial Prefetching, dan dev server yang lebih ringan — berikut yang berubah untuk tim production.",
+    "content": "# Next.js 16.3 Hadirkan Navigasi Instan untuk Ekosistem React\n\n![Ringkasan rilis Next.js 16.3](https://picsum.photos/seed/nextjs163/1200/600)\n\nNext.js 16.3, dirilis Agustus 2026, adalah pembaruan navigasi paling signifikan sejak App Router hadir. Fitur utama — **Navigasi Instan** — akhirnya menutup jarak antara SPA sisi klien dan Next apps yang dirender di server.\n\n## Apa yang Baru\n\n- **Navigasi Instan**: sebuah route dapat Stream, Cache, atau Block agar klik terasa instan.\n- **Partial Prefetching**: shell yang dapat digunakan ulang per route, di-cache di klien sehingga first paint langsung terasa saat sisanya streaming masuk.\n- **Navigation Inspector**: devtool baru untuk menginspeksi visual loading shell sebuah navigasi.\n- **Instant Insights**: menampilkan navigasi yang lambat secara otomatis saat pengembangan.\n- Dev server yang jauh lebih hemat memori — krusial untuk monorepo besar.\n\n## Mengapa Ini Penting\n\nSelama bertahun-tahun, performa yang dirasakan di Next apps bergantung pada desain `loading.tsx` yang cermat dan prefetching agresif. 16.3 membuat framework itu sendiri bertanggung jawab atas kesan instan, sehingga engineer bisa fokus ke fitur alih-alih micro-optimizing route transitions.\n\n> Navigasi yang terasa instan bukan magic — itu adalah cached shell ditambah konten yang di-stream.\n\n## Catatan Upgrade\n\nPartial Prefetching memerlukan `cacheComponents: true` di level teratas `next.config.ts`. Dikombinasikan dengan file `loading.tsx`, Anda mendapatkan penanda build `◐ (Partial Prerender)` yang menunjukkan HTML statis加上 dynamic server-streamed content — hasil yang diinginkan.\n\nLihat [blog post Next.js 16.3 resmi](https://nextjs.org/blog/next-16-3) untuk changelog lengkap.",
+    "tags": [
+      "teknologi",
+      "nextjs",
+      "react",
+      "performa"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-08-04T00:00:00.000Z",
+    "updatedAt": "2026-08-04T00:00:00.000Z"
+  },
+  {
+    "id": "id-react-19-2-view-transitions",
+    "slug": "id-react-19-2-view-transitions",
+    "title": "React 19.2 Jadikan View Transitions Kelas Satu",
+    "excerpt": "React 19.2 menstabilkan View Transitions, useEffectEvent, dan Activity — rilis yang lebih tenang tapi berdampak mendalam.",
+    "content": "# React 19.2 Jadikan View Transitions Kelas Satu\n\n![React 19.2 View Transitions](https://picsum.photos/seed/react192/1200/600)\n\nReact 19.2, yang dibawa ke Next.js 16 sebagai rilis canary, menghadirkan tiga fitur yang mengubah cara kita memikirkan kontinuitas UI: **View Transitions**, **`useEffectEvent`**, dan **Activity**.\n\n## View Transitions\n\nAnimasi elemen yang diperbarui di dalam Transition atau navigasi tanpa meninggalkan model reconciliation React. Padukan dengan View Transitions API native browser untuk transisi halus dan bebas jank.\n\n```tsx\nimport { useViewTransitionState } from 'react'\nimport { startTransition } from 'react'\n\nfunction toggleTheme(next) {\n  startTransition(() => setTheme(next))\n}\n```\n\n## useEffectEvent\n\nEkstrak logika non-reaktif dari Effects ke dalam fungsi Effect Event yang dapat digunakan ulang. Ini memperbaiki footgun yang sudah lama ada di mana linter menuntut dependencies yang sebenarnya tidak reaktif, menyebabkan re-runs yang tidak perlu.\n\n## Activity\n\nRender \"background activity\" dengan menyembunyikan UI menggunakan `display: none` sambil mempertahankan state dan membersihkan Effects. Ideal untuk tabs dan modals yang harus menjaga posisinya tanpa tetap di-mount.\n\n## Kesimpulan\n\nReact 19.2 lebih sedikit tentang API baru dan lebih banyak tentang menghilangkan pola coding defensif yang telah mengakumulasi developer. Lebih sedikit effects, lebih sedikit guards, lebih banyak kepercayaan pada framework.",
+    "tags": [
+      "teknologi",
+      "react",
+      "frontend"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-07-28T00:00:00.000Z",
+    "updatedAt": "2026-07-28T00:00:00.000Z"
+  },
+  {
+    "id": "id-turbopack-default-bundler-2026",
+    "slug": "id-turbopack-default-bundler-2026",
+    "title": "Turbopack Sebagai Bundler Default: Retrospektif 2026",
+    "excerpt": "Turbopack menggantikan Webpack sebagai bundler default Next.js. Setahun kemudian, berikut cara mengubah workflow developer.",
+    "content": "# Turbopack Sebagai Bundler Default: Retrospektif 2026\n\n![Perbandingan performa Turbopack](https://picsum.photos/seed/turbopack/1200/600)\n\nKetika Next.js 15 menjadikan Turbopack sebagai default untuk `next dev` dan `next build`, itu langkah berani. Pertengahan 2026, bet itu sebagian besar berhasil untuk mayoritas proyek.\n\n## Keuntungan\n\n- **Cold starts** turun 60–80% pada aplikasi menengah di benchmark internal.\n- **Incremental rebuilds** hampir instan untuk kasus umum mengedit satu komponen.\n- Memory footprint di dev jauh lebih rendah dibanding konfigurasi Webpack yang setara — kelegaan untuk lingkungan Docker dan CI.\n\n## Catatan\n\nEkor panjang Webpack loaders tidak memiliki alternatif Turbopack. Sebagian besar dimigrasikan ke alternatif native Turbopack atau diganti dengan alternatif yang lebih ringan. Override `webpack.config.js` kustom di `next.config.ts` bukan lagi escape hatch seperti dulu — tim yang bergantung pada kustomisasi Webpack dalam-dalam harus beradaptasi.\n\n> Pelajaran: default yang cukup cepat untuk persentil ke-90 menang, meskipun mereka menanggung sedikit rasa sakit migrasi untuk persentil ke-10.\n\n## Rekomendasi\n\nUntuk proyek greenfield di 2026, tidak ada alasan untuk menggunakan Webpack. Untuk proyek legacy, migrasinya bertahap — Turbopack cukup robust untuk bisa flip flag app-by-app.",
+    "tags": [
+      "teknologi",
+      "turbopack",
+      "tooling"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-07-20T00:00:00.000Z",
+    "updatedAt": "2026-07-20T00:00:00.000Z"
+  },
+  {
+    "id": "id-liquid-glass-design-era-2026",
+    "slug": "id-liquid-glass-design-era-2026",
+    "title": "Era Desain Liquid-Glass Sudah Hadir",
+    "excerpt": "Kaca buram, kedalaman, dan motion mendefinisikan bahasa visual 2026. Berikut yang membuat desain terasa modern sekarang.",
+    "content": "# Era Desain Liquid-Glass Sudah Hadir\n\n![Mockup UI liquid-glass](https://picsum.photos/seed/liquidglass/1200/600)\n\nJelajahi produk desain-forward apapun yang dirilis 2026 dan Anda akan noticed shared vocabulary: permukaan transculent buram, layered depth, dan motion yang merespons scroll dan pointer. Namakan itu **era liquid-glass**.\n\n## Bahan-bahannya\n\n1. **Lapisan transculent** — backdrop blur di atas background kaya dan animasi.\n2. **Kedalaman via parallax** — elemen bergerak dengan rate berbeda untuk menyarankan z-axis.\n3. **Reactive motion** — animasi didorong oleh scroll progress dan pointer position, bukan hanya mount.\n4. **Teks kontras tinggi** — palet neon-on-ink yang memenuhi kontras AA bahkan di atas background ramai.\n\n## Mengapa sekarang\n\nGPU-accelerated backdrop filters didukung secara universal, WebGL mainstream, dan framework seperti Motion (dulunya Framer Motion) membuat scroll-linked animation hanya beberapa baris kode. Biaya teknis untuk depth telah runtuh.\n\n## Guardrails aksesibilitas\n\nLiquid-glass gorgeous tapi berbahaya untuk aksesibilitas dan performa. Selalu:\n\n- Hormati `prefers-reduced-motion` — nonaktifkan parallax dan shader loops.\n- Jaga kontras teks di AA (4.5:1) di atas kaca.\n- Batasi `dpr` pada WebGL canvases untuk mobile high-DPI untuk menghindari GPU meleleh.\n\nSitus ini, PdskWork, dibangun di atas prinsip-prinsip ini — hero React Three Fiber dengan FBM fresnel background shader, glass panels, dan reduced-motion fallbacks.",
+    "tags": [
+      "teknologi",
+      "desain",
+      "css",
+      "aksesibilitas"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-07-12T00:00:00.000Z",
+    "updatedAt": "2026-07-12T00:00:00.000Z"
+  },
+  {
+    "id": "id-edge-runtime-maturity-2026",
+    "slug": "id-edge-runtime-maturity-2026",
+    "title": "Edge Runtimes Mencapai Kematangan Produksi di 2026",
+    "excerpt": "V8 isolates, WASM, dan Workers telah berpindah dari eksperimen ke default. Berikut state of the edge di 2026.",
+    "content": "# Edge Runtimes Mencapai Kematangan Produksi di 2026\n\n![Topologi edge runtime](https://picsum.photos/seed/edge/1200/600)\n\nDua tahun lalu, \"edge\" berarti hack cerdik di sekitar keterbatasan V8 isolate. Di 2026, edge runtimes adalah default yang sah untuk workload sensitif-latency.\n\n## Apa yang matang\n\n- **WASM in Workers** adalah first-class, membuka library yang sebelumnya membutuhkan Node APIs.\n- **Server Fast Refresh** membawa hot reloading fine-grained ke sisi server.\n- **Subresource Integrity** untuk file JavaScript sekarang built-in ke bundlers.\n- **Tree shaking of dynamic imports** — exports yang tidak digunakan dipangkas dari chunk `import()`.\n\n## Kapan memilih edge\n\nEdge bersinar untuk reads berat, globally-distributed, low-latency: auth checks, geo-personalization, A/B routing, dan feature flags. Itu bukan tool yang tepat untuk compute yang berjalan lama atau apapun yang butuh filesystem lengkap.\n\n## Kapan tetap di origin\n\nHeavy RAG inference, large file processing, dan apapun yang menyentuh relational database dengan semantics connection pooling masih termasuk di containerized origin. Pattern yang matang adalah **edge untuk shell, origin untuk body** — response edge yang cepat streaming sementara origin menghitung.",
+    "tags": [
+      "teknologi",
+      "edge",
+      "performa"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-06-28T00:00:00.000Z",
+    "updatedAt": "2026-06-28T00:00:00.000Z"
+  },
+  {
+    "id": "id-ai-coding-agents-mainstream-2026",
+    "slug": "id-ai-coding-agents-mainstream-2026",
+    "title": "AI Coding Agents Menyebar ke Mainstream di 2026",
+    "excerpt": "Dari novelty ke daily driver: AI coding agents sekarang bagian dari standar toolkit developer. Apa yang berubah?",
+    "content": "# AI Coding Agents Menyebar ke Mainstream di 2026\n\n![Workflow AI coding agent](https://picsum.photos/seed/aiagents/1200/600)\n\nDi 2024, AI coding agent adalah curiositi. Di 2026, itu adalah rekan satu tim. Pergeseran dari autocomplete ke task completion otonomus terjadi lebih cepat dari yang diprediksi kebanyakan orang.\n\n## Apa yang berubah\n\n1. **Long-context models** (1M+ tokens) membuat whole-repo reasoning praktis.\n2. **Sandboxed execution** — Docker dan UnixLocal backends membiarkan agent menjalankan kode dengan aman.\n3. **Reliabilitas tool-use** meningkat cukup sehingga agent menyelesaikan refactor multi-step tanpa hand-holding.\n4. **Paritas open-source** — framework seperti OpenHands dan Claude Agent SDK menutup gap dengan offering proprietary.\n\n## Workflow baru\n\nDeveloper modern tidak menulis setiap baris. Mereka menulis spec, review diff, dan steer agents. Skills berharga bergeser: kejelasan prompt, desain test, dan ketajaman code review lebih penting dari kecepatan mengetik.\n\n> Agent tidak menggantikan engineer; itu mengubah apa yang engineer habiskan waktu.\n\n## Guardrails yang berhasil\n\n- Jalankan agent di branch, jangan pernah di `main`.\n- Wajibkan test untuk perubahan non-trivial apapun.\n- Jaga human in the loop untuk apapun yang menyentuh production data atau secrets.\n\nTim yang menang dengan agent memperlakukan mereka seperti junior engineer: capable, cepat, tapi butuh review.",
+    "tags": [
+      "teknologi",
+      "ai",
+      "agents",
+      "berita"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-06-20T00:00:00.000Z",
+    "updatedAt": "2026-06-20T00:00:00.000Z"
+  },
+  {
+    "id": "id-webgpu-comes-to-browsers-2026",
+    "slug": "id-webgpu-comes-to-browsers-2026",
+    "title": "WebGPU Akhirnya Tersebar di Semua Browser di 2026",
+    "excerpt": "Setelah bertahun-tahun origin trials, WebGPU hadir di semua browser utama. Berikut yang dibuka untuk web.",
+    "content": "# WebGPU Akhirnya Tersebar di Semua Browser di 2026\n\n![Pipeline compute WebGPU](https://picsum.photos/seed/webgpu/1200/600)\n\nWebGPU — successor WebGL — mencapai cross-browser parity di 2026. Chrome, Safari, dan Firefox semuanya shipping dengan enabled by default. Ini revolusi tenang untuk apa yang bisa dilakukan web.\n\n## Apa yang WebGPU berikan\n\n- **Compute shaders** — jalankan workload GPGPU (ML inference, physics, particle sims) langsung di browser.\n- **API modern** — desain yang lebih bersih, overhead lebih rendah dari WebGL, lebih dekat ke Vulkan/Metal.\n- **Performa yang dapat diprediksi** — manajemen resource eksplisit alih-alih lotre driver WebGL.\n\n## Dampak real-world\n\n- In-browser LLM inference via WebGPU compute sekarang viable untuk model kecil, memungkinkan fitur AI yang sepenuhnya private dan offline.\n- Three.js dan React Three Fiber menambahkan WebGPU renderer first-class, sehingga konten WebGL existing dapat bermigrasi secara inkremental.\n- Physics engine dan procedural generation tools yang dulunya butuh native app sekarang berjalan di web.\n\n## Catatan\n\nWebGPU lebih low-level dari ekosistem WebGL yang biasa digunakan developer. Untuk sebagian besar product work, layering di atas Three.js atau Babylon.js masih pilihan tepat — turun ke WebGPU mentah hanya ketika butuh compute atau kontrol extreme.",
+    "tags": [
+      "teknologi",
+      "webgpu",
+      "grafis",
+      "browser"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-06-14T00:00:00.000Z",
+    "updatedAt": "2026-06-14T00:00:00.000Z"
+  },
+  {
+    "id": "id-typescript-6-type-erasure-2026",
+    "slug": "id-typescript-6-type-erasure-2026",
+    "title": "TypeScript 6 dan Revolusi Type Erasure",
+    "excerpt": "TypeScript 6 menstabilkan proposal type annotations, membawa info tipe runtime ke bahasa yang menghapusnya selama satu dekade.",
+    "content": "# TypeScript 6 dan Revolusi Type Erasure\n\n![Sistem tipe TypeScript 6](https://picsum.photos/seed/typescript6/1200/600)\n\nSelama lebih dari satu dekade, trait definisi TypeScript adalah bahwa tipe menghilang di runtime — dihapus, tidak pernah dikirim. TypeScript 6, menstabilkan **proposal type annotations**, mengubah persamaan itu.\n\n## Apa yang type annotations aktifkan\n\n- **Runtime type reflection** — validators, serializers, dan DI containers dapat membaca tipe aktual alih-alih menebak.\n- **Single source of truth** — tidak perlu lagi memelihara schema Zod/io-ts paralel yang drift dari interface Anda.\n- **Surface dependency lebih kecil** — ekosistem library validasi runtime menyusut karena bahasa melakukan pekerjaan.\n\n## Cerita migrasi\n\nFile `.ts` existing tidak terpengaruh — type erasure tetap default. Syntax baru opt-in, jadi adopsi inkremental. Library dapat expose entry points yang di-annotated sambil menjaga internals tetap erased.\n\n## Tradeoff\n\nTipe runtime berarti biaya runtime: ukuran bundle tumbuh ketika annotations dikirim. Pattern cerdas adalah annotate hanya boundary — respons API, file konfigurasi, input eksternal — sambil menjaga hot internal path tetap erased.\n\nIni adalah rilis TypeScript paling konsekuensial sejak 2.0.",
+    "tags": [
+      "teknologi",
+      "typescript",
+      "pemrograman"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-06-08T00:00:00.000Z",
+    "updatedAt": "2026-06-08T00:00:00.000Z"
+  },
+  {
+    "id": "id-vector-databases-commoditized-2026",
+    "slug": "id-vector-databases-commoditized-2026",
+    "title": "Vector Databases Ter Commoditize di 2026",
+    "excerpt": "pgvector, SQLite-vec, dan opsi in-browser mengubah vector search dari produk specialty menjadi fitur.",
+    "content": "# Vector Databases Ter Commoditize di 2026\n\n![Ruang embedding vector search](https://picsum.photos/seed/vectordb/1200/600)\n\nDi 2023, Anda butuh vector database dedicated untuk melakukan semantic search. Di 2026, vector search adalah fitur checkbox di tools yang sudah Anda gunakan.\n\n## Cerita commoditization\n\n- **`pgvector`** matang sampai titik di mana Postgres menangani production-scale similarity search untuk sebagian besar workload.\n- **`sqlite-vec`** membawa vector search ke lingkungan embedded dan edge — tidak butuh server.\n- **Opsi in-browser** (transformers.js + local vectors) membuat semantic search fully offline nyata.\n- Database generalis (MongoDB, Redis, Elastic) semuanya menambahkan native vector indexes.\n\n## Ketika Anda masih butuh specialist\n\nVector DB dedicated tetap pilihan tepat untuk: skala billion-vector, hybrid search dengan reranking kompleks, dan workload di mana millisecond latency pada korpus masif adalah produk. Untuk yang lain — yaitu sebagian besar tim — database existing Anda sudah cukup.\n\n> Pattern yang menang: vector search sebagai fitur database yang sudah Anda jalankan, bukan database baru untuk dioperasikkan.\n\n## Saran praktis\n\nMulai dengan `pgvector` di Postgres existing Anda. Ukur. Baru raggi specialist ketika Anda menabrak dinding yang bisa Anda nama — biasanya scale, bukan fitur.",
+    "tags": [
+      "teknologi",
+      "database",
+      "ai",
+      "infrastruktur"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-06-02T00:00:00.000Z",
+    "updatedAt": "2026-06-02T00:00:00.000Z"
+  },
+  {
+    "id": "id-rust-in-the-frontend-toolchain-2026",
+    "slug": "id-rust-in-the-frontend-toolchain-2026",
+    "title": "Rust di Frontend Toolchain Menjadi Normal di 2026",
+    "excerpt": "Rolldown, Biome, dan Deno's Rust rewrite menormalkan komponen toolchain berbasis Rust. Era JS-only berakhir.",
+    "content": "# Rust di Frontend Toolchain Menjadi Normal di 2026\n\n![Rust di frontend toolchain](https://picsum.photos/seed/rustfrontend/1200/600)\n\nDi 2024, menambahkan tool berbasis Rust ke frontend stack adalah sebuah percakapan. Di 2026, itu tidak值得大惊小怪. **Rolldown** menggantikan Webpack di ekosistem yang berdekatan dengan Turbopack, **Biome** menjadi linter/formatter default untuk tim yang bermigrasi dari ESLint/Prettier, dan **Deno** menyelesaikan Rust rewrite-nya.\n\n## Mengapa Rust menang\n\nRust memberikan performa level native dengan jaminan memory safety. Untuk pekerjaan toolchain — parsing, transformation, bundling — ini berarti throughput yang tidak bisa dicocokkan Node.js tanpa worker pooling yang kompleks.\n\n## Keuntungan praktis\n\n- **Rolldown** (Rust Bundler) memotong build time 60–70% vs Webpack.\n- **Biome** memformat dan melintasi dalam milidetik alih-alih detik.\n- **Deno** deployment dimulai di bawah 100ms vs cold start multi-detik Node.\n\n## Cerita migrasi\n\nMigrasi inkremental. Biome dapat menggantikan Prettier hari ini tanpa perubahan konfigurasi. Adopsi Rolldown mengikuti Turbopack. Kompatibilitas Node Deno berarti Anda dapat flip runtime tanpa menulis ulang packages.\n\n## Kesimpulan\n\nEra toolchain JS-only berakhir. Rust sekarang warga first-class di infrastruktur frontend, bukan eksperimen eksotis.",
+    "tags": [
+      "teknologi",
+      "rust",
+      "tooling",
+      "performa"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-06-05T00:00:00.000Z",
+    "updatedAt": "2026-06-05T00:00:00.000Z"
+  },
+  {
+    "id": "id-tutorial-build-3d-cyberpunk-hero-r3f",
+    "slug": "id-tutorial-build-3d-cyberpunk-hero-r3f",
+    "title": "Bangun Hero 3D Cyberpunk dengan React Three Fiber",
+    "excerpt": "Panduan step-by-step untuk membuat section hero 3D yang mengesankan dengan shader FBM fresnel dan dukungan reduced-motion.",
+    "content": "# Bangun Hero 3D Cyberpunk dengan React Three Fiber\n\n![Hero 3D Cyberpunk](https://picsum.photos/seed/cyberpunk3d/1200/600)\n\nSitus ini menggunakan hero React Three Fiber dengan shader FBM fresnel, glass panels, dan reduced-motion fallbacks. Berikut cara kerjanya.\n\n## Setup\n\nReact Three Fiber (R3F) adalah React renderer untuk Three.js. Ini membiarkan Anda menyusun scene 3D secara deklaratif, menggunakan model komponen React.\n\n```tsx\nimport { Canvas } from '@react-three/fiber'\nimport { Float, Environment } from '@react-three/drei'\n\nexport function HeroScene() {\n  return (\n    <Canvas>\n      <ambientLight />\n      <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>\n        <Mesh />\n      </Float>\n    </Canvas>\n  )\n}\n```\n\n## Shader FBM Fresnel\n\nBackground menggunakan Fractional Brownian Motion (FBM) noise dikombinasikan dengan efek Fresnel. Term Fresnel membuat edges bersinar, menciptakan rim lighting karakteristik cyberpunk.\n\n## Reduced motion\n\nSelalu hormati `prefers-reduced-motion`. Untuk pengguna yang lebih memilih motion lebih sedikit, kita fallback ke gradient statis atau animasi CSS subtil yang tidak memicu vestibular motion triggers.\n\n```css\n@media (prefers-reduced-motion: reduce) {\n  .hero-canvas {\n    animation: none;\n  }\n}\n```\n\n## Hasilnya\n\nHero 3D yang performatif dan accessible yang meningkatkan halaman tanpa mengorbankan load time atau motion sensitivity.",
+    "tags": [
+      "tutorial",
+      "react",
+      "three.js",
+      "3d",
+      "css"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-07-15T00:00:00.000Z",
+    "updatedAt": "2026-07-15T00:00:00.000Z"
+  },
+  {
+    "id": "id-tutorial-nextjs-16-cache-components",
+    "slug": "id-tutorial-nextjs-16-cache-components",
+    "title": "Menguasai Next.js 16 Cache Components",
+    "excerpt": "Deep dive ke primitif caching baru: fetch, Router, dan render caches bekerja bersama secara berbeda di Next.js 16.",
+    "content": "# Menguasai Next.js 16 Cache Components\n\n![Next.js 16 Cache](https://picsum.photos/seed/nextjscache/1200/600)\n\nNext.js 16 memperkenalkan sistem caching unified yang menggabungkan tiga cache yang sebelumnya terpisah: **fetch cache**, **router cache**, dan **full-route cache** (render cache).\n\n## Tiga cache\n\n1. **Fetch Cache** — shared di seluruh server. Meng-cache raw fetch responses, di-key oleh URL + options.\n2. **Router Cache** — sisi client. Menyimpan pre-rendered HTML + RSC payload dari route yang dikunjungi.\n3. **Full-Route Cache** — sisi server. Menyimpan fully rendered HTML + RSC payload untuk route statis.\n\n## cacheComponents\n\nFlag `cacheComponents` baru di `next.config.ts` mengaktifkan component-level caching yang agresif. Ketika diaktifkan, komponen individu dapat mendeklarasikan perilaku caching mereka sendiri.\n\n```tsx\nimport { unstable_cache } from 'next/cache'\n\nconst getData = unstable_cache(\n  async (id) => fetch(`/api/data/${id}`),\n  ['key'],\n  { revalidate: 3600, tags: ['data'] }\n)\n```\n\n## Kapan menggunakan masing-masing\n\n- **Static**: Halaman yang tidak pernah berubah. Di-cache saat build.\n- **Dynamic**: Halaman dengan konten spesifik-user. Di-render per-request.\n- **Cached**: Halaman dengan konten semi-statis. Divalidasi ulang berdasarkan jadwal atau oleh tag.\n\nCache components Next.js 16 membuat keputusan ini granular di level komponen, alih-alih level halaman.",
+    "tags": [
+      "tutorial",
+      "nextjs",
+      "caching",
+      "performa"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-07-10T00:00:00.000Z",
+    "updatedAt": "2026-07-10T00:00:00.000Z"
+  },
+  {
+    "id": "id-open-source-langgraph-1-0-stable",
+    "slug": "id-open-source-langgraph-1-0-stable",
+    "title": "LangGraph 1.0: Framework Agent Berbasis Graf yang Stabil",
+    "excerpt": "LangGraph mencapai 1.0 stabil, mengukuhkan posisinya sebagai framework go-to untuk workflow agent kompleks.",
+    "content": "# LangGraph 1.0: Framework Agent Berbasis Graf yang Stabil\n\n![Arsitektur LangGraph](https://picsum.photos/seed/langgraph/1200/600)\n\nLangGraph, library orkestrasi agent berbasis graf dari LangChain, mencapai 1.0 stabil di 2026. Setelah dua tahun iterasi, ia telah mengukuhkan posisinya sebagai framework go-to untuk workflow agent multi kompleks.\n\n## Apa yang membuat LangGraph berbeda\n\nLangGraph memodelkan workflow agent sebagai directed graphs. Setiap node adalah fungsi atau agent; edge membawa state antar node. Ini adalah fit alami untuk AI agentik — task jarang linier, dan graf menangani branching, looping, dan routing kondisional dengan elegan.\n\n## Perbaikan 1.0\n\n- **Checkpointing** sekarang production-ready — persist dan resume agent state lintas crash.\n- **Streaming** adalah first-class — stream tokens, tool calls, dan state updates.\n- **Pattern human-in-the-loop** built-in — interrupt, approve, dan edit agent state mid-execution.\n\n## Kapan memilih LangGraph\n\n- Workflow kompleks dengan branching, loops, atau logika kondisional.\n- Agent yang butuh persist state lintas task yang berjalan lama.\n- Skenario yang memerlukan persetujuan manusia di titik keputusan kritis.\n\n## Kesimpulan\n\nLangGraph 1.0 adalah framework yang harus dikalahkan untuk aplikasi agentik production-grade. Model grafnya adalah abstraksi yang tepat untuk realita messy workflow agent.",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "langgraph"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-07-25T00:00:00.000Z",
+    "updatedAt": "2026-07-25T00:00:00.000Z"
+  },
+  {
+    "id": "id-open-source-crewai-1-14-memory",
+    "slug": "id-open-source-crewai-1-14-memory",
+    "title": "CrewAI 1.14: Memory dan Konteks Jangka Panjang",
+    "excerpt": "CrewAI 1.14 mengirimkan primitif memory native, menyelesaikan masalah context window exhaustion untuk tim agent berbasis peran.",
+    "content": "# CrewAI 1.14: Memory dan Konteks Jangka Panjang\n\n![Agent memory CrewAI](https://picsum.photos/seed/crewai/1200/600)\n\nCrewAI 1.14 menyelesaikan masalah context window exhaustion yang telah mengganggu sistem multi-agent. Rilis menambahkan **primitif memory** native — episodic, semantic, dan working memory — yang dapat di-query agent tanpa membanjiri context.\n\n## Tipe memory\n\n1. **Episodic Memory** — menyimpan event dan outcome. Agent mengingat apa yang terjadi sebelumnya.\n2. **Semantic Memory** — menyimpan fakta dan pengetahuan. Agent tahu apa yang mereka pelajari.\n3. **Working Memory** — menyimpan konteks saat ini. Agent tahu apa yang terjadi sekarang.\n\n## Cara kerjanya\n\nKetika sebuah agent menyelesaikan task, fakta yang relevan di-abstraksi dan disimpan di semantic memory. Episodic memory menangkap urutan event. Working memory di-populate dari konteks percakapan saat ini.\n\n```python\nfrom crewai import Agent, Crew, Memory\n\ncrew = Crew(\n    agents=[researcher, writer],\n    memory=Memory(types=[\"episodic\", \"semantic\", \"working\"])\n)\n```\n\n## Mengapa ini penting\n\nTanpa memory, tim agent mengulangi mistake dan kehilangan konteks setelah beberapa turn. Dengan memory, mereka membangun institutional knowledge lintas sesi — fondasi untuk agent yang benar-benar berguna.\n\n## Kesimpulan\n\nPrimitif memory sekarang table stakes untuk framework multi-agent. Implementasi CrewAI bersih dan composable.",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "crewai"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-07-18T00:00:00.000Z",
+    "updatedAt": "2026-07-18T00:00:00.000Z"
+  },
+  {
+    "id": "id-openhands-open-source-dev-agent",
+    "slug": "id-openhands-open-source-dev-agent",
+    "title": "OpenHands: Agent Developer AI Open-Source",
+    "excerpt": "OpenHands mencapai prominence di 2026 sebagai agent AI go-to open-source untuk task pengembangan software.",
+    "content": "# OpenHands: Agent Developer AI Open-Source\n\n![Agent OpenHands](https://picsum.photos/seed/openhands/1200/600)\n\nOpenHands muncul sebagai agent AI open-source terkemuka untuk pengembangan software di 2026. Didukung komunitas kuat dan dirancang untuk extensibility, ia menjadi fondasi untuk puluhan development agent terspesialisasi.\n\n## Apa yang dilakukan OpenHands\n\nOpenHands adalah framework untuk membangun AI agent yang berinteraksi dengan lingkungan komputer. Ia dapat browse web, baca dan tulis file, jalankan perintah, dan lebih — semua melalui interface tool unified.\n\n## Model agent\n\nOpenHands menggunakan teachable loop: agent mengamati environment, merencanakan aksi, mengeksekusinya, dan belajar dari hasil. Loop ini menangani task sederhana (edit file) dan kompleks (debug test suite yang gagal).\n\n## Fitur kunci\n\n- **Sandboxed execution** — jalankan kode yang tidak dipercaya dengan aman di Docker containers.\n- **Multi-turn reasoning** — tangani task kompleks yang butuh banyak langkah.\n- **Tool extensibility** — tambahkan tool baru dengan mengimplementasi interface sederhana.\n- **Persistence** — lanjutkan dari tempat Anda berhenti setelah crash.\n\n## Mengapa ini penting\n\nFramework agent open-source mendemokratisasi pengembangan berbantuan AI. Lisensi yang permisif dan extensibility OpenHands berarti siapapun dapat membangun agent terspesialisasi tanpa memulai dari nol.\n\n## Kesimpulan\n\nOpenHands adalah jawaban open-source untuk coding agent komersial. Pengembangan berbasis komunitasnya memastikan iterasi cepat dan use case yang beragam.",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "openhands"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-07-05T00:00:00.000Z",
+    "updatedAt": "2026-07-05T00:00:00.000Z"
+  },
+  {
+    "id": "id-tutorial-motion-lazy-bundle",
+    "slug": "id-tutorial-motion-lazy-bundle",
+    "title": "Tutorial: Lazy Bundle dengan Motion untuk Performa Optimal",
+    "excerpt": "Pelajari cara lazy loading animasi dengan Motion (Framer Motion) untuk mengurangi bundle size dan meningkatkan waktu muat.",
+    "content": "# Tutorial: Lazy Bundle dengan Motion untuk Performa Optimal\n\n*Versi Indonesia dari [Tutorial: Shrinking Your Motion Bundle With LazyMotion]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "tutorial",
+      "motion",
+      "react",
+      "performa"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-07-26T00:00:00.000Z",
+    "updatedAt": "2026-07-26T00:00:00.000Z"
+  },
+  {
+    "id": "id-tutorial-static-export-firebase-hosting",
+    "slug": "id-tutorial-static-export-firebase-hosting",
+    "title": "Tutorial: Static Export Next.js ke Firebase Hosting",
+    "excerpt": "Deploy Next.js static export ke Firebase Hosting dengan CI/CD GitHub Actions otomatis.",
+    "content": "# Tutorial: Static Export Next.js ke Firebase Hosting\n\n*Versi Indonesia dari [Tutorial: Static Export a Next.js App to Firebase Hosting Free Tier]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "tutorial",
+      "nextjs",
+      "firebase",
+      "hosting"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-07-22T00:00:00.000Z",
+    "updatedAt": "2026-07-22T00:00:00.000Z"
+  },
+  {
+    "id": "id-tutorial-web-audio-ambient-drone",
+    "slug": "id-tutorial-web-audio-ambient-drone",
+    "title": "Tutorial: Ambient Drone dengan Web Audio API",
+    "excerpt": "Buat soundscape ambient yang menenangkan menggunakan Web Audio API dan synthesizer sederhana.",
+    "content": "# Tutorial: Ambient Drone dengan Web Audio API\n\n*Versi Indonesia dari [Tutorial: Synthesize an Ambient Drone With the Web Audio API]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "tutorial",
+      "web-audio",
+      "audio",
+      "javascript"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-07-18T00:00:00.000Z",
+    "updatedAt": "2026-07-18T00:00:00.000Z"
+  },
+  {
+    "id": "id-tutorial-i18n-client-side-nextjs",
+    "slug": "id-tutorial-i18n-client-side-nextjs",
+    "title": "Tutorial: i18n Client-Side dengan Next.js",
+    "excerpt": "Implementasi internationalization client-side dengan next-intl untuk pengalaman bilingual yang mulus.",
+    "content": "# Tutorial: i18n Client-Side dengan Next.js\n\n*Versi Indonesia dari [Tutorial: Client-Side i18n in a Static Next.js Export]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "tutorial",
+      "nextjs",
+      "i18n",
+      "internasionalisasi"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-07-14T00:00:00.000Z",
+    "updatedAt": "2026-07-14T00:00:00.000Z"
+  },
+  {
+    "id": "id-tutorial-rss-feed-static-nextjs",
+    "slug": "id-tutorial-rss-feed-static-nextjs",
+    "title": "Tutorial: RSS Feed untuk Next.js Static Export",
+    "excerpt": "Generate RSS feed XML secara otomatis saat build untuk Next.js static export.",
+    "content": "# Tutorial: RSS Feed untuk Next.js Static Export\n\n*Versi Indonesia dari [Tutorial: Generate an RSS Feed for a Static Next.js Site]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "tutorial",
+      "nextjs",
+      "rss",
+      "seo"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-07-10T00:00:00.000Z",
+    "updatedAt": "2026-07-10T00:00:00.000Z"
+  },
+  {
+    "id": "id-tutorial-firestore-client-sdk-static-site",
+    "slug": "id-tutorial-firestore-client-sdk-static-site",
+    "title": "Tutorial: Firebase Firestore Client SDK untuk Static Site",
+    "excerpt": "Ambil data Firestore dengan Firebase JS SDK pada static site Next.js tanpa backend server.",
+    "content": "# Tutorial: Firebase Firestore Client SDK untuk Static Site\n\n*Versi Indonesia dari [Tutorial: Adding Firestore to a Static Next.js Export]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "tutorial",
+      "firebase",
+      "firestore",
+      "static"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-07-06T00:00:00.000Z",
+    "updatedAt": "2026-07-06T00:00:00.000Z"
+  },
+  {
+    "id": "id-tutorial-reduced-motion-accessibility",
+    "slug": "id-tutorial-reduced-motion-accessibility",
+    "title": "Tutorial: Reduced Motion untuk Aksesibilitas Web",
+    "excerpt": "Implementasikan reduced motion dengan benar untuk menghormati preferensi pengguna dan meningkatkan aksesibilitas.",
+    "content": "# Tutorial: Reduced Motion untuk Aksesibilitas Web\n\n*Versi Indonesia dari [Tutorial: Building for `prefers-reduced-motion`]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "tutorial",
+      "css",
+      "aksesibilitas",
+      "motion"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-06-30T00:00:00.000Z",
+    "updatedAt": "2026-06-30T00:00:00.000Z"
+  },
+  {
+    "id": "id-tutorial-seo-nextjs-16",
+    "slug": "id-tutorial-seo-nextjs-16",
+    "title": "Tutorial: SEO untuk Next.js 16",
+    "excerpt": "Optimasi SEO dengan Next.js 16: metadata API, structured data, dan sitemap generation.",
+    "content": "# Tutorial: SEO untuk Next.js 16\n\n*Versi Indonesia dari [Tutorial: Production SEO in Next.js 16]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "tutorial",
+      "nextjs",
+      "seo",
+      "optimasi"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-06-24T00:00:00.000Z",
+    "updatedAt": "2026-06-24T00:00:00.000Z"
+  },
+  {
+    "id": "id-tutorial-github-actions-deploy-firebase",
+    "slug": "id-tutorial-github-actions-deploy-firebase",
+    "title": "Tutorial: Deploy Firebase dengan GitHub Actions",
+    "excerpt": "Otomatiskan deployment ke Firebase Hosting setiap push ke branch master dengan GitHub Actions.",
+    "content": "# Tutorial: Deploy Firebase dengan GitHub Actions\n\n*Versi Indonesia dari [Tutorial: CI/CD for Firebase Hosting With GitHub Actions]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "tutorial",
+      "firebase",
+      "github-actions",
+      "ci-cd"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-06-18T00:00:00.000Z",
+    "updatedAt": "2026-06-18T00:00:00.000Z"
+  },
+  {
+    "id": "id-programming-async-params-nextjs-16",
+    "slug": "id-programming-async-params-nextjs-16",
+    "title": "Async Params di Next.js 16: Preview dan API",
+    "excerpt": "Next.js 16 membawa async params untuk page components. Berikut cara menggunakannya dengan benar.",
+    "content": "# Async Params di Next.js 16: Preview dan API\n\n*Versi Indonesia dari [Next.js 16 Makes Async Request APIs Mandatory — Here Is How to Adapt]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "pemrograman",
+      "nextjs",
+      "async",
+      "params"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-08-01T00:00:00.000Z",
+    "updatedAt": "2026-08-01T00:00:00.000Z"
+  },
+  {
+    "id": "id-programming-middleware-to-proxy-nextjs-16",
+    "slug": "id-programming-middleware-to-proxy-nextjs-16",
+    "title": "Middleware sebagai Proxy di Next.js 16",
+    "excerpt": "Gunakan Next.js Middleware untuk proxy request ke API eksternal dengan caching dan transformasi.",
+    "content": "# Middleware sebagai Proxy di Next.js 16\n\n*Versi Indonesia dari [Next.js 16 Renamed Middleware to Proxy — What It Means]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "pemrograman",
+      "nextjs",
+      "middleware",
+      "proxy"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-07-29T00:00:00.000Z",
+    "updatedAt": "2026-07-29T00:00:00.000Z"
+  },
+  {
+    "id": "id-programming-next-image-priority-deprecated",
+    "slug": "id-programming-next-image-priority-deprecated",
+    "title": "Next.js Image Priority: Tidak Lagi Diperlukan?",
+    "excerpt": "Dengan Next.js 16, prioritas gambar ditangani otomatis. Kapan Anda masih butuh priority attribute?",
+    "content": "# Next.js Image Priority: Tidak Lagi Diperlukan?\n\n*Versi Indonesia dari [Next.js 16: `next/image` `priority` Is Deprecated — Use `preload`]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "pemrograman",
+      "nextjs",
+      "image",
+      "optimasi"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-07-24T00:00:00.000Z",
+    "updatedAt": "2026-07-24T00:00:00.000Z"
+  },
+  {
+    "id": "id-programming-eslint-flat-config-nextjs-16",
+    "slug": "id-programming-eslint-flat-config-nextjs-16",
+    "title": "ESLint Flat Config untuk Next.js 16",
+    "excerpt": "Migrasi ke ESLint flat config untuk proyek Next.js 16 dengan setup yang lebih sederhana.",
+    "content": "# ESLint Flat Config untuk Next.js 16\n\n*Versi Indonesia dari [Next.js 16: ESLint Flat Config and the End of `next lint`]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "pemrograman",
+      "eslint",
+      "nextjs",
+      "tooling"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-07-19T00:00:00.000Z",
+    "updatedAt": "2026-07-19T00:00:00.000Z"
+  },
+  {
+    "id": "id-programming-server-components-boundaries",
+    "slug": "id-programming-server-components-boundaries",
+    "title": "Server Components Boundaries di Next.js",
+    "excerpt": "Pahami kapan harus menggunakan Server Components vs Client Components untuk performa optimal.",
+    "content": "# Server Components Boundaries di Next.js\n\n*Versi Indonesia dari [Programming Server Components: Drawing the Right Boundaries]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "pemrograman",
+      "react",
+      "server-components",
+      "nextjs"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-07-15T00:00:00.000Z",
+    "updatedAt": "2026-07-15T00:00:00.000Z"
+  },
+  {
+    "id": "id-programming-react-compiler-2026",
+    "slug": "id-programming-react-compiler-2026",
+    "title": "React Compiler 2026: Status dan Best Practices",
+    "excerpt": "React Compiler sudah production-ready. Berikut cara mengaktifkannya dan pola yang direkomendasikan.",
+    "content": "# React Compiler 2026: Status dan Best Practices\n\n*Versi Indonesia dari [The React Compiler Is Real in 2026 — What It Changes]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "pemrograman",
+      "react",
+      "compiler",
+      "performa"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-07-11T00:00:00.000Z",
+    "updatedAt": "2026-07-11T00:00:00.000Z"
+  },
+  {
+    "id": "id-programming-error-handling-typescript",
+    "slug": "id-programming-error-handling-typescript",
+    "title": "Error Handling di TypeScript: Pola Modern",
+    "excerpt": "Hasil, Either, dan pola error handling modern untuk TypeScript yang lebih aman dan ekspresif.",
+    "content": "# Error Handling di TypeScript: Pola Modern\n\n*Versi Indonesia dari [TypeScript Error Handling: Beyond `try/catch`]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "pemrograman",
+      "typescript",
+      "error-handling"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-06-26T00:00:00.000Z",
+    "updatedAt": "2026-06-26T00:00:00.000Z"
+  },
+  {
+    "id": "id-programming-state-machines-react",
+    "slug": "id-programming-state-machines-react",
+    "title": "State Machines untuk React: XState dan Zustand",
+    "excerpt": "Gunakan state machines untuk logika state yang kompleks di React applications.",
+    "content": "# State Machines untuk React: XState dan Zustand\n\n*Versi Indonesia dari [Modeling UI State With State Machines in React]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "pemrograman",
+      "react",
+      "state-machine",
+      "zustand"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-06-22T00:00:00.000Z",
+    "updatedAt": "2026-06-22T00:00:00.000Z"
+  },
+  {
+    "id": "id-programming-testing-react-server-components",
+    "slug": "id-programming-testing-react-server-components",
+    "title": "Testing React Server Components",
+    "excerpt": "Strategi testing untuk React Server Components dengan Playwright dan Testing Library.",
+    "content": "# Testing React Server Components\n\n*Versi Indonesia dari [Testing React Server Components in 2026]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "pemrograman",
+      "react",
+      "testing",
+      "server-components"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-06-16T00:00:00.000Z",
+    "updatedAt": "2026-06-16T00:00:00.000Z"
+  },
+  {
+    "id": "id-programming-css-container-queries-2026",
+    "slug": "id-programming-css-container-queries-2026",
+    "title": "CSS Container Queries: Layout Responsif Komponen",
+    "excerpt": "Container queries memungkinkan komponen merespons ukuran container-nya, bukan viewport.",
+    "content": "# CSS Container Queries: Layout Responsif Komponen\n\n*Versi Indonesia dari [Container Queries Changed How I Write CSS in 2026]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "pemrograman",
+      "css",
+      "container-queries",
+      "responsive"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-06-10T00:00:00.000Z",
+    "updatedAt": "2026-06-10T00:00:00.000Z"
+  },
+  {
+    "id": "id-open-source-microsoft-agent-framework-1-0",
+    "slug": "id-open-source-microsoft-agent-framework-1-0",
+    "title": "Microsoft Agent Framework 1.0: Semantic Kernel + AutoGen",
+    "excerpt": "Microsoft menggabungkan Semantic Kernel dan AutoGen menjadi satu framework agent enterprise yang komprehensif.",
+    "content": "# Microsoft Agent Framework 1.0: Semantic Kernel + AutoGen\n\n*Versi Indonesia dari [Microsoft Agent Framework 1.0: Semantic Kernel Meets AutoGen]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "microsoft"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-07-27T00:00:00.000Z",
+    "updatedAt": "2026-07-27T00:00:00.000Z"
+  },
+  {
+    "id": "id-open-source-google-adk-2-0",
+    "slug": "id-open-source-google-adk-2-0",
+    "title": "Google Agent Development Kit 2.0",
+    "excerpt": "ADK Google mendapat update besar dengan multi-agent support dan integrasi Gemini yang lebih dalam.",
+    "content": "# Google Agent Development Kit 2.0\n\n*Versi Indonesia dari [Google ADK 2.0: Four-Language Agent Parity]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "google"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-07-23T00:00:00.000Z",
+    "updatedAt": "2026-07-23T00:00:00.000Z"
+  },
+  {
+    "id": "id-open-source-mastra-1-0-typescript",
+    "slug": "id-open-source-mastra-1-0-typescript",
+    "title": "Mastra 1.0: Agent Framework untuk TypeScript",
+    "excerpt": "Mastra menjadi framework agent TypeScript-first dengan integrasi native ke database dan tool ecosystem.",
+    "content": "# Mastra 1.0: Agent Framework untuk TypeScript\n\n*Versi Indonesia dari [Mastra 1.0: The TypeScript-First Agent Framework]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "typescript",
+      "mastra"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-07-17T00:00:00.000Z",
+    "updatedAt": "2026-07-17T00:00:00.000Z"
+  },
+  {
+    "id": "id-open-source-openai-agents-sdk-sandbox",
+    "slug": "id-open-source-openai-agents-sdk-sandbox",
+    "title": "OpenAI Agents SDK dengan Sandbox Execution",
+    "excerpt": "OpenAI Agents SDK membawa sandboxed code execution untuk agent yang lebih aman dan powerful.",
+    "content": "# OpenAI Agents SDK dengan Sandbox Execution\n\n*Versi Indonesia dari [OpenAI Agents SDK Adds Sandbox Execution and TypeScript Parity]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "openai"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-07-13T00:00:00.000Z",
+    "updatedAt": "2026-07-13T00:00:00.000Z"
+  },
+  {
+    "id": "id-open-source-claude-agent-sdk-subagents",
+    "slug": "id-open-source-claude-agent-sdk-subagents",
+    "title": "Claude Agent SDK: Sub-Agents dan Tool Calling",
+    "excerpt": "Claude Agent SDK dari Anthropic mendukung sub-agents dan tool calling yang sophisticated.",
+    "content": "# Claude Agent SDK: Sub-Agents dan Tool Calling\n\n*Versi Indonesia dari [Claude Agent SDK Adds Hierarchical Subagents and Fallback Chains]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "claude",
+      "anthropic"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-07-09T00:00:00.000Z",
+    "updatedAt": "2026-07-09T00:00:00.000Z"
+  },
+  {
+    "id": "id-open-source-llamaindex-workflows-1-0",
+    "slug": "id-open-source-llamaindex-workflows-1-0",
+    "title": "LlamaIndex Workflows 1.0: RAG Agent Pipelines",
+    "excerpt": "LlamaIndex Workflows menyederhanakan pembuatan RAG agent pipelines dengan visual composer.",
+    "content": "# LlamaIndex Workflows 1.0: RAG Agent Pipelines\n\n*Versi Indonesia dari [LlamaIndex Workflows 1.0: Event-Driven, Async-First Agents]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "llamaindex",
+      "rag"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-06-29T00:00:00.000Z",
+    "updatedAt": "2026-06-29T00:00:00.000Z"
+  },
+  {
+    "id": "id-open-source-pydantic-ai-v2",
+    "slug": "id-open-source-pydantic-ai-v2",
+    "title": "PydanticAI v2: Type-Safe AI Agents dengan Python",
+    "excerpt": "PydanticAI v2 membawa type safety yang lebih baik dan integrasi LangGraph yang seamless.",
+    "content": "# PydanticAI v2: Type-Safe AI Agents dengan Python\n\n*Versi Indonesia dari [Pydantic AI V2: Type-Safe Agent Development Done Right]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "python",
+      "pydantic"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-06-19T00:00:00.000Z",
+    "updatedAt": "2026-06-19T00:00:00.000Z"
+  },
+  {
+    "id": "id-open-source-deer-flow-bytedance",
+    "slug": "id-open-source-deer-flow-bytedance",
+    "title": "DeerFlow: Agent Framework dari ByteDance",
+    "excerpt": "DeerFlow adalah framework agent open-source dari ByteDance dengan fokus pada research dan multi-modal.",
+    "content": "# DeerFlow: Agent Framework dari ByteDance\n\n*Versi Indonesia dari [ByteDance Open-Sources Deer-Flow 2.0, Tops GitHub Trending]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "bytedance"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-06-12T00:00:00.000Z",
+    "updatedAt": "2026-06-12T00:00:00.000Z"
+  },
+  {
+    "id": "id-autogpt-open-source-agent-2026",
+    "slug": "id-autogpt-open-source-agent-2026",
+    "title": "AutoGPT: Agent Open-Source yang Berevolusi",
+    "excerpt": "AutoGPT berevolusi dari viral demo menjadi framework agent yang mature dan production-ready.",
+    "content": "# AutoGPT: Agent Open-Source yang Berevolusi\n\n*Versi Indonesia dari [AutoGPT: The Original Open-Source Agent, Still Evolving]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "autogpt"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-08-03T00:00:00.000Z",
+    "updatedAt": "2026-08-03T00:00:00.000Z"
+  },
+  {
+    "id": "id-metagpt-software-company-agent",
+    "slug": "id-metagpt-software-company-agent",
+    "title": "MetaGPT: Software Company dalam Agent",
+    "excerpt": "MetaGPT mensimulasikan organisasi software development lengkap dengan multiple AI agents.",
+    "content": "# MetaGPT: Software Company dalam Agent\n\n*Versi Indonesia dari [MetaGPT: An Open-Source Software Company in a Box]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "metagpt"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-07-25T00:00:00.000Z",
+    "updatedAt": "2026-07-25T00:00:00.000Z"
+  },
+  {
+    "id": "id-smolagents-minimal-code-first",
+    "slug": "id-smolagents-minimal-code-first",
+    "title": "smolagents: Minimal, Code-First Agent Framework",
+    "excerpt": "smolagents dari Hugging Face menawarkan pendekatan minimal untuk agent yang butuh kontrol penuh.",
+    "content": "# smolagents: Minimal, Code-First Agent Framework\n\n*Versi Indonesia dari [Smolagents: Minimal, Code-First Agents from Hugging Face]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "huggingface"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-07-21T00:00:00.000Z",
+    "updatedAt": "2026-07-21T00:00:00.000Z"
+  },
+  {
+    "id": "id-agno-lightweight-python-agents",
+    "slug": "id-agno-lightweight-python-agents",
+    "title": "Agno: Agent Python Ringan dan High-Performance",
+    "excerpt": "Agno (dulu Phidata) menjalankan agent dalam waktu kurang dari 2 mikrodetik dengan memory dan storage built-in.",
+    "content": "# Agno: Agent Python Ringan dan High-Performance\n\n*Versi Indonesia dari [Agno: Lightweight, High-Performance Python Agents]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "python",
+      "agno"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-07-16T00:00:00.000Z",
+    "updatedAt": "2026-07-16T00:00:00.000Z"
+  },
+  {
+    "id": "id-openclaw-privacy-first-agent",
+    "slug": "id-openclaw-privacy-first-agent",
+    "title": "OpenClaw: Agent Privacy-First yang Terhubung ke 50+ Apps",
+    "excerpt": "OpenClaw viral sebagai agent privacy-first yang terhubung ke 50+ apps tanpa memanggil API eksternal manapun.",
+    "content": "# OpenClaw: Agent Privacy-First yang Terhubung ke 50+ Apps\n\n*Versi Indonesia dari [OpenClaw: The Privacy-First Agent That Connects 50+ Apps]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "privacy",
+      "openclaw"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-07-08T00:00:00.000Z",
+    "updatedAt": "2026-07-08T00:00:00.000Z"
+  },
+  {
+    "id": "id-semantic-kernel-enterprise-dotnet",
+    "slug": "id-semantic-kernel-enterprise-dotnet",
+    "title": "Semantic Kernel: AI Enterprise untuk Dunia .NET",
+    "excerpt": "Semantic Kernel Microsoft tetap menjadi pilihan enterprise untuk embedding AI di stack .NET dan Java.",
+    "content": "# Semantic Kernel: AI Enterprise untuk Dunia .NET\n\n*Versi Indonesia dari [Semantic Kernel: Enterprise AI for the .NET World]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "microsoft",
+      "dotnet"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-06-27T00:00:00.000Z",
+    "updatedAt": "2026-06-27T00:00:00.000Z"
+  },
+  {
+    "id": "id-autogen-legacy-multi-agent",
+    "slug": "id-autogen-legacy-multi-agent",
+    "title": "AutoGen / AG2: Opsi Multi-Agent Legacy",
+    "excerpt": "AutoGen (sekarang AG2) tetap relevan untuk codebase v0.2 yang sudah ada.",
+    "content": "# AutoGen / AG2: Opsi Multi-Agent Legacy\n\n*Versi Indonesia dari [AutoGen / AG2: The Legacy Multi-Agent Option]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "autogen",
+      "multi-agent"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-06-15T00:00:00.000Z",
+    "updatedAt": "2026-06-15T00:00:00.000Z"
+  },
+  {
+    "id": "id-vibe-trading-open-source-agents",
+    "slug": "id-vibe-trading-open-source-agents",
+    "title": "Vibe-Trading dan Kebangkitan Open-Source Trading Agents",
+    "excerpt": "Vibe-Trading trending di GitHub Juli 2026 — agent trading open-source naik ke mainstream.",
+    "content": "# Vibe-Trading dan Kebangkitan Open-Source Trading Agents\n\n*Versi Indonesia dari [Vibe-Trading and the Rise of Open-Source Trading Agents]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "trading"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-07-12T00:00:00.000Z",
+    "updatedAt": "2026-07-12T00:00:00.000Z"
+  },
+  {
+    "id": "id-mcp-model-context-protocol-2026",
+    "slug": "id-mcp-model-context-protocol-2026",
+    "title": "MCP Memenangkan Standar Tooling Agent di 2026",
+    "excerpt": "Model Context Protocol berubah dari proposal Anthropic menjadi interface agent-tool universal.",
+    "content": "# MCP Memenangkan Standar Tooling Agent di 2026\n\n*Versi Indonesia dari [MCP Won the Agent Tooling Standard in 2026]*.\n\n*(Translation coming soon)*",
+    "tags": [
+      "open-source",
+      "ai",
+      "agents",
+      "mcp",
+      "standards"
+    ],
+    "published": true,
+    "locale": "id",
+    "createdAt": "2026-06-05T00:00:00.000Z",
+    "updatedAt": "2026-06-05T00:00:00.000Z"
   }
 ]
