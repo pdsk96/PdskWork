@@ -41,7 +41,10 @@ function AdminBlogList() {
             <h1 className="auth-title">{dict.blog.adminTitle}</h1>
             <p className="admin-welcome">{dict.blog.adminSubtitle}</p>
           </div>
-          <Link href="/admin/blog/new" className="primary-btn">{dict.blog.newPost}</Link>
+          <div className="blog-admin__actions">
+            <Link href="/admin/blog/new" className="primary-btn">{dict.blog.newPost}</Link>
+            <Link href="/admin/agents" className="ghost-btn">AI Agent Studio</Link>
+          </div>
         </div>
 
         <Link href="/blog" className="ghost-btn" target="_blank">
