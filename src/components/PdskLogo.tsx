@@ -49,7 +49,7 @@ export default function PdskLogo({ size = 28, className, animated = true }: Pdsk
       {/* Single continuous "PdskWork" wordmark — color split via tspan, no gap */}
       <text
         x="2"
-        y="42"
+        y="45"
         fontFamily="'Segoe UI', 'SF Pro Display', system-ui, sans-serif"
         fontSize="38"
         fontWeight="800"

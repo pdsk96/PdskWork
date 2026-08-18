@@ -157,7 +157,8 @@ export default function LiquidGlassNav() {
         }
         .lgnav__inner {
           position: relative;
-          display: flex;
+          display: grid;
+          grid-template-columns: 1fr auto 1fr;
           align-items: center;
           gap: 16px;
           padding: 8px 12px;
@@ -225,6 +226,7 @@ export default function LiquidGlassNav() {
         }
 
         .lgnav__brand {
+          justify-self: center;
           display: inline-flex;
           align-items: center;
           gap: 10px;
@@ -239,13 +241,13 @@ export default function LiquidGlassNav() {
           opacity: 0.85;
         }
         .lgnav__links {
+          justify-self: start;
           display: flex;
           align-items: center;
           gap: 4px;
           list-style: none;
           margin: 0;
           padding: 0;
-          margin-left: auto;
         }
         .lgnav__link {
           position: relative;
@@ -273,6 +275,7 @@ export default function LiquidGlassNav() {
           z-index: -1;
         }
         .lgnav__actions {
+          justify-self: end;
           display: flex;
           align-items: center;
           gap: 10px;
