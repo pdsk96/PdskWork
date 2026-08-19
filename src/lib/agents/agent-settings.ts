@@ -1,7 +1,8 @@
 'use client'
 
 import { doc, getDoc, setDoc } from 'firebase/firestore'
-import { db } from '@/lib/firebase'
+import { db, isFirebaseReady } from '@/lib/firebase'
+import { auth } from '@/lib/firebase'
 import type { LLMConfig } from '@/lib/ai/llm-client'
 
 export interface AgentSettings extends LLMConfig {
@@ -25,18 +26,61 @@ const DEFAULT_SETTINGS: AgentSettings = {
 
 const CONFIG_DOC_ID = 'default'
 
+function getAuthErrorMessage(err: unknown): string {
+  if (err instanceof Error) {
+    const msg = err.message.toLowerCase()
+    if (msg.includes('permission-denied') || msg.includes('missing or insufficient permissions')) {
+      return 'Firestore permission denied. Pastikan Firestore rules sudah di-deploy dan akun admin sudah login.'
+    }
+    if (msg.includes('unavailable') || msg.includes('network')) {
+      return 'Firestore tidak tersedia. Periksa koneksi internet.'
+    }
+    if (msg.includes('resource-exhausted')) {
+      return 'Quota Firestore habis.'
+    }
+    return err.message
+  }
+  return 'Unknown error'
+}
+
 export async function loadAgentSettings(): Promise<AgentSettings> {
-  if (!db) return DEFAULT_SETTINGS
   try {
+    if (!db || !isFirebaseReady()) {
+      console.warn('[agent-settings] Firebase not ready, returning default settings')
+      return DEFAULT_SETTINGS
+    }
+
     const snap = await getDoc(doc(db, 'agentConfigs', CONFIG_DOC_ID))
     if (snap.exists()) {
-      return { ...DEFAULT_SETTINGS, ...(snap.data() as Partial<AgentSettings>) }
+      const data = snap.data()
+      console.log('[agent-settings] Loaded settings from Firestore:', data)
+      return { ...DEFAULT_SETTINGS, ...(data as Partial<AgentSettings>) }
+    } else {
+      console.log('[agent-settings] No saved settings found, returning defaults')
+      return DEFAULT_SETTINGS
     }
-  } catch { /* ignore */ }
-  return DEFAULT_SETTINGS
+  } catch (err) {
+    console.error('[agent-settings] Failed to load settings:', err)
+    return DEFAULT_SETTINGS
+  }
 }
 
 export async function saveAgentSettings(settings: AgentSettings): Promise<void> {
-  if (!db) return
-  await setDoc(doc(db, 'agentConfigs', CONFIG_DOC_ID), settings, { merge: true })
+  try {
+    if (!db || !isFirebaseReady()) {
+      throw new Error('Firebase belum siap. Refresh halaman dan coba lagi.')
+    }
+
+    const currentUser = auth.currentUser
+    if (!currentUser) {
+      throw new Error('Anda belum login sebagai admin. Silakan login terlebih dahulu.')
+    }
+
+    console.log('[agent-settings] Saving settings to Firestore:', settings, 'authUid:', currentUser.uid)
+    await setDoc(doc(db, 'agentConfigs', CONFIG_DOC_ID), settings, { merge: true })
+    console.log('[agent-settings] Settings saved successfully')
+  } catch (err) {
+    console.error('[agent-settings] Failed to save settings:', err)
+    throw new Error(getAuthErrorMessage(err))
+  }
 }

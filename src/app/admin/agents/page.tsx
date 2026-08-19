@@ -64,9 +64,13 @@ export default function AdminAgentsPage() {
 
   const updateConfig = async (next: LLMConfig) => {
     setConfig(next)
-    const current = await loadAgentSettings().catch(() => null)
-    if (current) {
+    try {
+      const current = await loadAgentSettings()
+      console.log('[agents/page] Saving updated config:', { ...current, ...next })
       await saveAgentSettings({ ...current, ...next })
+      console.log('[agents/page] Config saved successfully')
+    } catch (err) {
+      console.error('[agents/page] Failed to save config:', err)
     }
   }
 
