@@ -2,6 +2,7 @@
 
 import { doc, getDoc, setDoc } from 'firebase/firestore'
 import { db, isFirebaseReady } from '@/lib/firebase'
+import { auth } from '@/lib/firebase'
 import type { LLMConfig } from '@/lib/ai/llm-client'
 
 export interface AgentSettings extends LLMConfig {
@@ -24,6 +25,23 @@ const DEFAULT_SETTINGS: AgentSettings = {
 }
 
 const CONFIG_DOC_ID = 'default'
+
+function getAuthErrorMessage(err: unknown): string {
+  if (err instanceof Error) {
+    const msg = err.message.toLowerCase()
+    if (msg.includes('permission-denied') || msg.includes('missing or insufficient permissions')) {
+      return 'Firestore permission denied. Pastikan Firestore rules sudah di-deploy dan akun admin sudah login.'
+    }
+    if (msg.includes('unavailable') || msg.includes('network')) {
+      return 'Firestore tidak tersedia. Periksa koneksi internet.'
+    }
+    if (msg.includes('resource-exhausted')) {
+      return 'Quota Firestore habis.'
+    }
+    return err.message
+  }
+  return 'Unknown error'
+}
 
 export async function loadAgentSettings(): Promise<AgentSettings> {
   try {
@@ -50,14 +68,19 @@ export async function loadAgentSettings(): Promise<AgentSettings> {
 export async function saveAgentSettings(settings: AgentSettings): Promise<void> {
   try {
     if (!db || !isFirebaseReady()) {
-      throw new Error('Firebase not ready. Cannot save settings.')
+      throw new Error('Firebase belum siap. Refresh halaman dan coba lagi.')
     }
 
-    console.log('[agent-settings] Saving settings to Firestore:', settings)
+    const currentUser = auth.currentUser
+    if (!currentUser) {
+      throw new Error('Anda belum login sebagai admin. Silakan login terlebih dahulu.')
+    }
+
+    console.log('[agent-settings] Saving settings to Firestore:', settings, 'authUid:', currentUser.uid)
     await setDoc(doc(db, 'agentConfigs', CONFIG_DOC_ID), settings, { merge: true })
     console.log('[agent-settings] Settings saved successfully')
   } catch (err) {
     console.error('[agent-settings] Failed to save settings:', err)
-    throw err
+    throw new Error(getAuthErrorMessage(err))
   }
 }

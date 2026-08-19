@@ -31,10 +31,11 @@ export default function AgentConfigPage() {
   const handleSave = async () => {
     if (!settings) return
     setSaving(true)
+    setToast(null)
     console.log('[agent-config] Saving settings:', settings)
     try {
       await saveAgentSettings(settings)
-      setToast('Settings saved.')
+      setToast('Settings saved successfully.')
       console.log('[agent-config] Reloading settings to confirm save...')
       const reloaded = await loadAgentSettings()
       setSettings(reloaded)
@@ -42,7 +43,7 @@ export default function AgentConfigPage() {
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Unknown error'
       console.error('[agent-config] Save failed:', err)
-      setToast(`Failed to save settings: ${msg}`)
+      setToast(`Gagal menyimpan: ${msg}`)
     } finally {
       setSaving(false)
     }
