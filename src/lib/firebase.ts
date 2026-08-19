@@ -4,8 +4,6 @@ import { getAuth } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
 import { getStorage } from 'firebase/storage'
 
-// Firebase client config for the pdskwork project. Values are public by design
-// (Firebase web config is safe to ship to the browser); secrets live server-side.
 const firebaseConfig = {
   apiKey: 'AIzaSyDHGlLYHlsc_QhFV_0ia6q5Z79tBUpG9YE',
   authDomain: 'pdskwork.firebaseapp.com',
@@ -16,16 +14,16 @@ const firebaseConfig = {
   measurementId: 'G-ZZW0HL7P0T',
 }
 
-// Guard against duplicate init during hot reloads / HMR.
 export const app = getApps().length ? getApp() : initializeApp(firebaseConfig)
-
-// Auth + Firestore (client SDK). Used by the admin CMS (email/password sign-in)
-// and the runtime blog store. Both are browser-only; safe to instantiate here
-// because this module is only imported by client components.
 export const auth = getAuth(app)
 export const db = getFirestore(app)
 export const storage = getStorage(app)
-
-// Analytics requires a browser environment with `window`. `isSupported()`
-// returns false in SSR / non-browser contexts, so we lazily enable it.
 export const analytics = isSupported().then((ok) => (ok ? getAnalytics(app) : null))
+
+export function isFirebaseReady(): boolean {
+  try {
+    return typeof window !== 'undefined' && Boolean(app && db && auth)
+  } catch {
+    return false
+  }
+}

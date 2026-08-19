@@ -15,20 +15,34 @@ export default function AgentConfigPage() {
   const [toast, setToast] = useState<string | null>(null)
 
   useEffect(() => {
+    console.log('[agent-config] Loading agent settings...')
     loadAgentSettings()
-      .then(setSettings)
-      .catch(() => setToast('Failed to load settings.'))
+      .then((s) => {
+        console.log('[agent-config] Settings loaded:', s)
+        setSettings(s)
+      })
+      .catch((err) => {
+        console.error('[agent-config] Failed to load settings:', err)
+        setToast('Failed to load settings.')
+      })
       .finally(() => setLoading(false))
   }, [])
 
   const handleSave = async () => {
     if (!settings) return
     setSaving(true)
+    console.log('[agent-config] Saving settings:', settings)
     try {
       await saveAgentSettings(settings)
       setToast('Settings saved.')
-    } catch {
-      setToast('Failed to save settings.')
+      console.log('[agent-config] Reloading settings to confirm save...')
+      const reloaded = await loadAgentSettings()
+      setSettings(reloaded)
+      console.log('[agent-config] Reloaded settings:', reloaded)
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Unknown error'
+      console.error('[agent-config] Save failed:', err)
+      setToast(`Failed to save settings: ${msg}`)
     } finally {
       setSaving(false)
     }

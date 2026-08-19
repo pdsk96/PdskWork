@@ -1,7 +1,7 @@
 'use client'
 
 import { doc, getDoc, setDoc } from 'firebase/firestore'
-import { db } from '@/lib/firebase'
+import { db, isFirebaseReady } from '@/lib/firebase'
 import type { LLMConfig } from '@/lib/ai/llm-client'
 
 export interface AgentSettings extends LLMConfig {
@@ -26,17 +26,38 @@ const DEFAULT_SETTINGS: AgentSettings = {
 const CONFIG_DOC_ID = 'default'
 
 export async function loadAgentSettings(): Promise<AgentSettings> {
-  if (!db) return DEFAULT_SETTINGS
   try {
+    if (!db || !isFirebaseReady()) {
+      console.warn('[agent-settings] Firebase not ready, returning default settings')
+      return DEFAULT_SETTINGS
+    }
+
     const snap = await getDoc(doc(db, 'agentConfigs', CONFIG_DOC_ID))
     if (snap.exists()) {
-      return { ...DEFAULT_SETTINGS, ...(snap.data() as Partial<AgentSettings>) }
+      const data = snap.data()
+      console.log('[agent-settings] Loaded settings from Firestore:', data)
+      return { ...DEFAULT_SETTINGS, ...(data as Partial<AgentSettings>) }
+    } else {
+      console.log('[agent-settings] No saved settings found, returning defaults')
+      return DEFAULT_SETTINGS
     }
-  } catch { /* ignore */ }
-  return DEFAULT_SETTINGS
+  } catch (err) {
+    console.error('[agent-settings] Failed to load settings:', err)
+    return DEFAULT_SETTINGS
+  }
 }
 
 export async function saveAgentSettings(settings: AgentSettings): Promise<void> {
-  if (!db) return
-  await setDoc(doc(db, 'agentConfigs', CONFIG_DOC_ID), settings, { merge: true })
+  try {
+    if (!db || !isFirebaseReady()) {
+      throw new Error('Firebase not ready. Cannot save settings.')
+    }
+
+    console.log('[agent-settings] Saving settings to Firestore:', settings)
+    await setDoc(doc(db, 'agentConfigs', CONFIG_DOC_ID), settings, { merge: true })
+    console.log('[agent-settings] Settings saved successfully')
+  } catch (err) {
+    console.error('[agent-settings] Failed to save settings:', err)
+    throw err
+  }
 }
