@@ -94,6 +94,14 @@ jobs:
           rm -f "$GOOGLE_APPLICATION_CREDENTIALS"
           echo "✓ Firestore seeding complete"
 
+      - name: Deploy Firestore rules and indexes
+        run: |
+          echo "$FIREBASE_SERVICE_ACCOUNT" > /tmp/firebase-svc-account.json
+          export GOOGLE_APPLICATION_CREDENTIALS=/tmp/firebase-svc-account.json
+          npm install -g firebase-tools
+          firebase deploy --only firestore:rules,firestore:indexes --project pdskwork
+          rm -f /tmp/firebase-svc-account.json
+
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
