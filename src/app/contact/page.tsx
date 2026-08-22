@@ -41,7 +41,7 @@ export default function ContactPage() {
       const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
 
       if (!serviceId || !templateId || !publicKey) {
-        throw new Error('EmailJS is not configured. Set NEXT_PUBLIC_EMAILJS_* environment variables.')
+        throw new Error(dict.contact.errorNotConfigured)
       }
 
       await emailjs.send(serviceId, templateId, {
@@ -55,7 +55,7 @@ export default function ContactPage() {
       setEmail('')
       setMessage('')
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to send message.')
+      setError(err instanceof Error ? err.message : dict.contact.errorNotConfigured)
     } finally {
       setSending(false)
     }
@@ -66,13 +66,13 @@ export default function ContactPage() {
       <main className="page">
         <section className="glass-card page-card">
           <h1 className="page-title">{dict.nav.contact}</h1>
-          <p className="page-lead">{dict.hero.subtitle}</p>
+          <p className="page-lead">{dict.contact.subtitle}</p>
         </section>
 
         <section className="glass-card page-card">
           <form ref={formRef} className="contact-form" onSubmit={onSubmit}>
             <div className="field">
-              <label className="field-label" htmlFor="contact-name">{dict.nav.contact || 'Name'}</label>
+              <label className="field-label" htmlFor="contact-name">{dict.contact.nameLabel}</label>
               <input
                 id="contact-name"
                 className="field-input"
@@ -80,12 +80,12 @@ export default function ContactPage() {
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Your name"
+                placeholder={dict.contact.namePlaceholder}
               />
             </div>
 
             <div className="field">
-              <label className="field-label" htmlFor="contact-email">Email</label>
+              <label className="field-label" htmlFor="contact-email">{dict.contact.emailLabel}</label>
               <input
                 id="contact-email"
                 className="field-input"
@@ -93,12 +93,12 @@ export default function ContactPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
+                placeholder={dict.contact.emailPlaceholder}
               />
             </div>
 
             <div className="field">
-              <label className="field-label" htmlFor="contact-message">Message</label>
+              <label className="field-label" htmlFor="contact-message">{dict.contact.messageLabel}</label>
               <textarea
                 id="contact-message"
                 className="field-input field-input--area"
@@ -106,15 +106,15 @@ export default function ContactPage() {
                 required
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                placeholder="Tell me about your project..."
+                placeholder={dict.contact.messagePlaceholder}
               />
             </div>
 
             {error && <p role="alert" className="auth-error">{error}</p>}
-            {sent && <p role="status" className="auth-success">Message sent successfully!</p>}
+            {sent && <p role="status" className="auth-success">{dict.contact.success}</p>}
 
             <button type="submit" className="primary-btn" disabled={sending}>
-              {sending ? 'Sending...' : 'Send message'}
+              {sending ? dict.contact.sending : dict.contact.send}
             </button>
           </form>
         </section>

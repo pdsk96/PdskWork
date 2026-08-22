@@ -20,6 +20,7 @@ export const logger = {
     if (!isProd) console.warn(...args)
   },
   error: (...args: unknown[]) => {
-    if (!isProd) console.error(...args)
+    if (!isProd) console.debug(...args)
+    console.error(...args)
   },
 }

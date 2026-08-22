@@ -6,6 +6,7 @@ import { db } from '@/lib/firebase'
 import { createPost } from '@/lib/blog-firestore'
 import { runAgentPipeline, type AgentJob, type AgentRunOptions } from './agent-orchestrator'
 import { callLLM, type LLMConfig } from '@/lib/ai/llm-client'
+import { slugify } from '@/lib/blog-types'
 import type { BlogPost } from '@/lib/blog-types'
 import { logger } from '@/lib/logger'
 
@@ -82,7 +83,7 @@ export function useScheduler(intervalMs = 300000, existingPosts: BlogPost[] = []
             logger.debug('[scheduler] processing manual', { jobId: job.id, title: job.title })
             await createPost({
               title: job.title,
-              slug: job.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''),
+              slug: slugify(job.title),
               excerpt: job.excerpt || '',
               content: job.content,
               tags: job.tags || [],

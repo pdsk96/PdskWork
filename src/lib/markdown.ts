@@ -113,8 +113,8 @@ function getVideoEmbedHtml(platform: string, videoId: string): string {
   }
 }
 
-export function renderMarkdown(md: string): string {
-  const rawHtml = marked.parse(md ?? '', { async: false }) as string
+export async function renderMarkdown(md: string): Promise<string> {
+  const rawHtml = await marked.parse(md ?? '')
 
   // Apply custom replacements BEFORE DOMPurify sanitization
   // so our safe video embeds and diagrams are preserved.
@@ -146,12 +146,20 @@ export function renderMarkdown(md: string): string {
     )
 
   // Sanitize with strict DOMPurify allowlist — no custom regex needed.
-  return DOMPurify.sanitize(withEmbeds, {
+  // Enforce iframe src restriction via hook to prevent XSS via arbitrary iframes.
+  DOMPurify.addHook('uponSanitizeAttribute', (data) => {
+    if (data.attrName === 'src' && data.tagName === 'iframe') {
+      data.attrValue = isAllowedIframeSrc(data.attrValue) ? data.attrValue : ''
+    }
+  })
+  const cleaned = DOMPurify.sanitize(withEmbeds, {
     ALLOWED_TAGS,
     ALLOWED_ATTR,
     ALLOW_DATA_ATTR: false,
     ALLOWED_URI_REGEXP: /^(?:https?|mailto|tel|data:image\/[^;,]+)/i,
   })
+  DOMPurify.removeHook('uponSanitizeAttribute')
+  return cleaned
 }
 
 /** Plain-text excerpt for meta descriptions / RSS. */

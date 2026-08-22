@@ -9,7 +9,6 @@ import { formatDate, readingTime } from '@/lib/blog-utils'
 import { getPostThumbnail } from '@/lib/thumbnail-generator'
 import RouteTransition from '@/components/RouteTransition'
 import ShareButtons from '@/components/ShareButtons'
-import DOMPurify from 'dompurify'
 
 function readSlugFromPath(): string {
   if (typeof window === 'undefined') return ''
@@ -27,6 +26,7 @@ export default function BlogPostView() {
   const [post, setPost] = useState<BlogPost | null | undefined>(undefined)
   const [prevPost, setPrevPost] = useState<BlogPost | null>(null)
   const [nextPost, setNextPost] = useState<BlogPost | null>(null)
+  const [html, setHtml] = useState('')
 
   useEffect(() => {
     let active = true
@@ -35,6 +35,7 @@ export default function BlogPostView() {
     setPost(undefined)
     setPrevPost(null)
     setNextPost(null)
+    setHtml('')
     void getPostBySlug(slug, locale)
       .then(async (p) => {
         if (!active) return
@@ -42,10 +43,14 @@ export default function BlogPostView() {
         if (p) {
           try {
             const { prev, next } = await getAdjacentPosts(p.slug, locale)
+            if (!active) return
             setPrevPost(prev)
             setNextPost(next)
             void incrementViewCount(p.id)
           } catch { /* ignore */ }
+          const rendered = await renderMarkdown(p.content)
+          if (!active) return
+          setHtml(rendered)
         }
       })
       .catch(() => {
@@ -84,9 +89,6 @@ export default function BlogPostView() {
       </RouteTransition>
     )
   }
-
-  const rawHtml = renderMarkdown(post.content)
-  const html = DOMPurify.sanitize(rawHtml)
 
   return (
     <RouteTransition>
@@ -169,4 +171,3 @@ export default function BlogPostView() {
     </RouteTransition>
   )
 }
-

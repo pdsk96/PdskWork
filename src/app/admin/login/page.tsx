@@ -78,7 +78,7 @@ export default function AdminLoginPage() {
       <section className="glass-card auth-form">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
           <h1 className="auth-title" style={{ margin: 0 }}>{dict.admin.loginTitle}</h1>
-          <Link href="/" className="ghost-btn">← Back to site</Link>
+          <Link href="/" className="ghost-btn">← {dict.ui.backToSite}</Link>
         </div>
         <Suspense fallback={<div className="glass-card auth-form" aria-busy="true" />}>
           <LoginForm />

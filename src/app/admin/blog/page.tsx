@@ -110,7 +110,7 @@ function AdminBlogList() {
           </div>
           <div className="blog-admin__actions">
             <Link href="/admin/blog/new" className="primary-btn">{dict.blog.newPost}</Link>
-            <Link href="/admin/agents" className="ghost-btn">AI Agent Studio</Link>
+            <Link href="/admin/agents" className="ghost-btn">{dict.admin.agentsTitle}</Link>
           </div>
         </div>
 
@@ -135,7 +135,7 @@ function AdminBlogList() {
                   className="field-input"
                   value={bulkTag}
                   onChange={(e) => setBulkTag(e.target.value)}
-                  placeholder="Add tags (comma-separated)"
+                  placeholder={dict.admin.bulkTagPlaceholder}
                 />
                 <button className="ghost-btn" onClick={() => handleBulkAction('tag')} disabled={bulkLoading || !bulkTag.trim()}>
                   {dict.admin.bulkUpdateTags}

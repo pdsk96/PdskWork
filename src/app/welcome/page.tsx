@@ -57,11 +57,11 @@ export default function WelcomePage() {
             <button type="button" className="primary-btn" onClick={requestFs}>
               {w.enter}
             </button>
-              <Link href="/work" className="ghost-btn">
-                {w.explore}
-              </Link>
-            </div>
-            <p className="welcome__cta-hint">{w.enterHint}</p>
+            <Link href="/work" className="ghost-btn">
+              {w.explore}
+            </Link>
+          </div>
+          <p className="welcome__cta-hint">{w.enterHint}</p>
           </section>
 
           <section className="welcome__section glass-card" aria-labelledby="welcome-greeting">

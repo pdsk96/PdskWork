@@ -24,5 +24,6 @@ export function formatDate(iso: string, locale: Locale): string {
 export function readingTime(content: string, unit: string): string {
   const words = (content.trim().match(/\S+/g) ?? []).length
   const mins = Math.max(1, Math.round(words / 200))
-  return `${mins} ${unit}`
+  const safeUnit = unit.trim() || 'min read'
+  return `${mins} ${safeUnit}`
 }

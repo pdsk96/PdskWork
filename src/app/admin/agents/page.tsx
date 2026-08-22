@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { useLocale } from '@/i18n/LocaleProvider'
+import { useLocale, useRouter } from '@/i18n/LocaleProvider'
 import AdminGate from '@/components/AdminGate'
 import AdminNav from '@/components/AdminNav'
 import AgentChat from '@/components/AgentStudio/AgentChat'
@@ -29,6 +29,7 @@ type Tab = 'agents' | 'autopilot' | 'schedule' | 'reports'
 
 export default function AdminAgentsPage() {
   const { dict, locale } = useLocale()
+  const router = useRouter()
   const [tab, setTab] = useState<Tab>('agents')
   const [config, setConfig] = useState<LLMConfig | null>(null)
   const [job, setJob] = useState<AgentJob | null>(null)
@@ -162,7 +163,8 @@ export default function AdminAgentsPage() {
     for (const t of times) {
       await createAutoGenerateJob(t, config, locale as 'en' | 'id', 1)
     }
-    setMessages((prev) => [...prev, { id: `a-${Date.now()}`, role: 'assistant', content: `Auto-schedule enabled: ${times.length} jobs created (07:00, 12:00, 19:00, 22:00).`, timestamp: Date.now() }])
+    const timeStr = times.map((t) => `${String(t).padStart(2, '0')}:00`).join(', ')
+    setMessages((prev) => [...prev, { id: `a-${Date.now()}`, role: 'assistant', content: `Auto-schedule enabled: ${times.length} jobs created (${timeStr}).`, timestamp: Date.now() }])
   }
 
   const handleGenerateReport = async () => {
@@ -182,8 +184,8 @@ export default function AdminAgentsPage() {
         <section className="glass-card admin-console">
           <div className="blog-admin__head">
             <div>
-              <h1 className="auth-title">AI Agent Studio</h1>
-              <p className="admin-welcome">Research, write, and auto-post with AI agents.</p>
+              <h1 className="auth-title">{dict.admin.agentsTitle}</h1>
+              <p className="admin-welcome">{dict.admin.agentsSubtitle}</p>
               {schedulerRunning && <p className="admin-welcome">Scheduler: running...</p>}
               {lastRun && !schedulerRunning && (
                 <p className="admin-welcome">Scheduler: last checked {new Date(lastRun).toLocaleTimeString()}</p>
@@ -202,7 +204,7 @@ export default function AdminAgentsPage() {
             <button className={`admin-tabs__btn ${tab === 'autopilot' ? 'is-active' : ''}`} onClick={() => setTab('autopilot')}>AutoPilot</button>
             <button className={`admin-tabs__btn ${tab === 'schedule' ? 'is-active' : ''}`} onClick={() => setTab('schedule')}>Schedule</button>
             <button className={`admin-tabs__btn ${tab === 'reports' ? 'is-active' : ''}`} onClick={() => setTab('reports')}>Reports</button>
-            <Link href="/admin/media" className="admin-tabs__btn">Media</Link>
+            <button className={`admin-tabs__btn`} onClick={() => router.push('/admin/media')}>Media</button>
           </div>
 
           {tab === 'agents' && (

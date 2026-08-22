@@ -97,7 +97,7 @@ export default function LiquidGlassNav() {
   const matchedLinks = NAV_LINKS.filter((l) => {
     if (!searchQuery.trim()) return false
     const q = searchQuery.trim().toLowerCase()
-    return dict.nav[l.navKey].toLowerCase().includes(q)
+    return (dict.nav[l.navKey] ?? '').toLowerCase().includes(q)
   })
 
   useEffect(() => {
@@ -262,7 +262,7 @@ export default function LiquidGlassNav() {
       </svg>
 
       {/* Desktop / Tablet top nav */}
-      <nav className="lgnav__inner" aria-label={locale === 'en' ? 'Primary' : 'Utama'}>
+      <nav className="lgnav__inner" aria-label={dict.nav.primaryNav}>
         <Link href="/" className="lgnav__brand" aria-label="PdskWork home">
           <PdskLogo size={isMobile ? 22 : 26} animated={false} />
         </Link>
@@ -473,7 +473,7 @@ export default function LiquidGlassNav() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -12 }}
           transition={{ duration: reduceMotion ? 0 : 0.22 }}
-          aria-label={locale === 'en' ? 'Mobile navigation' : 'Navigasi seluler'}
+          aria-label={dict.nav.mobileNav}
         >
           <ul className="lgnav__mobile-links">
             {NAV_LINKS.map((link) => {

@@ -6,20 +6,22 @@ rules_version = '2'
 //
 // - Public users can READ published posts (so the public blog renders without
 //   auth).
-// - Writes (create/update/delete) require an authenticated Firebase Auth user.
-//   Optionally lock writes to a single admin uid by setting ADMIN_UID below
-//   (or leave empty to allow any authenticated user).
+// - Writes (create/update/delete) require an authenticated Firebase Auth user
+//   with a verified email. Optionally lock writes to a single admin uid by
+//   setting ADMIN_UID below.
 //
-// To restrict to a specific admin, set ADMIN_UID to that user's uid and
-// uncomment the helper. Default: any signed-in user may write (the admin
-// account you create in the console).
+// IMPORTANT: Replace the placeholder ADMIN_EMAIL with the email address of the
+// real admin after creating the account in the Firebase Console. The default
+// allows any verified email for initial setup; restrict it before going public.
+
+const ADMIN_EMAIL = "owner@example.com" // TODO: replace with real admin email
+const ADMIN_UID = "" // TODO: replace with real admin uid, or leave empty to allow any verified email
 
 function isAdmin() {
-  // Static export has no server-side session cookies, so admin auth is
-  // client-side Firebase Auth. Allow any authenticated user to write so
-  // the admin CMS works. For stricter control, migrate to Firebase Custom
-  // Claims (admin: true) via the Admin SDK.
+  // Require authenticated + verified email. If ADMIN_UID is set, also match UID.
   return request.auth != null
+    && request.auth.token.email_verified == true
+    && (ADMIN_UID == "" || request.auth.uid == ADMIN_UID)
 }
 
 service cloud.firestore {

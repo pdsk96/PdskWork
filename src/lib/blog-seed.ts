@@ -18,6 +18,7 @@ import type { BlogPost } from './blog-types'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const SEED_FILE = join(__dirname, '..', 'db', 'blog.json')
+const COVER_MANIFEST = join(__dirname, '..', '..', 'public', 'blog-covers', 'manifest.json')
 
 function readSeed(): BlogPost[] {
   try {
@@ -28,9 +29,32 @@ function readSeed(): BlogPost[] {
   }
 }
 
+function readCoverManifest(): Record<string, { coverImage: string; coverImageAlt: string }> {
+  try {
+    const raw = readFileSync(COVER_MANIFEST, 'utf8')
+    return JSON.parse(raw)
+  } catch {
+    return {}
+  }
+}
+
+function withCovers(posts: BlogPost[]): BlogPost[] {
+  const manifest = readCoverManifest()
+  if (!Object.keys(manifest).length) return posts
+  return posts.map((p) => {
+    const m = manifest[p.slug]
+    if (!m) return p
+    return {
+      ...p,
+      coverImage: m.coverImage,
+      coverImageAlt: m.coverImageAlt,
+    }
+  })
+}
+
 /** All seed posts, newest first. Build-time only. */
 export function getSeedPosts(): BlogPost[] {
-  return readSeed().sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
+  return withCovers(readSeed()).sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
 }
 
 /** Published seed posts, optionally filtered by locale. Build-time only. */
@@ -40,5 +64,5 @@ export function getSeedPublishedPosts(locale?: 'en' | 'id'): BlogPost[] {
 
 /** Find a published seed post by slug. Build-time only. */
 export function getSeedPostBySlug(slug: string): BlogPost | null {
-  return readSeed().find((p) => p.slug === slug && p.published) ?? null
+  return getSeedPosts().find((p) => p.slug === slug && p.published) ?? null
 }

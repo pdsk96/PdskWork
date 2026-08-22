@@ -58,7 +58,7 @@ export default function AdminNav() {
     <>
       {/* Desktop horizontal nav */}
       {!isMobile && (
-        <nav className="admin-nav" aria-label="Admin">
+        <nav className="admin-nav" aria-label={dict.ui.adminNav}>
           {navItems.map((item) => {
             const active = item.exact
               ? safePathname === item.href
@@ -79,7 +79,7 @@ export default function AdminNav() {
 
       {/* Mobile bottom nav */}
       {isMobile && (
-        <nav className="admin-nav__bottom" aria-label="Admin">
+        <nav className="admin-nav__bottom" aria-label={dict.ui.adminNav}>
           {navItems.map((item) => {
             const active = safePathname === item.href || safePathname.startsWith(`${item.href}/`)
             const label = getLabel(item)

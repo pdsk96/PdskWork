@@ -1,9 +1,9 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import sharp from 'sharp'
 
 const BLOG_JSON = path.join(process.cwd(), 'src/db/blog.json')
 const OUT_DIR = path.join(process.cwd(), 'public/blog-covers')
+const MANIFEST_PATH = path.join(OUT_DIR, 'manifest.json')
 const WIDTH = 1200
 const HEIGHT = 630
 
@@ -72,6 +72,8 @@ async function main() {
   const posts = JSON.parse(raw)
 
   let updated = 0
+  const manifest = {}
+
   for (const post of posts) {
     if (post.published !== true) continue
     if (post.coverImage) continue
@@ -81,13 +83,15 @@ async function main() {
     const excerpt = String(post.excerpt || title)
 
     await generateCoverImage({ slug, title, excerpt })
-    post.coverImage = `/blog-covers/${slug}.jpg`
-    post.coverImageAlt = title
+    manifest[slug] = {
+      coverImage: `/blog-covers/${slug}.jpg`,
+      coverImageAlt: title,
+    }
     updated++
   }
 
   if (updated > 0) {
-    fs.writeFileSync(BLOG_JSON, JSON.stringify(posts, null, 2))
+    fs.writeFileSync(MANIFEST_PATH, JSON.stringify(manifest, null, 2))
     console.log(`[gen-cover-images] generated ${updated} cover image(s)`)
   } else {
     console.log('[gen-cover-images] nothing to generate')

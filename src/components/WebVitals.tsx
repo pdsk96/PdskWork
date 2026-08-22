@@ -23,7 +23,7 @@ export function WebVitals() {
     if (isDev) {
       // eslint-disable-next-line no-console
       logger.debug(`[web-vitals] ${metric.name}`, {
-        value: Math.round(metric.name === 'CLS' ? metric.value * 1000 : metric.value),
+        value: metric.value,
         rating: metric.rating,
         id: metric.id,
       })

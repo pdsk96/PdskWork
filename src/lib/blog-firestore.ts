@@ -109,6 +109,8 @@ function snapToPost(id: string, data: Record<string, unknown>, fallbackCreatedAt
     createdAt: typeof data.createdAt === 'string' ? data.createdAt : fallbackCreatedAt ?? new Date().toISOString(),
     updatedAt: typeof data.updatedAt === 'string' ? data.updatedAt : new Date().toISOString(),
     viewCount: typeof data.viewCount === 'number' ? data.viewCount : 0,
+    coverImage: typeof data.coverImage === 'string' ? data.coverImage : undefined,
+    coverImageAlt: typeof data.coverImageAlt === 'string' ? data.coverImageAlt : undefined,
   }
 }
 
@@ -332,17 +334,21 @@ async function uniqueSlug(slug: string, excludeId?: string): Promise<string> {
 /** Bulk update posts by id list. */
 export async function bulkUpdatePosts(ids: string[], patch: Partial<Pick<BlogPost, 'published' | 'tags' | 'locale' | 'title' | 'excerpt'>>): Promise<number> {
   if (!ids.length) return 0
-  const batch = writeBatch(db)
+  const BATCH_LIMIT = 500
   let count = 0
-  for (const id of ids) {
-    const ref = doc(db, COLLECTION, id)
-    batch.update(ref, {
-      ...patch,
-      updatedAt: new Date().toISOString(),
-    })
-    count++
+  for (let i = 0; i < ids.length; i += BATCH_LIMIT) {
+    const batch = writeBatch(db)
+    const chunk = ids.slice(i, i + BATCH_LIMIT)
+    for (const id of chunk) {
+      const ref = doc(db, COLLECTION, id)
+      batch.update(ref, {
+        ...patch,
+        updatedAt: new Date().toISOString(),
+      })
+      count++
+    }
+    await batch.commit()
   }
-  await batch.commit()
   // Invalidate cache for all affected locales
   invalidateCache('published')
   invalidateCache('slug')
@@ -352,14 +358,18 @@ export async function bulkUpdatePosts(ids: string[], patch: Partial<Pick<BlogPos
 /** Bulk delete posts by id list. */
 export async function bulkDeletePosts(ids: string[]): Promise<number> {
   if (!ids.length) return 0
-  const batch = writeBatch(db)
+  const BATCH_LIMIT = 500
   let count = 0
-  for (const id of ids) {
-    const ref = doc(db, COLLECTION, id)
-    batch.delete(ref)
-    count++
+  for (let i = 0; i < ids.length; i += BATCH_LIMIT) {
+    const batch = writeBatch(db)
+    const chunk = ids.slice(i, i + BATCH_LIMIT)
+    for (const id of chunk) {
+      const ref = doc(db, COLLECTION, id)
+      batch.delete(ref)
+      count++
+    }
+    await batch.commit()
   }
-  await batch.commit()
   // Invalidate cache for all affected locales
   invalidateCache('published')
   invalidateCache('slug')
@@ -373,33 +383,12 @@ export async function incrementViewCount(id: string): Promise<void> {
 
 /** Get adjacent posts (previous and next) for a given slug, ordered by createdAt desc. */
 export async function getAdjacentPosts(slug: string, locale?: 'en' | 'id'): Promise<{ prev: BlogPost | null; next: BlogPost | null }> {
-  // First, get the current post to know its createdAt
-  const current = await getPostBySlug(slug, locale)
-  if (!current) return { prev: null, next: null }
-
-  const base = locale
-    ? query(
-        collection(db, COLLECTION),
-        where('published', '==', true),
-        where('locale', '==', locale),
-        orderBy('createdAt', 'desc'),
-      )
-    : query(
-        collection(db, COLLECTION),
-        where('published', '==', true),
-        orderBy('createdAt', 'desc'),
-      )
-
-  // Fetch a small window around the current post (2 before + current + 2 after)
-  const q = query(base, limit(5))
-  const snap = await getDocs(q)
-  const posts = snap.docs.map((d) => snapToPost(d.id, d.data() as Record<string, unknown>))
-  const idx = posts.findIndex((p) => p.slug === slug)
-
+  const allPosts = await getPublishedPosts(locale)
+  const idx = allPosts.findIndex((p) => p.slug === slug)
   if (idx === -1) return { prev: null, next: null }
   return {
-    prev: idx > 0 ? posts[idx - 1] : null,
-    next: idx < posts.length - 1 ? posts[idx + 1] : null,
+    prev: idx > 0 ? allPosts[idx - 1] : null,
+    next: idx < allPosts.length - 1 ? allPosts[idx + 1] : null,
   }
 }
 

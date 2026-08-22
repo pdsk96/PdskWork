@@ -61,11 +61,11 @@ export default function AgentConfigPage() {
         <section className="glass-card admin-console">
           <div className="blog-admin__head">
             <div>
-              <h1 className="auth-title">Agent Configuration</h1>
+              <h1 className="auth-title">{dict.admin.agentsConfigTitle}</h1>
               <p className="admin-welcome">Configure LLM provider, API keys, and auto-schedule behavior.</p>
             </div>
             <button type="button" className="primary-btn" onClick={handleSave} disabled={saving}>
-              {saving ? 'Saving...' : 'Save Settings'}
+              {saving ? 'Saving...' : dict.admin.autopilotSave}
             </button>
           </div>
 
@@ -92,7 +92,7 @@ export default function AgentConfigPage() {
                   type="password"
                   value={settings.apiKey}
                   onChange={(e) => setSettings({ ...settings, apiKey: e.target.value })}
-                  placeholder="Enter your API key"
+                  placeholder={dict.ui.apiKeyPlaceholder}
                 />
               </div>
               <div className="field">
@@ -101,7 +101,7 @@ export default function AgentConfigPage() {
                   className="field-input"
                   value={settings.model || ''}
                   onChange={(e) => setSettings({ ...settings, model: e.target.value })}
-                  placeholder={settings.provider === 'groq' ? 'llama-3.3-70b-versatile' : 'mistralai/Mistral-7B-Instruct-v0.3'}
+                  placeholder={settings.provider === 'groq' ? dict.ui.modelPlaceholderGroq : dict.ui.modelPlaceholderHf}
                 />
               </div>
               <div className="agent-config__row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
@@ -182,7 +182,7 @@ export default function AgentConfigPage() {
 
             <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
               <button type="button" className="primary-btn" onClick={handleSave} disabled={saving}>
-                {saving ? 'Saving...' : 'Save Settings'}
+                {saving ? 'Saving...' : dict.admin.autopilotSave}
               </button>
               <Link href="/admin/agents" className="ghost-btn">← Back to Agent Studio</Link>
             </div>

@@ -22,11 +22,11 @@ export default function AdminGate({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!loading && !user) {
       const rawNext = searchParams.get('next')
-      // Only allow internal admin paths to prevent open redirect attacks.
-      // Reject protocol-relative URLs (//evil.com), absolute URLs, and paths
-      // outside the admin section.
-      const safeNext = rawNext && rawNext.startsWith('/admin') && !rawNext.startsWith('//') && !rawNext.startsWith('/.') 
-        ? rawNext 
+      // Decode URI components to catch encoded path-traversal attempts,
+      // then allow only internal /admin paths.
+      const decoded = rawNext ? decodeURIComponent(rawNext) : ''
+      const safeNext = decoded.startsWith('/admin') && !decoded.startsWith('//') && !decoded.startsWith('/.')
+        ? decoded
         : '/admin'
       router.replace(`/admin/login?next=${encodeURIComponent(safeNext)}`)
     }

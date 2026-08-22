@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useEffect } from 'react'
 import { useLocale } from '@/i18n/LocaleProvider'
 
-export default function GlobalError({ error, reset }: { error: Error; reset: () => void }) {
+export default function GlobalError({ error, reset, digest }: { error: Error; reset: () => void; digest?: string }) {
   const { dict } = useLocale()
 
   useEffect(() => {

@@ -20,8 +20,8 @@ export function FirebaseAnalytics() {
           // analytics is initialized; page_view is auto-logged by the SDK.
         }
       })
-      .catch(() => {
-        // Swallow — analytics must never break the page.
+      .catch((err) => {
+        if (active) logger.warn('[analytics] init failed:', err)
       })
     return () => {
       active = false

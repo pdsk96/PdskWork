@@ -32,10 +32,7 @@ export default function FaqPage() {
 
         <section className="page-card faq__contact">
           <p>
-            {dict.nav.contact} →{' '}
-             <Link href="/contact" className="faq__link">
-               {dict.nav.contact}
-             </Link>
+            {dict.nav.contact} — <Link href="/contact" className="faq__link">{dict.nav.contact}</Link>
           </p>
         </section>
       </main>

@@ -176,7 +176,7 @@ export default function BlogEditor({ post }: BlogEditorProps) {
           type="text"
           value={slug}
           onChange={(e) => setSlug(e.target.value)}
-          placeholder="auto"
+          placeholder={dict.blog.slugAuto}
         />
         <span className="field-hint">{dict.blog.slugHint}</span>
       </label>

@@ -44,6 +44,9 @@ export async function uploadMedia(file: File): Promise<MediaItem> {
 }
 
 export async function deleteMedia(path: string): Promise<void> {
+  if (!path.startsWith(`${MEDIA_ROOT}/`)) {
+    throw new Error('Invalid media path')
+  }
   const storageRef = ref(storage, path)
   await deleteObject(storageRef)
 }
@@ -51,10 +54,11 @@ export async function deleteMedia(path: string): Promise<void> {
 export async function listMedia(): Promise<MediaItem[]> {
   const rootRef = ref(storage, MEDIA_ROOT)
   const res = await listAll(rootRef)
-  const items: MediaItem[] = []
-  for (const item of res.items) {
-    const url = await getDownloadURL(item)
-    items.push({ name: item.name, path: item.name, fullPath: item.fullPath, url })
-  }
+  const items = await Promise.all(
+    res.items.map(async (item) => {
+      const url = await getDownloadURL(item)
+      return { name: item.name, path: item.name, fullPath: item.fullPath, url }
+    })
+  )
   return items
 }

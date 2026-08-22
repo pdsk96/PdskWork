@@ -13,6 +13,7 @@ const ROOT = join(__dirname, '..')
 const SEED = join(ROOT, 'src', 'db', 'blog.json')
 const OUT = join(ROOT, 'public', 'feed.xml')
 const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://pdskwork.web.app'
+const DEFAULT_LOCALE = 'en'
 
 function esc(s) {
   return String(s)
@@ -81,7 +82,7 @@ const xml = `<?xml version="1.0" encoding="UTF-8"?>
     <title>PdskWork</title>
     <link>${BASE}</link>
     <description>Karya cyberpunk untuk era liquid-glass.</description>
-    <language>id</language>
+    <language>${DEFAULT_LOCALE}</language>
     <lastBuildDate>${updated}</lastBuildDate>
     <atom:link href="${BASE}/feed.xml" rel="self" type="application/rss+xml" />
     ${postItems}
