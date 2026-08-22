@@ -23,7 +23,8 @@ export default function BlogPage() {
   const [totalCount, setTotalCount] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
 
-  const totalPages = Math.ceil(totalCount / POSTS_PER_PAGE)
+  const isTotalCountUnknown = totalCount === Infinity
+  const totalPages = isTotalCountUnknown ? (hasMore ? currentPage + 1 : currentPage) : Math.ceil(totalCount / POSTS_PER_PAGE)
 
   const updatePageInURL = (page: number) => {
     const params = new URLSearchParams(searchParams.toString())
@@ -95,7 +96,7 @@ export default function BlogPage() {
     const pages: (number | string)[] = []
     const maxVisible = 5
 
-    if (totalPages <= maxVisible) {
+    if (isTotalCountUnknown || totalPages <= maxVisible) {
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i)
       }
@@ -200,7 +201,7 @@ export default function BlogPage() {
               ))}
             </section>
 
-            {totalPages > 1 && (
+            {totalPages > 1 && !isTotalCountUnknown && (
               <nav className="pagination" aria-label="Blog pagination">
                 <button
                   className="pagination__btn pagination__btn--prev"
@@ -240,7 +241,7 @@ export default function BlogPage() {
             )}
 
             <p className="pagination__info">
-              {dict.blog.showing || 'Showing'} {(currentPage - 1) * POSTS_PER_PAGE + 1}–{Math.min(currentPage * POSTS_PER_PAGE, totalCount)} {dict.blog.of || 'of'} {totalCount} {dict.blog.posts || 'posts'}
+              {dict.blog.showing || 'Showing'} {(currentPage - 1) * POSTS_PER_PAGE + 1}–{Math.min(currentPage * POSTS_PER_PAGE, totalCount || 0)} {dict.blog.of || 'of'} {isTotalCountUnknown ? '?' : totalCount} {dict.blog.posts || 'posts'}
             </p>
           </>
         )}

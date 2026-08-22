@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useLocale } from '@/i18n/LocaleProvider'
 import { getAllPosts, bulkUpdatePosts, bulkDeletePosts, type BlogPost } from '@/lib/blog-firestore'
@@ -58,10 +58,18 @@ function AdminBlogList() {
     }
   }
 
+  const toastTimerRef = useRef<number | null>(null)
   const showToast = (msg: string) => {
+    if (toastTimerRef.current) window.clearTimeout(toastTimerRef.current)
     setToast(msg)
-    setTimeout(() => setToast(null), 3000)
+    toastTimerRef.current = window.setTimeout(() => setToast(null), 3000)
   }
+
+  useEffect(() => {
+    return () => {
+      if (toastTimerRef.current) window.clearTimeout(toastTimerRef.current)
+    }
+  }, [])
 
   const handleBulkAction = async (action: BulkAction) => {
     if (selectedIds.size === 0) return
@@ -89,7 +97,12 @@ function AdminBlogList() {
         setBulkTag('')
       }
       setSelectedIds(new Set())
-      setPosts((prev) => (prev ? prev.filter((p) => !ids.includes(p.id)) : prev))
+      if (action === 'delete') {
+        setPosts((prev) => (prev ? prev.filter((p) => !ids.includes(p.id)) : prev))
+      } else {
+        // For publish/unpublish/tag, refresh from server to get updated data
+        void getAllPosts().then(setPosts).catch(() => setPosts([]))
+      }
     } catch {
       showToast('Bulk action failed.')
     } finally {

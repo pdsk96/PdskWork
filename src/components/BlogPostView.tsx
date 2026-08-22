@@ -148,16 +148,12 @@ export default function BlogPostView() {
               <Link href={`/blog/${prevPost.slug}`} className="blog-post__nav-link blog-post__nav-link--prev">
                 ← {prevPost.title}
               </Link>
-            ) : (
-              <span />
-            )}
+            ) : null}
             {nextPost ? (
               <Link href={`/blog/${nextPost.slug}`} className="blog-post__nav-link blog-post__nav-link--next">
                 {nextPost.title} →
               </Link>
-            ) : (
-              <span />
-            )}
+            ) : null}
           </nav>
 
           <footer className="blog-post__footer">

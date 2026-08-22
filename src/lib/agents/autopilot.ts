@@ -320,8 +320,8 @@ export async function runAutoPilotCycle(onEvent?: (e: AutoPilotEvent) => void): 
             published: true,
             locale: result.draft.locale,
           })
-          await updateContentPlan(plan.id, { status: 'published' })
-          onEvent?.({ type: 'publish-done', timestamp: Date.now(), message: `Published: ${result.draft.title}`, data: { planId: plan.id, slug: result.draft.slug } })
+          await updateContentPlan(plan.id, { status: 'published', postId: publishedPost.slug })
+          onEvent?.({ type: 'publish-done', timestamp: Date.now(), message: `Published: ${result.draft.title}`, data: { planId: plan.id, slug: publishedPost.slug } })
 
           // Send email notification + social distribution
           const settings = await getNotificationSettings()
@@ -464,7 +464,7 @@ export function useAutoPilot(): UseAutoPilotResult {
     // Publish
     setStatus('publishing')
     try {
-      await createPost({
+      const publishedPost = await createPost({
         title: plan.title,
         slug: plan.postId,
         excerpt: plan.angle,
@@ -473,7 +473,7 @@ export function useAutoPilot(): UseAutoPilotResult {
         published: true,
         locale: plan.locale,
       })
-      await updateContentPlan(planId, { status: 'published' })
+      await updateContentPlan(planId, { status: 'published', postId: publishedPost.slug })
     } catch (err) {
       await updateContentPlan(planId, { status: 'failed' })
       setError(err instanceof Error ? err.message : 'Publish failed')

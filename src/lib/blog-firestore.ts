@@ -171,8 +171,7 @@ export async function getPaginatedPosts(
     totalCount = countSnap.data().count
   } catch {
     // Count aggregation unavailable (missing index / permissions).
-    // Set totalCount to Infinity so the UI shows pagination controls
-    // without a broken "0 items" state.
+    // Keep totalCount as Infinity so the caller can detect it.
     totalCount = Infinity
   }
 
@@ -181,9 +180,6 @@ export async function getPaginatedPosts(
     const snap = await getDocs(q)
     const posts = snap.docs.map((d) => snapToPost(d.id, d.data() as Record<string, unknown>))
     const hasMore = posts.length === perPage
-    if (totalCount === Infinity) {
-      totalCount = hasMore ? perPage + 1 : posts.length
-    }
     return { posts, hasMore, totalCount }
   }
 
@@ -197,10 +193,6 @@ export async function getPaginatedPosts(
     : query(baseQuery, limit(perPage))
   const snap = await getDocs(q)
   const posts = snap.docs.map((d) => snapToPost(d.id, d.data() as Record<string, unknown>))
-
-  if (totalCount === Infinity) {
-    totalCount = cursorSnap.size + posts.length + (posts.length === perPage ? 1 : 0)
-  }
 
   return {
     posts,
