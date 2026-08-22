@@ -44,8 +44,8 @@ function addInsightSection(content, insight) {
   return `${trimmed}\n\n---\n\n${insight}\n`
 }
 
-function main() {
-  const raw = fs.readFileSync(BLOG_JSON, 'utf8')
+async function main() {
+  const raw = await fs.promises.readFile(BLOG_JSON, 'utf8')
   const posts = JSON.parse(raw)
 
   let updated = 0
@@ -59,7 +59,7 @@ function main() {
     }
   }
 
-  fs.writeFileSync(BLOG_JSON, JSON.stringify(posts, null, 2))
+  await fs.promises.writeFile(BLOG_JSON, JSON.stringify(posts, null, 2))
   console.log(`[add-insights] added insight to ${updated} post(s)`)
 }
 
