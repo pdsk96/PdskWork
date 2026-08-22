@@ -1,7 +1,8 @@
 rules_version = '2'
 
 // PdskWork Firestore security rules.
-// Collections: `posts` (blog CMS), `scheduledJobs` (auto-poster), `reports` (analytics), `agentConfigs` (agent settings).
+// Collections: `posts` (blog CMS), `scheduledJobs` (auto-poster), `reports` (analytics), `agentConfigs` (agent settings),
+// `autoPilotConfig`, `agentRuns`, `contentPlans`, `distributionJobs`.
 //
 // - Public users can READ published posts (so the public blog renders without
 //   auth).
@@ -46,6 +47,26 @@ service cloud.firestore {
 
     // Agent configuration. Admin-only access.
     match /agentConfigs/{configId} {
+      allow read, write: if isAdmin()
+    }
+
+    // AutoPilot configuration. Admin-only access.
+    match /autoPilotConfig/{configId} {
+      allow read, write: if isAdmin()
+    }
+
+    // AutoPilot execution runs. Admin-only access.
+    match /agentRuns/{runId} {
+      allow read, write: if isAdmin()
+    }
+
+    // Content plans for AutoPilot. Admin-only access.
+    match /contentPlans/{planId} {
+      allow read, write: if isAdmin()
+    }
+
+    // Distribution jobs. Admin-only access.
+    match /distributionJobs/{jobId} {
       allow read, write: if isAdmin()
     }
 

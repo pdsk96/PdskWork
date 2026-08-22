@@ -19,10 +19,12 @@ import { db } from '@/lib/firebase'
 import type { ChatMessage } from '@/components/AgentStudio/AgentChat'
 import type { BlogPost } from '@/lib/blog-types'
 import { useScheduler, createAutoGenerateJob, type ScheduledJob } from '@/lib/agents/scheduler'
+import { useAutoPilot } from '@/lib/agents/autopilot'
 import { useReports, generateReport } from '@/lib/agents/report-generator'
 import { loadAgentSettings, saveAgentSettings } from '@/lib/agents/agent-settings'
+import AutoPilotDashboard from '@/components/AgentStudio/AutoPilotDashboard'
 
-type Tab = 'agents' | 'schedule' | 'reports'
+type Tab = 'agents' | 'autopilot' | 'schedule' | 'reports'
 
 export default function AdminAgentsPage() {
   const { dict, locale } = useLocale()
@@ -196,6 +198,7 @@ export default function AdminAgentsPage() {
 
           <div className="admin-tabs">
             <button className={`admin-tabs__btn ${tab === 'agents' ? 'is-active' : ''}`} onClick={() => setTab('agents')}>Agents</button>
+            <button className={`admin-tabs__btn ${tab === 'autopilot' ? 'is-active' : ''}`} onClick={() => setTab('autopilot')}>AutoPilot</button>
             <button className={`admin-tabs__btn ${tab === 'schedule' ? 'is-active' : ''}`} onClick={() => setTab('schedule')}>Schedule</button>
             <button className={`admin-tabs__btn ${tab === 'reports' ? 'is-active' : ''}`} onClick={() => setTab('reports')}>Reports</button>
             <Link href="/admin/media" className="admin-tabs__btn">Media</Link>
@@ -234,6 +237,10 @@ export default function AdminAgentsPage() {
                 </div>
               )}
             </div>
+          )}
+
+          {tab === 'autopilot' && (
+            <AutoPilotDashboard />
           )}
 
           {tab === 'schedule' && (
