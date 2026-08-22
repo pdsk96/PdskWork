@@ -23,7 +23,7 @@ export function useReports() {
     try {
       const q = query(collection(db, 'reports'), orderBy('generatedAt', 'desc'), limit(20))
       const snap = await getDocs(q)
-      const items: ReportData[] = snap.docs.map((d) => ({ id: d.id, ...(d.data() as ReportData) }))
+      const items: ReportData[] = snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<ReportData, 'id'>) }))
       setReports(items)
     } finally {
       setLoading(false)

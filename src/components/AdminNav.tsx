@@ -37,7 +37,8 @@ export default function AdminNav() {
       }
       return typeof value === 'string' ? value : item.href
     }
-    return (dict as Record<string, unknown>)[item.labelKey] || item.href
+    const raw = (dict as Record<string, unknown>)[item.labelKey]
+    return typeof raw === 'string' ? raw : item.href
   }
 
   return (
