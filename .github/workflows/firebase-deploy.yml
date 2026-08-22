@@ -106,10 +106,6 @@ jobs:
           export GOOGLE_APPLICATION_CREDENTIALS=/tmp/firebase-svc-account.json
           firebase deploy --only firestore:rules,firestore:indexes --project pdskwork
           rm -f /tmp/firebase-svc-account.json
-        # Service account must have Service Usage Admin / Editor role to
-        # auto-enable the Firestore API. If it lacks that permission this
-        # step fails — allow the hosting deploy to proceed regardless.
-        continue-on-error: true
 
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
