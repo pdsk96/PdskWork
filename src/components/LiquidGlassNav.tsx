@@ -517,7 +517,6 @@ export default function LiquidGlassNav() {
           padding: 10px 16px;
           --mx: 50%;
           --my: 50%;
-          isolation: isolate;
         }
         .lgnav__svg {
           position: absolute;
@@ -536,7 +535,7 @@ export default function LiquidGlassNav() {
           border-radius: 18px;
           border: 1px solid var(--glass-border);
           background: rgba(16, 22, 40, 0.82);
-          z-index: 100;
+          z-index: 200;
         }
         @supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
           .lgnav__inner {
@@ -651,7 +650,7 @@ export default function LiquidGlassNav() {
           gap: 6px;
           flex-shrink: 0;
           position: relative;
-          z-index: 101;
+          z-index: 201;
         }
 
         /* Hamburger */
@@ -703,7 +702,7 @@ export default function LiquidGlassNav() {
         .lgnav__backdrop {
           position: fixed;
           inset: 0;
-          z-index: 50;
+          z-index: 150;
           background: rgba(5, 6, 10, 0.45);
           -webkit-backdrop-filter: blur(2px);
           backdrop-filter: blur(2px);
@@ -727,7 +726,7 @@ export default function LiquidGlassNav() {
           box-shadow:
             0 18px 50px -20px rgba(0, 0, 0, 0.7),
             inset 0 1px 0 rgba(255, 255, 255, 0.14);
-          z-index: 60;
+          z-index: 200;
         }
         .lgnav__mobile-links {
           list-style: none;
@@ -832,7 +831,7 @@ export default function LiquidGlassNav() {
           box-shadow:
             0 18px 50px -20px rgba(0, 0, 0, 0.7),
             inset 0 1px 0 rgba(255, 255, 255, 0.14);
-          z-index: 60;
+          z-index: 200;
         }
         .lgnav__search-header {
           display: flex;
