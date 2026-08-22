@@ -266,10 +266,14 @@ export default function LiquidGlassNav() {
         )}
 
         <div className="lgnav__actions">
-          <LanguageToggle />
-          <ThemeToggle />
-          <AmbientSound />
-          <FullscreenToggle autoOnFirstGesture />
+          {!isMobile && (
+            <>
+              <LanguageToggle />
+              <ThemeToggle />
+              <AmbientSound />
+              <FullscreenToggle autoOnFirstGesture />
+            </>
+          )}
           <button
             type="button"
             className="lgnav__search-toggle"
@@ -416,6 +420,15 @@ export default function LiquidGlassNav() {
                 )
               })}
             </ul>
+            <div className="lgnav__mobile-settings" role="separator" aria-orientation="horizontal">
+              <span className="lgnav__mobile-settings-label">{dict.ui.settings}</span>
+              <div className="lgnav__mobile-settings-row">
+                <LanguageToggle />
+                <ThemeToggle />
+                <AmbientSound />
+                <FullscreenToggle autoOnFirstGesture />
+              </div>
+            </div>
           </m.nav>
         )}
 
@@ -708,6 +721,33 @@ export default function LiquidGlassNav() {
         }
         .lgnav__mobile-links .lgnav__active-pill {
           display: none;
+        }
+
+        /* Mobile settings section */
+        .lgnav__mobile-settings {
+          margin-top: 10px;
+          padding-top: 10px;
+          border-top: 1px solid var(--glass-border);
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+        .lgnav__mobile-settings-label {
+          font-size: 0.72rem;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          color: var(--fg-muted);
+          padding: 0 4px;
+        }
+        .lgnav__mobile-settings-row {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          flex-wrap: wrap;
+        }
+        .lgnav__mobile-settings-row > * {
+          flex-shrink: 0;
         }
 
         /* Search */

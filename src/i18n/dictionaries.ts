@@ -156,6 +156,7 @@ export const dictionaries = {
       id: 'Bahasa Indonesia',
     },
     ui: {
+      settings: 'Settings',
       themeOnLight: 'Switch to light theme',
       themeOnDark: 'Switch to dark theme',
       ambientOn: 'Turn on ambient sound',
@@ -499,6 +500,7 @@ export const dictionaries = {
       id: 'Bahasa Indonesia',
     },
     ui: {
+      settings: 'Pengaturan',
       themeOnLight: 'Ganti ke tema terang',
       themeOnDark: 'Ganti ke tema gelap',
       ambientOn: 'Nyalakan suara ambient',
