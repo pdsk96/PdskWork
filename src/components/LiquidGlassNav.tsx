@@ -330,180 +330,184 @@ export default function LiquidGlassNav() {
           )}
         </div>
 
-        {/* Backdrop */}
-        {(searchOpen || mobileOpen) && (
-          <button
-            type="button"
-            className="lgnav__backdrop"
-            onClick={closeAll}
-            aria-label="Close overlays"
-          />
-        )}
-
-        {/* Search panel */}
-        {searchOpen && (
-          <m.div
-            id="lgnav-search-panel"
-            className="lgnav__search-panel"
-            initial={{ opacity: 0, y: isMobile ? 0 : -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: reduceMotion ? 0 : 0.2 }}
-            role="dialog"
-            aria-modal="true"
-            aria-label={dict.nav.searchPlaceholder || 'Search'}
-          >
-            <div className="lgnav__search-header">
-              <span className="lgnav__search-title">{dict.nav.searchPlaceholder || 'Search'}</span>
-              <button
-                type="button"
-                className="lgnav__search-close"
-                onClick={handleSearchToggle}
-                aria-label="Close search"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <line x1="18" y1="6" x2="6" y2="18" />
-                  <line x1="6" y1="6" x2="18" y2="18" />
-                </svg>
-              </button>
-            </div>
-            <div className="lgnav__search-field">
-              <svg className="lgnav__search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-              </svg>
-              <input
-                ref={searchInputRef}
-                className="lgnav__search-input"
-                type="search"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder={dict.nav.searchPlaceholder || 'Search posts...'}
-                aria-label="Search"
-              />
-              {searchQuery.trim() && (
-                <button
-                  type="button"
-                  className="lgnav__search-clear"
-                  onClick={() => setSearchQuery('')}
-                  aria-label="Clear search"
-                >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <line x1="18" y1="6" x2="6" y2="18" />
-                    <line x1="6" y1="6" x2="18" y2="18" />
-                  </svg>
-                </button>
-              )}
-              {searchQuery.trim() && (matchedLinks.length > 0 || matchedPosts.length > 0) && (
-                <span className="lgnav__search-count">
-                  {matchedLinks.length + matchedPosts.length}
-                </span>
-              )}
-            </div>
-            <div className="lgnav__search-results">
-              {matchedLinks.length > 0 && (
-                <div className="lgnav__search-group">
-                  <span className="lgnav__search-group-label">{dict.ui?.navLinks || 'Navigation'}</span>
-                  <ul>
-                    {matchedLinks.map((link) => (
-                      <li key={link.href}>
-                        <Link
-                          href={link.href}
-                          className="lgnav__search-result"
-                          onClick={() => {
-                            setSearchOpen(false)
-                            setSearchQuery('')
-                            setSearchPosts([])
-                          }}
-                        >
-                          <span className="lgnav__search-result-title">{dict.nav[link.navKey]}</span>
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              {matchedPosts.length > 0 && (
-                <div className="lgnav__search-group">
-                  <span className="lgnav__search-group-label">{dict.ui?.posts || 'Posts'}</span>
-                  <ul>
-                    {matchedPosts.map((post) => (
-                      <li key={post.id}>
-                        <Link
-                          href={`/blog/${post.slug}`}
-                          className="lgnav__search-result"
-                          onClick={() => {
-                            setSearchOpen(false)
-                            setSearchQuery('')
-                            setSearchPosts([])
-                          }}
-                        >
-                          <span className="lgnav__search-result-title">{post.title}</span>
-                          <span className="lgnav__search-result-meta">{formatDate(post.createdAt, locale)}</span>
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              {searchQuery.trim() && matchedLinks.length === 0 && matchedPosts.length === 0 && !searchLoading && (
-                <p className="lgnav__search-empty">{dict.nav.noResults || 'No results found.'}</p>
-              )}
-              {searchLoading && searchQuery.trim() && (
-                <p className="lgnav__search-empty">{dict.ui?.searching || 'Searching...'}</p>
-              )}
-            </div>
-          </m.div>
-        )}
-
-        {/* Mobile menu */}
-        {mobileOpen && isMobile && (
-          <m.nav
-            id="lgnav-mobile-menu"
-            className="lgnav__mobile-menu"
-            initial={{ opacity: 0, y: -12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: reduceMotion ? 0 : 0.22 }}
-            aria-label={locale === 'en' ? 'Mobile navigation' : 'Navigasi seluler'}
-          >
-            <ul className="lgnav__mobile-links">
-              {NAV_LINKS.map((link) => {
-                const safePathname = pathname ?? '/'
-                const active =
-                  link.href === '/'
-                    ? safePathname === '/'
-                    : safePathname === link.href || safePathname.startsWith(`${link.href}/`)
-                return (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className={`lgnav__link${active ? ' is-active' : ''}`}
-                      aria-current={active ? 'page' : undefined}
-                      onClick={() => setMobileOpen(false)}
-                    >
-                      {dict.nav[link.navKey]}
-                      {active && <span className="lgnav__active-pill" aria-hidden="true" />}
-                    </Link>
-                  </li>
-                )
-              })}
-            </ul>
-            <div className="lgnav__mobile-settings">
-              <span className="lgnav__mobile-settings-label">{dict.ui.settings}</span>
-              <div className="lgnav__mobile-settings-row">
-                <LanguageToggle />
-                <ThemeToggle />
-                <AmbientSound />
-                <FullscreenToggle autoOnFirstGesture />
-              </div>
-            </div>
-          </m.nav>
-        )}
-
         {/* Cursor glare (desktop only) */}
         {!isMobile && <span className="lgnav__glare" aria-hidden="true" />}
         <span className="lgnav__refract" aria-hidden="true" />
       </nav>
+
+      {/* ===== OVERLAYS - outside lgnav__inner for proper stacking ===== */}
+
+      {/* Backdrop */}
+      {(searchOpen || mobileOpen) && (
+        <div
+          className="lgnav__backdrop"
+          onClick={closeAll}
+          aria-label="Close overlays"
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') closeAll() }}
+        />
+      )}
+
+      {/* Search panel */}
+      {searchOpen && (
+        <m.div
+          id="lgnav-search-panel"
+          className="lgnav__search-panel"
+          initial={{ opacity: 0, y: isMobile ? 0 : -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: reduceMotion ? 0 : 0.2 }}
+          role="dialog"
+          aria-modal="true"
+          aria-label={dict.nav.searchPlaceholder || 'Search'}
+        >
+          <div className="lgnav__search-header">
+            <span className="lgnav__search-title">{dict.nav.searchPlaceholder || 'Search'}</span>
+            <button
+              type="button"
+              className="lgnav__search-close"
+              onClick={handleSearchToggle}
+              aria-label="Close search"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+          </div>
+          <div className="lgnav__search-field">
+            <svg className="lgnav__search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            <input
+              ref={searchInputRef}
+              className="lgnav__search-input"
+              type="search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder={dict.nav.searchPlaceholder || 'Search posts...'}
+              aria-label="Search"
+            />
+            {searchQuery.trim() && (
+              <button
+                type="button"
+                className="lgnav__search-clear"
+                onClick={() => setSearchQuery('')}
+                aria-label="Clear search"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            )}
+            {searchQuery.trim() && (matchedLinks.length > 0 || matchedPosts.length > 0) && (
+              <span className="lgnav__search-count">
+                {matchedLinks.length + matchedPosts.length}
+              </span>
+            )}
+          </div>
+          <div className="lgnav__search-results">
+            {matchedLinks.length > 0 && (
+              <div className="lgnav__search-group">
+                <span className="lgnav__search-group-label">{dict.ui?.navLinks || 'Navigation'}</span>
+                <ul>
+                  {matchedLinks.map((link) => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        className="lgnav__search-result"
+                        onClick={() => {
+                          setSearchOpen(false)
+                          setSearchQuery('')
+                          setSearchPosts([])
+                        }}
+                      >
+                        <span className="lgnav__search-result-title">{dict.nav[link.navKey]}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {matchedPosts.length > 0 && (
+              <div className="lgnav__search-group">
+                <span className="lgnav__search-group-label">{dict.ui?.posts || 'Posts'}</span>
+                <ul>
+                  {matchedPosts.map((post) => (
+                    <li key={post.id}>
+                      <Link
+                        href={`/blog/${post.slug}`}
+                        className="lgnav__search-result"
+                        onClick={() => {
+                          setSearchOpen(false)
+                          setSearchQuery('')
+                          setSearchPosts([])
+                        }}
+                      >
+                        <span className="lgnav__search-result-title">{post.title}</span>
+                        <span className="lgnav__search-result-meta">{formatDate(post.createdAt, locale)}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {searchQuery.trim() && matchedLinks.length === 0 && matchedPosts.length === 0 && !searchLoading && (
+              <p className="lgnav__search-empty">{dict.nav.noResults || 'No results found.'}</p>
+            )}
+            {searchLoading && searchQuery.trim() && (
+              <p className="lgnav__search-empty">{dict.ui?.searching || 'Searching...'}</p>
+            )}
+          </div>
+        </m.div>
+      )}
+
+      {/* Mobile menu */}
+      {mobileOpen && isMobile && (
+        <m.nav
+          id="lgnav-mobile-menu"
+          className="lgnav__mobile-menu"
+          initial={{ opacity: 0, y: -12 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -12 }}
+          transition={{ duration: reduceMotion ? 0 : 0.22 }}
+          aria-label={locale === 'en' ? 'Mobile navigation' : 'Navigasi seluler'}
+        >
+          <ul className="lgnav__mobile-links">
+            {NAV_LINKS.map((link) => {
+              const safePathname = pathname ?? '/'
+              const active =
+                link.href === '/'
+                  ? safePathname === '/'
+                  : safePathname === link.href || safePathname.startsWith(`${link.href}/`)
+              return (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className={`lgnav__link${active ? ' is-active' : ''}`}
+                    aria-current={active ? 'page' : undefined}
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    {dict.nav[link.navKey]}
+                    {active && <span className="lgnav__active-pill" aria-hidden="true" />}
+                  </Link>
+                </li>
+              )
+            })}
+          </ul>
+          <div className="lgnav__mobile-settings">
+            <span className="lgnav__mobile-settings-label">{dict.ui.settings}</span>
+            <div className="lgnav__mobile-settings-row">
+              <LanguageToggle />
+              <ThemeToggle />
+              <AmbientSound />
+              <FullscreenToggle autoOnFirstGesture />
+            </div>
+          </div>
+        </m.nav>
+      )}
 
       <style jsx>{`
         .lgnav {
@@ -513,6 +517,7 @@ export default function LiquidGlassNav() {
           padding: 10px 16px;
           --mx: 50%;
           --my: 50%;
+          isolation: isolate;
         }
         .lgnav__svg {
           position: absolute;
@@ -531,6 +536,7 @@ export default function LiquidGlassNav() {
           border-radius: 18px;
           border: 1px solid var(--glass-border);
           background: rgba(16, 22, 40, 0.82);
+          z-index: 10;
         }
         @supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
           .lgnav__inner {
@@ -645,7 +651,7 @@ export default function LiquidGlassNav() {
           gap: 6px;
           flex-shrink: 0;
           position: relative;
-          z-index: 56;
+          z-index: 11;
         }
 
         /* Hamburger */
@@ -697,18 +703,19 @@ export default function LiquidGlassNav() {
         .lgnav__backdrop {
           position: fixed;
           inset: 0;
-          z-index: 110;
+          z-index: 90;
           background: rgba(5, 6, 10, 0.45);
           -webkit-backdrop-filter: blur(2px);
           backdrop-filter: blur(2px);
+          cursor: pointer;
         }
 
         /* Mobile menu */
         .lgnav__mobile-menu {
           position: absolute;
           top: calc(100% + 10px);
-          right: 12px;
-          width: min(300px, calc(100vw - 24px));
+          right: 16px;
+          width: min(300px, calc(100vw - 32px));
           max-height: calc(100vh - 120px);
           overflow-y: auto;
           padding: 14px;
@@ -720,7 +727,7 @@ export default function LiquidGlassNav() {
           box-shadow:
             0 18px 50px -20px rgba(0, 0, 0, 0.7),
             inset 0 1px 0 rgba(255, 255, 255, 0.14);
-          z-index: 120;
+          z-index: 100;
         }
         .lgnav__mobile-links {
           list-style: none;
@@ -811,8 +818,8 @@ export default function LiquidGlassNav() {
         .lgnav__search-panel {
           position: absolute;
           top: calc(100% + 10px);
-          right: 12px;
-          width: min(360px, calc(100vw - 24px));
+          right: 16px;
+          width: min(360px, calc(100vw - 32px));
           max-height: min(480px, calc(100vh - 120px));
           display: flex;
           flex-direction: column;
@@ -825,7 +832,7 @@ export default function LiquidGlassNav() {
           box-shadow:
             0 18px 50px -20px rgba(0, 0, 0, 0.7),
             inset 0 1px 0 rgba(255, 255, 255, 0.14);
-          z-index: 120;
+          z-index: 100;
         }
         .lgnav__search-header {
           display: flex;
