@@ -18,6 +18,12 @@ export interface BlogPost {
   viewCount?: number
   coverImage?: string
   coverImageAlt?: string
+  media?: Array<{
+    type: 'image' | 'video' | 'diagram'
+    url: string
+    alt?: string
+    caption?: string
+  }>
 }
 
 export interface BlogInput {

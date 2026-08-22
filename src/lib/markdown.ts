@@ -100,6 +100,20 @@ export function renderMarkdown(md: string): string {
         return match // Return original if not a valid video URL
       }
     )
+    .replace(
+      /!\[([^\]]*)\]\(diagram:([^)]+)\)/g,
+      (match, alt, slug) => {
+        const id = slug.trim().replace(/[^a-z0-9-]/gi, '')
+        return `<figure class="md-diagram" aria-label="${alt || id}">
+  <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="diagram-title">
+    <title id="diagram-title">${alt || id}</title>
+    <rect width="800" height="400" fill="rgba(16,22,40,0.6)" rx="16"/>
+    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="var(--fg-muted)" font-family="system-ui,sans-serif" font-size="18">${id} diagram placeholder</text>
+  </svg>
+  ${alt ? `<figcaption>${alt}</figcaption>` : ''}
+</figure>`
+      }
+    )
 }
 
 /** Plain-text excerpt for meta descriptions / RSS. */

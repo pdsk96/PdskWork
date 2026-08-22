@@ -2010,6 +2010,27 @@ a {
     aspect-ratio: 16/10;
   }
 }
+
+/* Diagram embeds */
+.md-diagram {
+  margin: 1.2rem 0;
+  padding: 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  background: rgba(5, 6, 10, 0.45);
+}
+.md-diagram svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+.md-diagram figcaption {
+  margin-top: 0.6rem;
+  color: var(--fg-muted);
+  font-size: 0.88rem;
+  text-align: center;
+}
 .blog-post__footer {
   display: flex;
   flex-wrap: wrap;
