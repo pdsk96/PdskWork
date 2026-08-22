@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useEffect, useRef, useState, useMemo } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import { m, useReducedMotion } from 'motion/react'
 import { useLocale } from '@/i18n/LocaleProvider'
 import LanguageToggle from './LanguageToggle'
@@ -15,73 +15,105 @@ import blogSeed from '@/db/blog.json'
 import type { BlogPost } from '@/lib/blog-types'
 import { formatDate } from '@/lib/blog-utils'
 
-/**
- * LiquidGlassNav — refractive glass navbar.
- *
- * - Frosted backdrop-blur surface.
- * - An inline SVG filter (feDisplacementMap + feGaussianBlur + feTurbulence)
- *   distorts the frosted layer for a subtle liquid-glass refraction sheen.
- * - A cursor-follow glare writes the pointer position to CSS custom props
- *   --mx / --my via a throttled rAF handler (no React state per move), so the
- *   glare gradient updates without re-rendering the bar.
- * - `@supports` on backdrop-filter: where unsupported, a static opaque
- *   glassmorphism fallback (solid translucent background) is used.
- * - prefers-reduced-motion disables the glare tracking and SVG turbulence
- *   animation (turbulence stays static).
- *
- * `transitionTypes` on links tag navigations for the Next 16 View
- * Transitions route transitions (home = back, others = forward).
- */
+const BREAKPOINT_TABLET = 1024
+const BREAKPOINT_MOBILE = 768
+
+type ViewMode = 'desktop' | 'tablet' | 'mobile'
+
+function useViewMode(): ViewMode {
+  const [mode, setMode] = useState<ViewMode>(() => {
+    if (typeof window === 'undefined') return 'desktop'
+    if (window.innerWidth < BREAKPOINT_MOBILE) return 'mobile'
+    if (window.innerWidth < BREAKPOINT_TABLET) return 'tablet'
+    return 'desktop'
+  })
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const mql = window.matchMedia(`(max-width: ${BREAKPOINT_MOBILE - 1}px)`)
+    const mqlTablet = window.matchMedia(`(max-width: ${BREAKPOINT_TABLET - 1}px)`)
+
+    const update = () => {
+      const w = window.innerWidth
+      setMode(w < BREAKPOINT_MOBILE ? 'mobile' : w < BREAKPOINT_TABLET ? 'tablet' : 'desktop')
+    }
+
+    mql.addEventListener('change', update)
+    mqlTablet.addEventListener('change', update)
+    return () => {
+      mql.removeEventListener('change', update)
+      mqlTablet.removeEventListener('change', update)
+    }
+  }, [])
+
+  return mode
+}
+
 export default function LiquidGlassNav() {
   const { dict, locale } = useLocale()
   const pathname = usePathname()
   const reduceMotion = useReducedMotion()
+  const viewMode = useViewMode()
+
   const [mobileOpen, setMobileOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
+  const [isLandscape, setIsLandscape] = useState(false)
 
   const navRef = useRef<HTMLElement>(null)
   const rafRef = useRef<number | null>(null)
   const pendingRef = useRef<{ x: number; y: number } | null>(null)
   const searchInputRef = useRef<HTMLInputElement>(null)
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null)
 
-  const seedPosts = useMemo<BlogPost[]>(() => blogSeed as BlogPost[], [])
+  const seedPosts = blogSeed as BlogPost[]
 
-  const matchedPosts = useMemo(() => {
-    if (!searchQuery.trim()) return []
+  const matchedPosts = blogSeed
+    .filter((p) => p.published && p.locale === locale)
+    .filter((p) => {
+      if (!searchQuery.trim()) return false
+      const q = searchQuery.trim().toLowerCase()
+      return p.title.toLowerCase().includes(q) || p.excerpt.toLowerCase().includes(q) || p.tags.some((t) => t.toLowerCase().includes(q))
+    })
+    .slice(0, 8)
+
+  const matchedLinks = NAV_LINKS.filter((l) => {
+    if (!searchQuery.trim()) return false
     const q = searchQuery.trim().toLowerCase()
-    return seedPosts
-      .filter((p) => p.published && p.locale === locale)
-      .filter((p) => p.title.toLowerCase().includes(q) || p.excerpt.toLowerCase().includes(q) || p.tags.some((t) => t.toLowerCase().includes(q)))
-      .slice(0, 8)
-  }, [searchQuery, seedPosts, locale])
+    return dict.nav[l.navKey].toLowerCase().includes(q)
+  })
 
-  const matchedLinks = useMemo(() => {
-    if (!searchQuery.trim()) return []
-    const q = searchQuery.trim().toLowerCase()
-    return NAV_LINKS.filter((l) => dict.nav[l.navKey].toLowerCase().includes(q))
-  }, [searchQuery, dict])
+  useEffect(() => {
+    const checkLandscape = () => {
+      const w = window.innerWidth
+      const h = window.innerHeight
+      setIsLandscape(w > h && w < 1024)
+    }
+    checkLandscape()
+    window.addEventListener('resize', checkLandscape)
+    return () => window.removeEventListener('resize', checkLandscape)
+  }, [])
 
-  const handleSearchToggle = () => {
+  const handleSearchToggle = useCallback(() => {
     setSearchOpen((v) => {
       const next = !v
       if (next) setMobileOpen(false)
       return next
     })
-  }
+  }, [])
 
-  const handleMobileToggle = () => {
+  const handleMobileToggle = useCallback(() => {
     setMobileOpen((v) => {
       const next = !v
       if (next) setSearchOpen(false)
       return next
     })
-  }
+  }, [])
 
-  const closeAll = () => {
+  const closeAll = useCallback(() => {
     setSearchOpen(false)
     setMobileOpen(false)
-  }
+  }, [])
 
   useEffect(() => {
     if (searchOpen && searchInputRef.current) {
@@ -89,8 +121,9 @@ export default function LiquidGlassNav() {
     }
   }, [searchOpen])
 
+  // Cursor glare (desktop only)
   useEffect(() => {
-    if (reduceMotion) return
+    if (reduceMotion || viewMode === 'mobile') return
     if (!navRef.current) return
 
     function schedule() {
@@ -119,8 +152,45 @@ export default function LiquidGlassNav() {
       window.removeEventListener('pointermove', onMove)
       if (rafRef.current != null) window.cancelAnimationFrame(rafRef.current)
     }
-  }, [reduceMotion])
+  }, [reduceMotion, viewMode])
 
+  // Swipe-to-close gesture for mobile
+  useEffect(() => {
+    if (viewMode !== 'mobile' || !mobileOpen) return
+
+    function onTouchStart(e: TouchEvent) {
+      const touch = e.touches[0]
+      if (touch.clientX < 40) {
+        touchStartRef.current = { x: touch.clientX, y: touch.clientY }
+      }
+    }
+
+    function onTouchMove(e: TouchEvent) {
+      if (!touchStartRef.current) return
+      const touch = e.touches[0]
+      const dx = touch.clientX - touchStartRef.current.x
+      if (dx > 80) {
+        setMobileOpen(false)
+        touchStartRef.current = null
+      }
+    }
+
+    function onTouchEnd() {
+      touchStartRef.current = null
+    }
+
+    document.addEventListener('touchstart', onTouchStart, { passive: true })
+    document.addEventListener('touchmove', onTouchMove, { passive: true })
+    document.addEventListener('touchend', onTouchEnd)
+
+    return () => {
+      document.removeEventListener('touchstart', onTouchStart)
+      document.removeEventListener('touchmove', onTouchMove)
+      document.removeEventListener('touchend', onTouchEnd)
+    }
+  }, [viewMode, mobileOpen])
+
+  // Keyboard handling
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && (searchOpen || mobileOpen)) {
@@ -129,8 +199,9 @@ export default function LiquidGlassNav() {
     }
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
-  }, [searchOpen, mobileOpen])
+  }, [searchOpen, mobileOpen, closeAll])
 
+  // Body scroll lock
   useEffect(() => {
     if (!mobileOpen && !searchOpen) return
     document.body.style.overflow = 'hidden'
@@ -141,57 +212,55 @@ export default function LiquidGlassNav() {
 
   const filterId = 'liquid-glass-refract'
 
+  const isMobile = viewMode === 'mobile'
+  const isTablet = viewMode === 'tablet'
+
+  // Bottom nav items for mobile (primary links only)
+  const bottomNavItems = isMobile ? NAV_LINKS.slice(0, 5) : []
+
   return (
-    <header ref={navRef} className="lgnav" role="banner">
-      {/* SVG filter: turbulence + displacement produce a refraction sheen. */}
+    <header ref={navRef} className={`lgnav lgnav--${viewMode}${isLandscape ? ' lgnav--landscape' : ''}`} role="banner">
+      {/* SVG filter */}
       <svg className="lgnav__svg" aria-hidden="true" focusable="false">
         <defs>
           <filter id={filterId} x="-20%" y="-20%" width="140%" height="140%">
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency="0.012 0.02"
-              numOctaves="2"
-              seed="7"
-              result="noise"
-            />
+            <feTurbulence type="fractalNoise" baseFrequency="0.012 0.02" numOctaves="2" seed="7" result="noise" />
             <feGaussianBlur in="noise" stdDeviation="0.4" result="soft" />
-            <feDisplacementMap
-              in="SourceGraphic"
-              in2="soft"
-              scale={reduceMotion ? 0 : 9}
-              xChannelSelector="R"
-              yChannelSelector="G"
-            />
+            <feDisplacementMap in="SourceGraphic" in2="soft" scale={reduceMotion ? 0 : 9} xChannelSelector="R" yChannelSelector="G" />
           </filter>
         </defs>
       </svg>
 
+      {/* Desktop / Tablet top nav */}
       <nav className="lgnav__inner" aria-label={locale === 'en' ? 'Primary' : 'Utama'}>
         <Link href="/" className="lgnav__brand" aria-label="PdskWork home">
-          <PdskLogo size={26} animated={false} />
+          <PdskLogo size={isMobile ? 22 : 26} animated={false} />
         </Link>
 
-        <ul className="lgnav__links">
-          {NAV_LINKS.map((link) => {
-            const safePathname = pathname ?? '/'
-            const active =
-              link.href === '/'
-                ? safePathname === '/'
-                : safePathname === link.href || safePathname.startsWith(`${link.href}/`)
-            return (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className={`lgnav__link${active ? ' is-active' : ''}`}
-                  aria-current={active ? 'page' : undefined}
-                >
-                  {dict.nav[link.navKey]}
-                  {active && <span className="lgnav__active-pill" aria-hidden="true" />}
-                </Link>
-              </li>
-            )
-          })}
-        </ul>
+        {/* Desktop links */}
+        {!isMobile && (
+          <ul className="lgnav__links" role="list">
+            {NAV_LINKS.map((link) => {
+              const safePathname = pathname ?? '/'
+              const active =
+                link.href === '/'
+                  ? safePathname === '/'
+                  : safePathname === link.href || safePathname.startsWith(`${link.href}/`)
+              return (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className={`lgnav__link${active ? ' is-active' : ''}`}
+                    aria-current={active ? 'page' : undefined}
+                  >
+                    {dict.nav[link.navKey]}
+                    {active && <span className="lgnav__active-pill" aria-hidden="true" />}
+                  </Link>
+                </li>
+              )
+            })}
+          </ul>
+        )}
 
         <div className="lgnav__actions">
           <LanguageToggle />
@@ -211,25 +280,23 @@ export default function LiquidGlassNav() {
               <line x1="21" y1="21" x2="16.65" y2="16.65" />
             </svg>
           </button>
-          <button
-            type="button"
-            className="lgnav__hamburger"
-            onClick={handleMobileToggle}
-            aria-expanded={mobileOpen}
-            aria-controls="lgnav-mobile-menu"
-            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-          >
-            <span className="lgnav__hamburger-line" />
-            <span className="lgnav__hamburger-line" />
-            <span className="lgnav__hamburger-line" />
-          </button>
-          {/*
-            Admin entry is intentionally hidden from the public nav. The admin
-            console remains reachable at /admin/login (client-side gated by
-            Firebase Auth) — no discovery link is exposed in the UI.
-          */}
+          {isMobile && (
+            <button
+              type="button"
+              className="lgnav__hamburger"
+              onClick={handleMobileToggle}
+              aria-expanded={mobileOpen}
+              aria-controls="lgnav-mobile-menu"
+              aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+            >
+              <span className="lgnav__hamburger-line" />
+              <span className="lgnav__hamburger-line" />
+              <span className="lgnav__hamburger-line" />
+            </button>
+          )}
         </div>
 
+        {/* Backdrop */}
         {(searchOpen || mobileOpen) && (
           <button
             type="button"
@@ -239,11 +306,12 @@ export default function LiquidGlassNav() {
           />
         )}
 
+        {/* Search panel */}
         {searchOpen && (
           <m.div
             id="lgnav-search-panel"
             className="lgnav__search-panel"
-            initial={{ opacity: 0, y: -10 }}
+            initial={{ opacity: 0, y: isMobile ? 0 : -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: reduceMotion ? 0 : 0.2 }}
           >
@@ -312,7 +380,8 @@ export default function LiquidGlassNav() {
           </m.div>
         )}
 
-        {mobileOpen && (
+        {/* Mobile menu */}
+        {mobileOpen && isMobile && (
           <m.nav
             id="lgnav-mobile-menu"
             className="lgnav__mobile-menu"
@@ -347,18 +416,57 @@ export default function LiquidGlassNav() {
           </m.nav>
         )}
 
-        {/* cursor-follow glare (driven by --mx/--my) */}
-        <span className="lgnav__glare" aria-hidden="true" />
-        {/* refraction sheen layer uses the SVG filter */}
+        {/* Cursor glare (desktop only) */}
+        {!isMobile && <span className="lgnav__glare" aria-hidden="true" />}
         <span className="lgnav__refract" aria-hidden="true" />
       </nav>
+
+      {/* Mobile bottom navigation */}
+      {isMobile && (
+        <nav className="lgnav__bottom" aria-label={locale === 'en' ? 'Primary' : 'Utama'}>
+          {bottomNavItems.map((link) => {
+            const safePathname = pathname ?? '/'
+            const active =
+              link.href === '/'
+                ? safePathname === '/'
+                : safePathname === link.href || safePathname.startsWith(`${link.href}/`)
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`lgnav__bottom-item${active ? ' is-active' : ''}`}
+                aria-current={active ? 'page' : undefined}
+              >
+                <span className="lgnav__bottom-icon" aria-hidden="true">
+                  {link.href === '/' && '⌂'}
+                  {link.href === '/work' && '◈'}
+                  {link.href === '/blog' && '☰'}
+                  {link.href === '/about' && '◎'}
+                  {link.href === '/contact' && '✉'}
+                </span>
+                <span className="lgnav__bottom-label">{dict.nav[link.navKey]}</span>
+              </Link>
+            )
+          })}
+          <button
+            type="button"
+            className="lgnav__bottom-item lgnav__bottom-more"
+            onClick={handleMobileToggle}
+            aria-expanded={mobileOpen}
+            aria-label={mobileOpen ? 'Close menu' : 'More'}
+          >
+            <span className="lgnav__bottom-icon" aria-hidden="true">⋯</span>
+            <span className="lgnav__bottom-label">{mobileOpen ? 'Close' : 'More'}</span>
+          </button>
+        </nav>
+      )}
 
       <style jsx>{`
         .lgnav {
           position: sticky;
           top: 0;
           z-index: 100;
-          padding: 12px 20px;
+          padding: 10px 16px;
           --mx: 50%;
           --my: 50%;
         }
@@ -369,16 +477,15 @@ export default function LiquidGlassNav() {
         }
         .lgnav__inner {
           position: relative;
-          display: grid;
-          grid-template-columns: 1fr auto 1fr;
+          display: flex;
           align-items: center;
-          gap: 16px;
-          padding: 8px 12px;
+          justify-content: space-between;
+          gap: 12px;
+          padding: 8px 14px;
           max-width: var(--maxw, 1180px);
           margin: 0 auto;
           border-radius: 18px;
-          border: 1px solid rgba(120, 200, 255, 0.22);
-          /* glass surface (works without backdrop-filter via @supports fallback) */
+          border: 1px solid var(--glass-border);
           background: rgba(16, 22, 40, 0.82);
         }
         @supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
@@ -391,7 +498,8 @@ export default function LiquidGlassNav() {
               0 18px 50px -24px rgba(0, 0, 0, 0.7);
           }
         }
-        /* refraction sheen: the blurred frosted edge distorted by the SVG filter */
+
+        /* Refraction sheen */
         .lgnav__refract {
           position: absolute;
           inset: 0;
@@ -409,12 +517,12 @@ export default function LiquidGlassNav() {
         }
         @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
           .lgnav__refract {
-            /* no refraction without blur support; keep a static sheen */
             filter: none;
             opacity: 0.4;
           }
         }
-        /* cursor-follow glare, positioned via CSS vars */
+
+        /* Cursor glare */
         .lgnav__glare {
           position: absolute;
           inset: 0;
@@ -432,13 +540,9 @@ export default function LiquidGlassNav() {
         .lgnav__inner:hover .lgnav__glare {
           opacity: 1;
         }
-        .lgnav[data-reduce='on'] .lgnav__glare,
-        :global(.lgnav__glare) {
-          /* glare disabled under reduced motion via JS (no tracking); keep static */
-        }
 
+        /* Brand */
         .lgnav__brand {
-          justify-self: center;
           display: inline-flex;
           align-items: center;
           gap: 10px;
@@ -448,12 +552,14 @@ export default function LiquidGlassNav() {
           font-weight: 700;
           letter-spacing: 0.02em;
           transition: opacity 0.2s ease;
+          flex-shrink: 0;
         }
         .lgnav__brand:hover {
           opacity: 0.85;
         }
+
+        /* Desktop links */
         .lgnav__links {
-          justify-self: start;
           display: flex;
           align-items: center;
           gap: 4px;
@@ -465,12 +571,13 @@ export default function LiquidGlassNav() {
           position: relative;
           display: inline-flex;
           align-items: center;
-          padding: 8px 12px;
+          padding: 8px 14px;
           border-radius: 10px;
           color: var(--fg, #e9f6ff);
           text-decoration: none;
           font-size: 0.95rem;
           transition: color 0.2s ease;
+          white-space: nowrap;
         }
         .lgnav__link:hover {
           color: #00f0ff;
@@ -486,62 +593,395 @@ export default function LiquidGlassNav() {
           border: 1px solid rgba(0, 240, 255, 0.35);
           z-index: -1;
         }
+
+        /* Actions */
         .lgnav__actions {
-          justify-self: end;
           display: flex;
           align-items: center;
-          gap: 10px;
+          gap: 6px;
           flex-shrink: 0;
           position: relative;
           z-index: 56;
         }
-        .lgnav__admin {
-          text-decoration: none;
-          font-size: 0.9rem;
-          padding: 7px 12px;
+
+        /* Hamburger */
+        .lgnav__hamburger {
+          display: none;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          gap: 5px;
+          width: 44px;
+          height: 44px;
+          padding: 0;
+          border: 1px solid var(--glass-border);
           border-radius: 10px;
-          border: 1px solid rgba(120, 200, 255, 0.22);
-          color: var(--fg, #e9f6ff);
+          background: var(--glass-bg);
+          color: var(--fg);
+          cursor: pointer;
+          backdrop-filter: blur(var(--glass-blur));
+          -webkit-backdrop-filter: blur(var(--glass-blur));
+          transition: border-color 0.2s ease, color 0.2s ease;
         }
-        .lgnav__admin:hover {
-          border-color: #00f0ff;
-          color: #00f0ff;
+        .lgnav__hamburger:hover {
+          border-color: var(--cyan);
+          color: var(--cyan);
+        }
+        .lgnav__hamburger:focus-visible {
+          outline: none;
+          box-shadow: var(--focus-ring);
+        }
+        .lgnav__hamburger-line {
+          display: block;
+          width: 18px;
+          height: 2px;
+          border-radius: 2px;
+          background: currentColor;
+          transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+        .lgnav__hamburger[aria-expanded='true'] .lgnav__hamburger-line:nth-child(1) {
+          transform: translateY(7px) rotate(45deg);
+        }
+        .lgnav__hamburger[aria-expanded='true'] .lgnav__hamburger-line:nth-child(2) {
+          opacity: 0;
+        }
+        .lgnav__hamburger[aria-expanded='true'] .lgnav__hamburger-line:nth-child(3) {
+          transform: translateY(-7px) rotate(-45deg);
         }
 
-        @media (max-width: 720px) {
+        /* Backdrop */
+        .lgnav__backdrop {
+          position: fixed;
+          inset: 0;
+          z-index: 110;
+          background: rgba(5, 6, 10, 0.45);
+          -webkit-backdrop-filter: blur(2px);
+          backdrop-filter: blur(2px);
+        }
+
+        /* Mobile menu */
+        .lgnav__mobile-menu {
+          position: absolute;
+          top: calc(100% + 10px);
+          right: 12px;
+          width: min(280px, calc(100vw - 24px));
+          padding: 12px;
+          border-radius: 16px;
+          border: 1px solid var(--glass-border);
+          background: rgba(16, 22, 40, 0.92);
+          -webkit-backdrop-filter: blur(18px) saturate(150%);
+          backdrop-filter: blur(18px) saturate(150%);
+          box-shadow:
+            0 18px 50px -20px rgba(0, 0, 0, 0.7),
+            inset 0 1px 0 rgba(255, 255, 255, 0.14);
+          z-index: 120;
+        }
+        .lgnav__mobile-links {
+          list-style: none;
+          margin: 0;
+          padding: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+        }
+        .lgnav__mobile-links .lgnav__link {
+          display: block;
+          padding: 12px 14px;
+          border-radius: 10px;
+          color: var(--fg);
+          text-decoration: none;
+          font-size: 0.95rem;
+          transition: color 0.2s ease, background 0.2s ease;
+        }
+        .lgnav__mobile-links .lgnav__link:hover {
+          color: var(--cyan);
+          background: rgba(0, 240, 255, 0.08);
+        }
+        .lgnav__mobile-links .lgnav__link.is-active {
+          color: #ffffff;
+          background: rgba(0, 240, 255, 0.12);
+        }
+        .lgnav__mobile-links .lgnav__active-pill {
+          display: none;
+        }
+
+        /* Search */
+        .lgnav__search-toggle {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 44px;
+          height: 44px;
+          padding: 0;
+          border: 1px solid var(--glass-border);
+          border-radius: 10px;
+          background: var(--glass-bg);
+          color: var(--fg);
+          cursor: pointer;
+          backdrop-filter: blur(var(--glass-blur));
+          -webkit-backdrop-filter: blur(var(--glass-blur));
+          transition: border-color 0.2s ease, color 0.2s ease;
+        }
+        .lgnav__search-toggle:hover {
+          border-color: var(--cyan);
+          color: var(--cyan);
+        }
+        .lgnav__search-toggle:focus-visible {
+          outline: none;
+          box-shadow: var(--focus-ring);
+        }
+
+        .lgnav__search-panel {
+          position: absolute;
+          top: calc(100% + 10px);
+          right: 12px;
+          width: min(320px, calc(100vw - 24px));
+          padding: 12px;
+          border-radius: 16px;
+          border: 1px solid var(--glass-border);
+          background: rgba(16, 22, 40, 0.92);
+          -webkit-backdrop-filter: blur(18px) saturate(150%);
+          backdrop-filter: blur(18px) saturate(150%);
+          box-shadow:
+            0 18px 50px -20px rgba(0, 0, 0, 0.7),
+            inset 0 1px 0 rgba(255, 255, 255, 0.14);
+          z-index: 120;
+        }
+        .lgnav__search-field {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 10px 12px;
+          border-radius: 10px;
+          border: 1px solid var(--glass-border);
+          background: rgba(5, 6, 10, 0.45);
+        }
+        .lgnav__search-icon {
+          color: var(--fg-muted);
+          flex-shrink: 0;
+        }
+        .lgnav__search-input {
+          flex: 1;
+          background: transparent;
+          border: 0;
+          color: var(--fg);
+          font-size: 1rem;
+          outline: none;
+          min-width: 0;
+        }
+        .lgnav__search-input::placeholder {
+          color: var(--fg-muted);
+        }
+        .lgnav__search-count {
+          font-size: 0.75rem;
+          color: var(--cyan);
+          background: rgba(0, 240, 255, 0.12);
+          padding: 2px 8px;
+          border-radius: 999px;
+          font-weight: 700;
+        }
+        .lgnav__search-results {
+          margin-top: 8px;
+          max-height: 280px;
+          overflow-y: auto;
+        }
+        .lgnav__search-group {
+          list-style: none;
+          margin: 0;
+          padding: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+        }
+        .lgnav__search-group + .lgnav__search-group {
+          margin-top: 6px;
+          padding-top: 6px;
+          border-top: 1px solid var(--glass-border);
+        }
+        .lgnav__search-result {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+          padding: 10px 12px;
+          border-radius: 10px;
+          color: var(--fg);
+          text-decoration: none;
+          font-size: 0.92rem;
+          transition: background 0.2s ease, color 0.2s ease;
+        }
+        .lgnav__search-result:hover {
+          background: rgba(0, 240, 255, 0.08);
+          color: var(--cyan);
+        }
+        .lgnav__search-result-title {
+          font-weight: 600;
+        }
+        .lgnav__search-result-meta {
+          font-size: 0.78rem;
+          color: var(--fg-muted);
+        }
+        .lgnav__search-empty {
+          margin: 8px 10px 0;
+          color: var(--fg-muted);
+          font-size: 0.88rem;
+        }
+
+        /* Mobile bottom navigation */
+        .lgnav__bottom {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          z-index: 98;
+          display: flex;
+          align-items: center;
+          justify-content: space-around;
+          gap: 4px;
+          padding: 6px 8px;
+          padding-bottom: max(6px, env(safe-area-inset-bottom));
+          background: rgba(16, 22, 40, 0.92);
+          -webkit-backdrop-filter: blur(18px) saturate(150%);
+          backdrop-filter: blur(18px) saturate(150%);
+          border-top: 1px solid var(--glass-border);
+          box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
+        }
+        .lgnav__bottom-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 2px;
+          flex: 1;
+          min-width: 0;
+          padding: 6px 4px;
+          border-radius: 12px;
+          color: var(--fg-muted);
+          text-decoration: none;
+          font-size: 0.7rem;
+          transition: color 0.2s ease, background 0.2s ease;
+          text-align: center;
+        }
+        .lgnav__bottom-item:hover {
+          color: var(--fg);
+          background: rgba(255, 255, 255, 0.04);
+        }
+        .lgnav__bottom-item.is-active {
+          color: var(--cyan);
+        }
+        .lgnav__bottom-item.is-active .lgnav__bottom-icon {
+          text-shadow: 0 0 8px rgba(0, 240, 255, 0.5);
+        }
+        .lgnav__bottom-icon {
+          font-size: 1.3rem;
+          line-height: 1;
+          transition: text-shadow 0.2s ease;
+        }
+        .lgnav__bottom-label {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 100%;
+        }
+        .lgnav__bottom-more {
+          background: none;
+          border: none;
+          cursor: pointer;
+          font-family: inherit;
+        }
+
+        /* Tablet: show compact links */
+        @media (max-width: ${BREAKPOINT_TABLET}px) and (min-width: ${BREAKPOINT_MOBILE}px) {
+          .lgnav__links {
+            gap: 2px;
+          }
+          .lgnav__link {
+            padding: 8px 10px;
+            font-size: 0.88rem;
+          }
+          .lgnav__actions {
+            gap: 4px;
+          }
+          .lgnav__search-toggle,
+          .lgnav__hamburger {
+            width: 40px;
+            height: 40px;
+          }
+        }
+
+        /* Mobile: hide top links, show bottom nav + hamburger */
+        @media (max-width: ${BREAKPOINT_MOBILE}px) {
+          .lgnav {
+            padding: 8px 10px;
+            padding-bottom: max(8px, calc(env(safe-area-inset-bottom) + 72px));
+          }
           .lgnav__links {
             display: none;
           }
           .lgnav__inner {
-            position: relative;
-            gap: 10px;
-            padding: 8px;
+            gap: 8px;
+            padding: 6px 10px;
           }
           .lgnav__actions {
-            gap: 6px;
+            gap: 4px;
           }
           .lgnav__hamburger {
             display: inline-flex;
           }
           .lgnav__search-toggle {
             display: inline-flex;
+            width: 44px;
+            height: 44px;
           }
         }
 
+        /* Small mobile */
         @media (max-width: 380px) {
           .lgnav__inner {
-            gap: 8px;
-            padding: 6px;
+            gap: 6px;
+            padding: 6px 8px;
           }
           .lgnav__actions {
-            gap: 4px;
+            gap: 2px;
           }
           .lgnav__brand svg {
             height: 22px;
             width: auto;
           }
+          .lgnav__bottom-item {
+            font-size: 0.65rem;
+            padding: 4px 2px;
+          }
+          .lgnav__bottom-icon {
+            font-size: 1.1rem;
+          }
         }
 
+        /* Landscape mobile optimization */
+        @media (max-width: 1024px) and (orientation: landscape) {
+          .lgnav {
+            padding: 6px 12px;
+            padding-bottom: max(6px, calc(env(safe-area-inset-bottom) + 68px));
+          }
+          .lgnav__inner {
+            padding: 6px 12px;
+            gap: 10px;
+          }
+          .lgnav__bottom {
+            padding: 4px 8px;
+            padding-bottom: max(4px, env(safe-area-inset-bottom));
+          }
+          .lgnav__bottom-item {
+            padding: 4px 6px;
+          }
+          .lgnav__bottom-icon {
+            font-size: 1.1rem;
+          }
+          .lgnav__bottom-label {
+            font-size: 0.65rem;
+          }
+        }
+
+        /* Reduced motion */
         @media (prefers-reduced-motion: reduce) {
           .lgnav__glare {
             display: none;
