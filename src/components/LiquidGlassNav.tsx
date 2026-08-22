@@ -62,17 +62,26 @@ export default function LiquidGlassNav() {
     return NAV_LINKS.filter((l) => dict.nav[l.navKey].toLowerCase().includes(q))
   }, [searchQuery, dict])
 
-  useEffect(() => {
-    if (!searchOpen) return
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setSearchOpen(false)
-        setSearchQuery('')
-      }
-    }
-    document.addEventListener('keydown', onKey)
-    return () => document.removeEventListener('keydown', onKey)
-  }, [searchOpen])
+  const handleSearchToggle = () => {
+    setSearchOpen((v) => {
+      const next = !v
+      if (next) setMobileOpen(false)
+      return next
+    })
+  }
+
+  const handleMobileToggle = () => {
+    setMobileOpen((v) => {
+      const next = !v
+      if (next) setSearchOpen(false)
+      return next
+    })
+  }
+
+  const closeAll = () => {
+    setSearchOpen(false)
+    setMobileOpen(false)
+  }
 
   useEffect(() => {
     if (searchOpen && searchInputRef.current) {
@@ -113,17 +122,22 @@ export default function LiquidGlassNav() {
   }, [reduceMotion])
 
   useEffect(() => {
-    if (!mobileOpen) return
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setMobileOpen(false)
+      if (e.key === 'Escape' && (searchOpen || mobileOpen)) {
+        closeAll()
+      }
     }
     document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [searchOpen, mobileOpen])
+
+  useEffect(() => {
+    if (!mobileOpen && !searchOpen) return
     document.body.style.overflow = 'hidden'
     return () => {
-      document.removeEventListener('keydown', onKey)
       document.body.style.overflow = ''
     }
-  }, [mobileOpen])
+  }, [mobileOpen, searchOpen])
 
   const filterId = 'liquid-glass-refract'
 
@@ -187,7 +201,7 @@ export default function LiquidGlassNav() {
           <button
             type="button"
             className="lgnav__search-toggle"
-            onClick={() => setSearchOpen((v) => !v)}
+            onClick={handleSearchToggle}
             aria-expanded={searchOpen}
             aria-controls="lgnav-search-panel"
             aria-label={searchOpen ? 'Close search' : 'Open search'}
@@ -200,7 +214,7 @@ export default function LiquidGlassNav() {
           <button
             type="button"
             className="lgnav__hamburger"
-            onClick={() => setMobileOpen((v) => !v)}
+            onClick={handleMobileToggle}
             aria-expanded={mobileOpen}
             aria-controls="lgnav-mobile-menu"
             aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
@@ -215,6 +229,15 @@ export default function LiquidGlassNav() {
             Firebase Auth) — no discovery link is exposed in the UI.
           */}
         </div>
+
+        {(searchOpen || mobileOpen) && (
+          <button
+            type="button"
+            className="lgnav__backdrop"
+            onClick={closeAll}
+            aria-label="Close overlays"
+          />
+        )}
 
         {searchOpen && (
           <m.div
@@ -469,6 +492,8 @@ export default function LiquidGlassNav() {
           align-items: center;
           gap: 10px;
           flex-shrink: 0;
+          position: relative;
+          z-index: 56;
         }
         .lgnav__admin {
           text-decoration: none;
