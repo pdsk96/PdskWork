@@ -712,8 +712,8 @@ export default function LiquidGlassNav() {
 
         /* Mobile menu */
         .lgnav__mobile-menu {
-          position: absolute;
-          top: calc(100% + 10px);
+          position: fixed;
+          top: 70px;
           right: 16px;
           width: min(300px, calc(100vw - 32px));
           max-height: calc(100vh - 120px);
@@ -816,8 +816,8 @@ export default function LiquidGlassNav() {
         }
 
         .lgnav__search-panel {
-          position: absolute;
-          top: calc(100% + 10px);
+          position: fixed;
+          top: 70px;
           right: 16px;
           width: min(360px, calc(100vw - 32px));
           max-height: min(480px, calc(100vh - 120px));
