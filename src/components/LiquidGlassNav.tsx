@@ -720,9 +720,7 @@ export default function LiquidGlassNav() {
           padding: 14px;
           border-radius: 16px;
           border: 1px solid var(--glass-border);
-          background: rgba(16, 22, 40, 0.92);
-          -webkit-backdrop-filter: blur(18px) saturate(150%);
-          backdrop-filter: blur(18px) saturate(150%);
+          background: rgba(16, 22, 40, 0.96);
           box-shadow:
             0 18px 50px -20px rgba(0, 0, 0, 0.7),
             inset 0 1px 0 rgba(255, 255, 255, 0.14);
@@ -825,9 +823,7 @@ export default function LiquidGlassNav() {
           padding: 14px;
           border-radius: 16px;
           border: 1px solid var(--glass-border);
-          background: rgba(16, 22, 40, 0.92);
-          -webkit-backdrop-filter: blur(18px) saturate(150%);
-          backdrop-filter: blur(18px) saturate(150%);
+          background: rgba(16, 22, 40, 0.96);
           box-shadow:
             0 18px 50px -20px rgba(0, 0, 0, 0.7),
             inset 0 1px 0 rgba(255, 255, 255, 0.14);
