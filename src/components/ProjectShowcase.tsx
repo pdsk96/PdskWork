@@ -21,26 +21,28 @@ export default function ProjectShowcase() {
       label: dict.nav.work,
       title: dict.showcase.realtime3d,
       body: dict.showcase.realtime3dBody,
-      span: { gridColumn: 'span 2', gridRow: 'span 2' } as React.CSSProperties,
+      spanClassName: 'bento-span-2-rows',
     },
     {
       accent: 'magenta' as const,
       label: 'Motion',
       title: dict.showcase.kineticType,
       body: dict.showcase.kineticTypeBody,
+      spanClassName: '',
     },
     {
       accent: 'violet' as const,
       label: 'Glass',
       title: dict.showcase.liquidSurfaces,
       body: dict.showcase.liquidSurfacesBody,
+      spanClassName: '',
     },
     {
       accent: 'cyan' as const,
       label: 'Stack',
       title: dict.showcase.stackTitle,
       body: dict.showcase.stackBody,
-      span: { gridColumn: 'span 2' } as React.CSSProperties,
+      spanClassName: 'bento-span-2',
     },
   ]
 
@@ -53,7 +55,7 @@ export default function ProjectShowcase() {
           whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.6, ease: ['easeOut'], delay: i * 0.05 }}
-          style={item.span}
+          className={item.spanClassName}
         >
           <GlassPanel accent={item.accent} label={item.label} style={{ height: '100%' }}>
             <h3 className="bento__title">{item.title}</h3>
@@ -78,9 +80,21 @@ export default function ProjectShowcase() {
           color: var(--fg-muted, #9fb3c8);
           font-size: 0.92rem;
         }
+        .bento-span-2 {
+          grid-column: span 2;
+        }
+        .bento-span-2-rows {
+          grid-column: span 2;
+          grid-row: span 2;
+        }
         @media (max-width: 720px) {
           .bento {
             grid-template-columns: 1fr;
+          }
+          .bento-span-2,
+          .bento-span-2-rows {
+            grid-column: span 1;
+            grid-row: span 1;
           }
         }
       `}</style>

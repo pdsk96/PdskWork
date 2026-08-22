@@ -204,9 +204,12 @@ export default function LiquidGlassNav() {
   // Body scroll lock
   useEffect(() => {
     if (!mobileOpen && !searchOpen) return
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
     document.body.style.overflow = 'hidden'
+    document.body.style.paddingRight = `${scrollbarWidth}px`
     return () => {
       document.body.style.overflow = ''
+      document.body.style.paddingRight = ''
     }
   }, [mobileOpen, searchOpen])
 
@@ -419,47 +422,47 @@ export default function LiquidGlassNav() {
         {/* Cursor glare (desktop only) */}
         {!isMobile && <span className="lgnav__glare" aria-hidden="true" />}
         <span className="lgnav__refract" aria-hidden="true" />
-      </nav>
 
-      {/* Mobile bottom navigation */}
-      {isMobile && (
-        <nav className="lgnav__bottom" aria-label={locale === 'en' ? 'Primary' : 'Utama'}>
-          {bottomNavItems.map((link) => {
-            const safePathname = pathname ?? '/'
-            const active =
-              link.href === '/'
-                ? safePathname === '/'
-                : safePathname === link.href || safePathname.startsWith(`${link.href}/`)
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`lgnav__bottom-item${active ? ' is-active' : ''}`}
-                aria-current={active ? 'page' : undefined}
-              >
-                <span className="lgnav__bottom-icon" aria-hidden="true">
-                  {link.href === '/' && '⌂'}
-                  {link.href === '/work' && '◈'}
-                  {link.href === '/blog' && '☰'}
-                  {link.href === '/about' && '◎'}
-                  {link.href === '/contact' && '✉'}
-                </span>
-                <span className="lgnav__bottom-label">{dict.nav[link.navKey]}</span>
-              </Link>
-            )
-          })}
-          <button
-            type="button"
-            className="lgnav__bottom-item lgnav__bottom-more"
-            onClick={handleMobileToggle}
-            aria-expanded={mobileOpen}
-            aria-label={mobileOpen ? 'Close menu' : 'More'}
-          >
-            <span className="lgnav__bottom-icon" aria-hidden="true">⋯</span>
-            <span className="lgnav__bottom-label">{mobileOpen ? 'Close' : 'More'}</span>
-          </button>
-        </nav>
-      )}
+        {/* Mobile bottom navigation */}
+        {isMobile && (
+          <nav className="lgnav__bottom" aria-label={locale === 'en' ? 'Primary' : 'Utama'}>
+            {bottomNavItems.map((link) => {
+              const safePathname = pathname ?? '/'
+              const active =
+                link.href === '/'
+                  ? safePathname === '/'
+                  : safePathname === link.href || safePathname.startsWith(`${link.href}/`)
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`lgnav__bottom-item${active ? ' is-active' : ''}`}
+                  aria-current={active ? 'page' : undefined}
+                >
+                  <span className="lgnav__bottom-icon" aria-hidden="true">
+                    {link.href === '/' && '⌂'}
+                    {link.href === '/work' && '◈'}
+                    {link.href === '/blog' && '☰'}
+                    {link.href === '/about' && '◎'}
+                    {link.href === '/contact' && '✉'}
+                  </span>
+                  <span className="lgnav__bottom-label">{dict.nav[link.navKey]}</span>
+                </Link>
+              )
+            })}
+            <button
+              type="button"
+              className="lgnav__bottom-item lgnav__bottom-more"
+              onClick={handleMobileToggle}
+              aria-expanded={mobileOpen}
+              aria-label={mobileOpen ? 'Close menu' : 'More'}
+            >
+              <span className="lgnav__bottom-icon" aria-hidden="true">⋯</span>
+              <span className="lgnav__bottom-label">{mobileOpen ? 'Close' : 'More'}</span>
+            </button>
+          </nav>
+        )}
+      </nav>
 
       <style jsx>{`
         .lgnav {
@@ -665,6 +668,8 @@ export default function LiquidGlassNav() {
           top: calc(100% + 10px);
           right: 12px;
           width: min(280px, calc(100vw - 24px));
+          max-height: calc(100vh - 120px);
+          overflow-y: auto;
           padding: 12px;
           border-radius: 16px;
           border: 1px solid var(--glass-border);
