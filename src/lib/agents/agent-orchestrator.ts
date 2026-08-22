@@ -5,6 +5,7 @@ import { runResearcher, type ContentOpportunity } from './researcher'
 import { runWriter, type WriterInput, type GeneratedPost } from './writer'
 import { runVisualist, type VisualistInput, type GeneratedMedia } from './visualist'
 import type { BlogPost } from '@/lib/blog-types'
+import { logger } from '@/lib/logger'
 
 export type AgentJobStatus = 'idle' | 'researching' | 'writing' | 'imaging' | 'done' | 'error'
 
@@ -49,13 +50,13 @@ export async function runAgentPipeline(options: AgentRunOptions, onProgress: (jo
       job.step = 'Researching content opportunities...'
       job.progress = 10
       onProgress(job)
-      console.debug('[agent-pipeline] stage=researching')
+      logger.debug('[agent-pipeline] stage=researching')
 
       const opportunities = await runResearcher(config, { locale, maxTopics: maxOpportunities, existingPosts })
       job.opportunities = opportunities
       job.progress = 40
       onProgress(job)
-      console.debug('[agent-pipeline] research complete', { count: opportunities.length })
+      logger.debug('[agent-pipeline] research complete', { count: opportunities.length })
 
       if (opportunities.length === 0) {
         job.status = 'error'
@@ -72,7 +73,7 @@ export async function runAgentPipeline(options: AgentRunOptions, onProgress: (jo
     job.step = `Writing article: ${topic.title}`
     job.progress = 50
     onProgress(job)
-    console.debug('[agent-pipeline] stage=writing', { title: topic.title })
+    logger.debug('[agent-pipeline] stage=writing', { title: topic.title })
 
     const writerInput: WriterInput = {
       title: topic.title,
@@ -84,7 +85,7 @@ export async function runAgentPipeline(options: AgentRunOptions, onProgress: (jo
     job.draft = draft
     job.progress = 70
     onProgress(job)
-    console.debug('[agent-pipeline] write complete', { draftTitle: draft?.title ?? null })
+    logger.debug('[agent-pipeline] write complete', { draftTitle: draft?.title ?? null })
 
     if (!draft) {
       job.status = 'error'
@@ -98,7 +99,7 @@ export async function runAgentPipeline(options: AgentRunOptions, onProgress: (jo
     job.step = 'Generating images...'
     job.progress = 85
     onProgress(job)
-    console.debug('[agent-pipeline] stage=imaging')
+    logger.debug('[agent-pipeline] stage=imaging')
 
     const media = await runVisualist({ post: draft, locale })
     job.media = media
@@ -107,14 +108,14 @@ export async function runAgentPipeline(options: AgentRunOptions, onProgress: (jo
     job.step = 'Complete'
     job.finishedAt = Date.now()
     onProgress(job)
-    console.debug('[agent-pipeline] stage=done')
+    logger.debug('[agent-pipeline] stage=done')
     return job
   } catch (err) {
     job.status = 'error'
     job.error = err instanceof Error ? err.message : 'Unknown error'
     job.finishedAt = Date.now()
     onProgress(job)
-    console.error('[agent-pipeline] stage=error', { error: job.error })
+    logger.error('[agent-pipeline] stage=error', { error: job.error })
     return job
   }
 }

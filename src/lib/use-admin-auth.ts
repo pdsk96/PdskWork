@@ -3,6 +3,7 @@
 import { onAuthStateChanged, signInWithEmailAndPassword, signOut, type User } from 'firebase/auth'
 import { useEffect, useState } from 'react'
 import { auth } from './firebase'
+import { logger } from '@/lib/logger'
 
 /**
  * Admin auth — Firebase Auth (client SDK).
@@ -28,7 +29,7 @@ export function useAdminAuth(): AdminAuth {
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (u) => {
-      console.debug('[admin-auth] state changed', { uid: u?.uid ?? null, email: u?.email ?? null })
+      logger.debug('[admin-auth] state changed', { uid: u?.uid ?? null, email: u?.email ?? null })
       setUser(u)
       setLoading(false)
     })

@@ -11,43 +11,12 @@ import AmbientSound from './AmbientSound'
 import FullscreenToggle from './FullscreenToggle'
 import PdskLogo from './PdskLogo'
 import { NAV_LINKS } from '@/lib/nav'
-import blogSeed from '@/db/blog.json'
-import type { BlogPost } from '@/lib/blog-types'
+import { getPublishedPosts, type BlogPost } from '@/lib/blog-firestore'
 import { formatDate } from '@/lib/blog-utils'
+import { useViewMode, type ViewMode } from '@/hooks/useViewMode'
 
 const BREAKPOINT_TABLET = 1024
 const BREAKPOINT_MOBILE = 768
-
-type ViewMode = 'desktop' | 'tablet' | 'mobile'
-
-function useViewMode(): ViewMode {
-  const [mode, setMode] = useState<ViewMode>(() => {
-    if (typeof window === 'undefined') return 'desktop'
-    if (window.innerWidth < BREAKPOINT_MOBILE) return 'mobile'
-    if (window.innerWidth < BREAKPOINT_TABLET) return 'tablet'
-    return 'desktop'
-  })
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    const mql = window.matchMedia(`(max-width: ${BREAKPOINT_MOBILE - 1}px)`)
-    const mqlTablet = window.matchMedia(`(max-width: ${BREAKPOINT_TABLET - 1}px)`)
-
-    const update = () => {
-      const w = window.innerWidth
-      setMode(w < BREAKPOINT_MOBILE ? 'mobile' : w < BREAKPOINT_TABLET ? 'tablet' : 'desktop')
-    }
-
-    mql.addEventListener('change', update)
-    mqlTablet.addEventListener('change', update)
-    return () => {
-      mql.removeEventListener('change', update)
-      mqlTablet.removeEventListener('change', update)
-    }
-  }, [])
-
-  return mode
-}
 
 export default function LiquidGlassNav() {
   const { dict, locale } = useLocale()
@@ -66,16 +35,45 @@ export default function LiquidGlassNav() {
   const searchInputRef = useRef<HTMLInputElement>(null)
   const touchStartRef = useRef<{ x: number; y: number } | null>(null)
 
-  const seedPosts = blogSeed as BlogPost[]
+  const [searchPosts, setSearchPosts] = useState<BlogPost[]>([])
+  const [searchLoading, setSearchLoading] = useState(false)
+  const searchDebounceRef = useRef<number | null>(null)
 
-  const matchedPosts = blogSeed
-    .filter((p) => p.published && p.locale === locale)
-    .filter((p) => {
-      if (!searchQuery.trim()) return false
-      const q = searchQuery.trim().toLowerCase()
-      return p.title.toLowerCase().includes(q) || p.excerpt.toLowerCase().includes(q) || p.tags.some((t) => t.toLowerCase().includes(q))
-    })
-    .slice(0, 8)
+  // Search posts from Firestore with debounce instead of bundling blog.json.
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setSearchPosts([])
+      return
+    }
+
+    setSearchLoading(true)
+    if (searchDebounceRef.current) window.clearTimeout(searchDebounceRef.current)
+
+    searchDebounceRef.current = window.setTimeout(async () => {
+      try {
+        const posts = await getPublishedPosts(locale)
+        const q = searchQuery.trim().toLowerCase()
+        const matched = posts
+          .filter((p) =>
+            p.title.toLowerCase().includes(q) ||
+            p.excerpt.toLowerCase().includes(q) ||
+            p.tags.some((t) => t.toLowerCase().includes(q))
+          )
+          .slice(0, 8)
+        setSearchPosts(matched)
+      } catch {
+        setSearchPosts([])
+      } finally {
+        setSearchLoading(false)
+      }
+    }, 300)
+
+    return () => {
+      if (searchDebounceRef.current) window.clearTimeout(searchDebounceRef.current)
+    }
+  }, [searchQuery, locale])
+
+  const matchedPosts = searchPosts
 
   const matchedLinks = NAV_LINKS.filter((l) => {
     if (!searchQuery.trim()) return false

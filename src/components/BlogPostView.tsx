@@ -13,8 +13,13 @@ import DOMPurify from 'dompurify'
 
 function readSlugFromPath(): string {
   if (typeof window === 'undefined') return ''
-  const m = window.location.pathname.match(/\/blog\/([^/]+)(?:\/)?$/)
-  return m ? decodeURIComponent(m[1]) : ''
+  try {
+    const path = new URL(window.location.href).pathname
+    const m = path.match(/\/blog\/([^/]+)/)
+    return m ? decodeURIComponent(m[1]) : ''
+  } catch {
+    return ''
+  }
 }
 
 export default function BlogPostView() {

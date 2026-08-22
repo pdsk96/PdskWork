@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { useLocale } from '@/i18n/LocaleProvider'
+import { useViewMode, type ViewMode } from '@/hooks/useViewMode'
 
 interface AdminNavItem {
   href: string
@@ -26,25 +27,6 @@ const MOBILE_NAV: AdminNavItem[] = [
   { href: '/admin/media', labelKey: 'mediaTitle', icon: '◫' },
   { href: '/admin/agents', labelKey: 'agentsTitle', icon: '⚙' },
 ]
-
-type ViewMode = 'desktop' | 'mobile'
-
-function useViewMode(): ViewMode {
-  const [mode, setMode] = useState<ViewMode>(() => {
-    if (typeof window === 'undefined') return 'desktop'
-    return window.innerWidth < 768 ? 'mobile' : 'desktop'
-  })
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    const mql = window.matchMedia('(max-width: 767px)')
-    const update = () => setMode(mql.matches ? 'mobile' : 'desktop')
-    mql.addEventListener('change', update)
-    return () => mql.removeEventListener('change', update)
-  }, [])
-
-  return mode
-}
 
 export default function AdminNav() {
   const pathname = usePathname()

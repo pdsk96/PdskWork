@@ -15,10 +15,9 @@ rules_version = '2'
 // account you create in the console).
 
 function isAdmin() {
-  // Lock to a single admin uid:
-  //   return request.auth.uid == 'REPLACE_WITH_ADMIN_UID'
-  // Default: any authenticated user.
-  return request.auth != null
+  // Lock to a single admin uid for production safety.
+  // Replace the value below with your admin UID from Firebase Console → Authentication → Users.
+  return request.auth != null && request.auth.uid == 'pdsk-admin-uid'
 }
 
 service cloud.firestore {

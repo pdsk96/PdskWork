@@ -11,6 +11,8 @@
  * Server-side keys should be injected at build time or via Firebase App Hosting secrets.
  */
 
+import { logger } from '@/lib/logger'
+
 export type EmailProvider = 'resend' | 'sendgrid' | 'emailjs'
 
 export interface EmailNotifierConfig {
@@ -125,13 +127,13 @@ export async function sendEmail(message: EmailMessage): Promise<boolean> {
     return sendViaEmailJS(config, message)
   }
 
-  console.warn('[email-notifier] Unknown provider:', config.provider)
+  logger.warn('[email-notifier] Unknown provider:', config.provider)
   return false
 }
 
 async function sendViaResend(config: EmailNotifierConfig, message: EmailMessage): Promise<boolean> {
   if (!config.apiKey) {
-    console.warn('[email-notifier] Resend API key not configured')
+    logger.warn('[email-notifier] Resend API key not configured')
     return false
   }
 
@@ -153,21 +155,21 @@ async function sendViaResend(config: EmailNotifierConfig, message: EmailMessage)
 
     if (!response.ok) {
       const err = await response.text()
-      console.error('[email-notifier] Resend error:', response.status, err)
+      logger.error('[email-notifier] Resend error:', response.status, err)
       return false
     }
 
-    console.debug('[email-notifier] Email sent via Resend')
+    logger.debug('[email-notifier] Email sent via Resend')
     return true
   } catch (err) {
-    console.error('[email-notifier] Resend failed:', err)
+    logger.error('[email-notifier] Resend failed:', err)
     return false
   }
 }
 
 async function sendViaSendGrid(config: EmailNotifierConfig, message: EmailMessage): Promise<boolean> {
   if (!config.apiKey) {
-    console.warn('[email-notifier] SendGrid API key not configured')
+    logger.warn('[email-notifier] SendGrid API key not configured')
     return false
   }
 
@@ -197,21 +199,21 @@ async function sendViaSendGrid(config: EmailNotifierConfig, message: EmailMessag
 
     if (!response.ok) {
       const err = await response.text()
-      console.error('[email-notifier] SendGrid error:', response.status, err)
+      logger.error('[email-notifier] SendGrid error:', response.status, err)
       return false
     }
 
-    console.debug('[email-notifier] Email sent via SendGrid')
+    logger.debug('[email-notifier] Email sent via SendGrid')
     return true
   } catch (err) {
-    console.error('[email-notifier] SendGrid failed:', err)
+    logger.error('[email-notifier] SendGrid failed:', err)
     return false
   }
 }
 
 async function sendViaEmailJS(config: EmailNotifierConfig, message: EmailMessage): Promise<boolean> {
   if (!config.emailJsServiceId || !config.emailJsTemplateId || !config.emailJsPublicKey) {
-    console.warn('[email-notifier] EmailJS config incomplete')
+    logger.warn('[email-notifier] EmailJS config incomplete')
     return false
   }
 
@@ -232,10 +234,10 @@ async function sendViaEmailJS(config: EmailNotifierConfig, message: EmailMessage
       config.emailJsPublicKey,
     )
 
-    console.debug('[email-notifier] Email sent via EmailJS:', result.status)
+    logger.debug('[email-notifier] Email sent via EmailJS:', result.status)
     return true
   } catch (err) {
-    console.error('[email-notifier] EmailJS failed:', err)
+    logger.error('[email-notifier] EmailJS failed:', err)
     return false
   }
 }

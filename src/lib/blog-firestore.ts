@@ -5,6 +5,7 @@ import {
   deleteDoc,
   doc,
   getCountFromServer,
+  getDoc,
   getDocs,
   increment,
   limit,
@@ -47,6 +48,28 @@ export interface PaginatedPosts {
   totalCount: number
 }
 
+/** Simple in-memory cache for Firestore queries (client-side, per-tab). */
+const queryCache = new Map<string, { data: unknown; ts: number }>()
+const CACHE_TTL = 60_000 // 1 minute
+
+function cacheKey(...parts: (string | number | boolean | undefined)[]): string {
+  return parts.filter((p) => p !== undefined).join('|')
+}
+
+function getCached<T>(key: string): T | null {
+  const entry = queryCache.get(key)
+  if (!entry) return null
+  if (Date.now() - entry.ts > CACHE_TTL) {
+    queryCache.delete(key)
+    return null
+  }
+  return entry.data as T
+}
+
+function setCached<T>(key: string, data: T): void {
+  queryCache.set(key, { data, ts: Date.now() })
+}
+
 function newId(): string {
   if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
     return crypto.randomUUID()
@@ -54,18 +77,22 @@ function newId(): string {
   return `${Date.now()}-${Math.random().toString(36).slice(2)}`
 }
 
-function snapToPost(id: string, data: Record<string, unknown>): BlogPost {
+function isStringArray(value: unknown): value is string[] {
+  return Array.isArray(value) && value.every((item) => typeof item === 'string')
+}
+
+function snapToPost(id: string, data: Record<string, unknown>, fallbackCreatedAt?: string): BlogPost {
   return {
     id,
-    slug: String(data.slug ?? ''),
-    title: String(data.title ?? ''),
-    excerpt: String(data.excerpt ?? ''),
-    content: String(data.content ?? ''),
-    tags: Array.isArray(data.tags) ? (data.tags as string[]) : [],
-    published: Boolean(data.published),
+    slug: typeof data.slug === 'string' ? data.slug : '',
+    title: typeof data.title === 'string' ? data.title : '',
+    excerpt: typeof data.excerpt === 'string' ? data.excerpt : '',
+    content: typeof data.content === 'string' ? data.content : '',
+    tags: isStringArray(data.tags) ? data.tags : [],
+    published: typeof data.published === 'boolean' ? data.published : false,
     locale: data.locale === 'id' ? 'id' : 'en',
-    createdAt: String(data.createdAt ?? new Date().toISOString()),
-    updatedAt: String(data.updatedAt ?? new Date().toISOString()),
+    createdAt: typeof data.createdAt === 'string' ? data.createdAt : fallbackCreatedAt ?? new Date().toISOString(),
+    updatedAt: typeof data.updatedAt === 'string' ? data.updatedAt : new Date().toISOString(),
     viewCount: typeof data.viewCount === 'number' ? data.viewCount : 0,
   }
 }
@@ -79,6 +106,10 @@ export async function getAllPosts(): Promise<BlogPost[]> {
 
 /** Return published posts, optionally filtered by locale. */
 export async function getPublishedPosts(locale?: 'en' | 'id'): Promise<BlogPost[]> {
+  const key = cacheKey('published', locale)
+  const cached = getCached<BlogPost[]>(key)
+  if (cached) return cached
+
   const q = locale
     ? query(
         collection(db, COLLECTION),
@@ -92,7 +123,9 @@ export async function getPublishedPosts(locale?: 'en' | 'id'): Promise<BlogPost[
         orderBy('createdAt', 'desc'),
       )
   const snap = await getDocs(q)
-  return snap.docs.map((d) => snapToPost(d.id, d.data() as Record<string, unknown>))
+  const posts = snap.docs.map((d) => snapToPost(d.id, d.data() as Record<string, unknown>))
+  setCached(key, posts)
+  return posts
 }
 
 /** Return paginated published posts, optionally filtered by locale. */
@@ -130,13 +163,13 @@ export async function getPaginatedPosts(
     const snap = await getDocs(q)
     const posts = snap.docs.map((d) => snapToPost(d.id, d.data() as Record<string, unknown>))
     const hasMore = posts.length === perPage
-    console.debug(`[blog-firestore] getPaginatedPosts page=${page} locale=${locale ?? 'all'} count=${posts.length} hasMore=${hasMore}`)
     if (totalCount === 0) {
       totalCount = hasMore ? posts.length + 1 : posts.length
     }
     return { posts, hasMore, totalCount }
   }
 
+  // Cursor-based pagination: fetch the last document of the previous page.
   const cursorQ = query(baseQuery, limit((page - 1) * perPage))
   const cursorSnap = await getDocs(cursorQ)
   const lastDoc = cursorSnap.docs[cursorSnap.docs.length - 1]
@@ -160,24 +193,35 @@ export async function getPaginatedPosts(
 
 /** Find a single published post by slug. */
 export async function getPostBySlug(slug: string, locale?: string): Promise<BlogPost | null> {
+  const key = cacheKey('slug', slug, locale)
+  const cached = getCached<BlogPost | null>(key)
+  if (cached !== null && cached !== undefined) return cached
+
   let q = query(collection(db, COLLECTION), where('slug', '==', slug), where('published', '==', true))
-  
+
   // If locale is provided, try to find post in that locale first
   if (locale) {
     const localeQuery = query(q, where('locale', '==', locale))
     const localeSnap = await getDocs(localeQuery)
     if (!localeSnap.empty) {
       const d = localeSnap.docs[0]
-      return snapToPost(d.id, d.data() as Record<string, unknown>)
+      const post = snapToPost(d.id, d.data() as Record<string, unknown>)
+      setCached(key, post)
+      return post
     }
   }
-  
+
   // Fallback: if no locale specified or no post found in specified locale,
   // return any post with matching slug (for backward compatibility)
   const snap = await getDocs(q)
-  if (snap.empty) return null
+  if (snap.empty) {
+    setCached(key, null)
+    return null
+  }
   const d = snap.docs[0]
-  return snapToPost(d.id, d.data() as Record<string, unknown>)
+  const post = snapToPost(d.id, d.data() as Record<string, unknown>)
+  setCached(key, post)
+  return post
 }
 
 /** Find a single post by id (any state — used by the admin editor). */
@@ -188,9 +232,11 @@ export async function getPostById(id: string): Promise<BlogPost | null> {
 }
 
 async function getDocById(id: string): Promise<Record<string, unknown> | null> {
-  const snap = await getDocs(query(collection(db, COLLECTION), where('__name__', '==', id)))
-  if (snap.empty) return null
-  return snap.docs[0].data() as Record<string, unknown>
+  // Use direct doc lookup instead of where('__name__', '==', id) for efficiency.
+  const ref = doc(db, COLLECTION, id)
+  const snap = await getDoc(ref)
+  if (!snap.exists()) return null
+  return snap.data() as Record<string, unknown>
 }
 
 /** Create a new post. Returns the created post. */
