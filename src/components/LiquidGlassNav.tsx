@@ -357,7 +357,7 @@ export default function LiquidGlassNav() {
         .lgnav {
           position: sticky;
           top: 0;
-          z-index: 50;
+          z-index: 100;
           padding: 12px 20px;
           --mx: 50%;
           --my: 50%;
