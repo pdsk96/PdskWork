@@ -356,6 +356,7 @@ export default function LiquidGlassNav() {
           className="lgnav__search-panel"
           initial={{ opacity: 0, y: isMobile ? 0 : -10 }}
           animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: isMobile ? 0 : -10 }}
           transition={{ duration: reduceMotion ? 0 : 0.2 }}
           role="dialog"
           aria-modal="true"
@@ -537,6 +538,10 @@ export default function LiquidGlassNav() {
           background: rgba(16, 22, 40, 0.82);
           z-index: 200;
         }
+        [data-theme='light'] .lgnav__inner {
+          background: rgba(235, 242, 249, 0.85);
+          border-color: rgba(20, 50, 90, 0.16);
+        }
         @supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
           .lgnav__inner {
             background: rgba(16, 22, 40, 0.55);
@@ -564,6 +569,16 @@ export default function LiquidGlassNav() {
           );
           filter: url(#${filterId});
         }
+        [data-theme='light'] .lgnav__refract {
+          opacity: 0.4;
+          background: linear-gradient(
+            180deg,
+            rgba(0, 144, 168, 0.06),
+            transparent 30%,
+            transparent 70%,
+            rgba(179, 24, 156, 0.04)
+          );
+        }
         @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
           .lgnav__refract {
             filter: none;
@@ -586,6 +601,13 @@ export default function LiquidGlassNav() {
           transition: opacity 0.25s ease;
           mix-blend-mode: screen;
         }
+        [data-theme='light'] .lgnav__glare {
+          background: radial-gradient(
+            140px circle at var(--mx) var(--my),
+            rgba(0, 144, 168, 0.18),
+            transparent 60%
+          );
+        }
         .lgnav__inner:hover .lgnav__glare {
           opacity: 1;
         }
@@ -603,8 +625,14 @@ export default function LiquidGlassNav() {
           transition: opacity 0.2s ease;
           flex-shrink: 0;
         }
+        [data-theme='light'] .lgnav__brand {
+          color: var(--bg-2);
+        }
         .lgnav__brand:hover {
           opacity: 0.85;
+        }
+        [data-theme='light'] .lgnav__brand:hover {
+          opacity: 0.7;
         }
 
         /* Desktop links */
@@ -628,11 +656,20 @@ export default function LiquidGlassNav() {
           transition: color 0.2s ease;
           white-space: nowrap;
         }
+        [data-theme='light'] .lgnav__link {
+          color: var(--bg-2);
+        }
         .lgnav__link:hover {
           color: #00f0ff;
         }
+        [data-theme='light'] .lgnav__link:hover {
+          color: var(--cyan);
+        }
         .lgnav__link.is-active {
           color: #ffffff;
+        }
+        [data-theme='light'] .lgnav__link.is-active {
+          color: #000;
         }
         .lgnav__active-pill {
           position: absolute;
@@ -641,6 +678,10 @@ export default function LiquidGlassNav() {
           background: linear-gradient(180deg, rgba(0, 240, 255, 0.22), rgba(122, 92, 255, 0.18));
           border: 1px solid rgba(0, 240, 255, 0.35);
           z-index: -1;
+        }
+        [data-theme='light'] .lgnav__active-pill {
+          background: linear-gradient(180deg, rgba(0, 144, 168, 0.2), rgba(90, 60, 240, 0.15));
+          border-color: rgba(0, 144, 168, 0.35);
         }
 
         /* Actions */
@@ -672,13 +713,23 @@ export default function LiquidGlassNav() {
           -webkit-backdrop-filter: blur(var(--glass-blur));
           transition: border-color 0.2s ease, color 0.2s ease;
         }
+        [data-theme='light'] .lgnav__hamburger {
+          background: rgba(255, 255, 255, 0.75);
+          color: var(--bg-2);
+        }
         .lgnav__hamburger:hover {
           border-color: var(--cyan);
           color: var(--cyan);
         }
+        [data-theme='light'] .lgnav__hamburger:hover {
+          background: rgba(255, 255, 255, 0.9);
+        }
         .lgnav__hamburger:focus-visible {
           outline: none;
           box-shadow: var(--focus-ring);
+        }
+        [data-theme='light'] .lgnav__hamburger:focus-visible {
+          box-shadow: 0 0 0 3px rgba(0, 144, 168, 0.55);
         }
         .lgnav__hamburger-line {
           display: block;
@@ -708,14 +759,17 @@ export default function LiquidGlassNav() {
           backdrop-filter: blur(2px);
           cursor: pointer;
         }
+        [data-theme='light'] .lgnav__backdrop {
+          background: rgba(235, 242, 249, 0.55);
+        }
 
         /* Mobile menu */
         .lgnav__mobile-menu {
           position: fixed;
-          top: 70px;
+          top: calc(var(--nav-h) + 8px);
           right: 16px;
           width: min(300px, calc(100vw - 32px));
-          max-height: calc(100vh - 120px);
+          max-height: calc(100vh - var(--nav-h) - 24px);
           overflow-y: auto;
           padding: 14px;
           border-radius: 16px;
@@ -724,7 +778,27 @@ export default function LiquidGlassNav() {
           box-shadow:
             0 18px 50px -20px rgba(0, 0, 0, 0.7),
             inset 0 1px 0 rgba(255, 255, 255, 0.14);
-          z-index: 202;
+          z-index: 204;
+          scrollbar-width: thin;
+          scrollbar-color: rgba(0, 240, 255, 0.3) transparent;
+        }
+        .lgnav__mobile-menu::-webkit-scrollbar {
+          width: 6px;
+        }
+        .lgnav__mobile-menu::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .lgnav__mobile-menu::-webkit-scrollbar-thumb {
+          background: rgba(0, 240, 255, 0.3);
+          border-radius: 3px;
+        }
+        [data-theme='light'] .lgnav__mobile-menu {
+          background: rgba(235, 242, 249, 0.96);
+          border-color: rgba(20, 50, 90, 0.16);
+          scrollbar-color: rgba(0, 144, 168, 0.3) transparent;
+        }
+        [data-theme='light'] .lgnav__mobile-menu::-webkit-scrollbar-thumb {
+          background: rgba(0, 144, 168, 0.3);
         }
         .lgnav__mobile-links {
           list-style: none;
@@ -749,9 +823,17 @@ export default function LiquidGlassNav() {
           color: var(--cyan);
           background: rgba(0, 240, 255, 0.08);
         }
+        [data-theme='light'] .lgnav__mobile-links .lgnav__link:hover {
+          color: var(--cyan);
+          background: rgba(0, 144, 168, 0.08);
+        }
         .lgnav__mobile-links .lgnav__link.is-active {
           color: #ffffff;
           background: rgba(0, 240, 255, 0.12);
+        }
+        [data-theme='light'] .lgnav__mobile-links .lgnav__link.is-active {
+          color: #000;
+          background: rgba(0, 144, 168, 0.15);
         }
         .lgnav__mobile-links .lgnav__active-pill {
           display: none;
@@ -773,6 +855,9 @@ export default function LiquidGlassNav() {
           letter-spacing: 0.1em;
           color: var(--fg-muted);
           padding: 0 4px;
+        }
+        [data-theme='light'] .lgnav__mobile-settings-label {
+          color: #41526b;
         }
         .lgnav__mobile-settings-row {
           display: flex;
@@ -803,21 +888,31 @@ export default function LiquidGlassNav() {
           -webkit-backdrop-filter: blur(var(--glass-blur));
           transition: border-color 0.2s ease, color 0.2s ease;
         }
+        [data-theme='light'] .lgnav__search-toggle {
+          background: rgba(255, 255, 255, 0.7);
+          color: var(--bg-2);
+        }
         .lgnav__search-toggle:hover {
           border-color: var(--cyan);
           color: var(--cyan);
+        }
+        [data-theme='light'] .lgnav__search-toggle:hover {
+          background: rgba(255, 255, 255, 0.9);
         }
         .lgnav__search-toggle:focus-visible {
           outline: none;
           box-shadow: var(--focus-ring);
         }
+        [data-theme='light'] .lgnav__search-toggle:focus-visible {
+          box-shadow: 0 0 0 3px rgba(0, 144, 168, 0.55);
+        }
 
         .lgnav__search-panel {
           position: fixed;
-          top: 70px;
+          top: calc(var(--nav-h) + 8px);
           right: 16px;
           width: min(360px, calc(100vw - 32px));
-          max-height: min(480px, calc(100vh - 120px));
+          max-height: calc(100vh - var(--nav-h) - 24px);
           display: flex;
           flex-direction: column;
           padding: 14px;
@@ -827,7 +922,11 @@ export default function LiquidGlassNav() {
           box-shadow:
             0 18px 50px -20px rgba(0, 0, 0, 0.7),
             inset 0 1px 0 rgba(255, 255, 255, 0.14);
-          z-index: 202;
+          z-index: 203;
+        }
+        [data-theme='light'] .lgnav__search-panel {
+          background: rgba(235, 242, 249, 0.96);
+          border-color: rgba(20, 50, 90, 0.16);
         }
         .lgnav__search-header {
           display: flex;
@@ -857,6 +956,14 @@ export default function LiquidGlassNav() {
           cursor: pointer;
           transition: color 0.2s ease, border-color 0.2s ease;
         }
+        [data-theme='light'] .lgnav__search-close {
+          color: var(--bg-2);
+          border-color: rgba(20, 50, 90, 0.25);
+        }
+        [data-theme='light'] .lgnav__search-close:hover {
+          color: var(--bg-0);
+          border-color: var(--cyan);
+        }
         .lgnav__search-close:hover {
           color: var(--fg);
           border-color: var(--cyan);
@@ -875,6 +982,9 @@ export default function LiquidGlassNav() {
           background: rgba(5, 6, 10, 0.45);
           flex-shrink: 0;
         }
+        [data-theme='light'] .lgnav__search-field {
+          background: rgba(255, 255, 255, 0.6);
+        }
         .lgnav__search-icon {
           color: var(--fg-muted);
           flex-shrink: 0;
@@ -888,8 +998,22 @@ export default function LiquidGlassNav() {
           outline: none;
           min-width: 0;
         }
+        .lgnav__search-input:focus-visible {
+          outline: none;
+          box-shadow: 0 0 0 2px rgba(0, 240, 255, 0.4);
+          border-radius: 4px;
+        }
+        [data-theme='light'] .lgnav__search-input:focus-visible {
+          box-shadow: 0 0 0 2px rgba(0, 144, 168, 0.4);
+        }
         .lgnav__search-input::placeholder {
           color: var(--fg-muted);
+        }
+        [data-theme='light'] .lgnav__search-input {
+          color: var(--bg-2);
+        }
+        [data-theme='light'] .lgnav__search-input::placeholder {
+          color: #41526b;
         }
         .lgnav__search-count {
           font-size: 0.75rem;
@@ -899,6 +1023,10 @@ export default function LiquidGlassNav() {
           border-radius: 999px;
           font-weight: 700;
           flex-shrink: 0;
+        }
+        [data-theme='light'] .lgnav__search-count {
+          background: rgba(0, 144, 168, 0.12);
+          color: var(--cyan);
         }
         .lgnav__search-clear {
           display: inline-flex;
@@ -919,9 +1047,15 @@ export default function LiquidGlassNav() {
           color: var(--fg);
           background: rgba(255, 255, 255, 0.08);
         }
+        [data-theme='light'] .lgnav__search-clear:hover {
+          background: rgba(0, 0, 0, 0.06);
+        }
         .lgnav__search-clear:focus-visible {
           outline: none;
           box-shadow: var(--focus-ring);
+        }
+        [data-theme='light'] .lgnav__search-clear:focus-visible {
+          box-shadow: 0 0 0 3px rgba(0, 144, 168, 0.55);
         }
         .lgnav__search-results {
           margin-top: 10px;
@@ -947,6 +1081,9 @@ export default function LiquidGlassNav() {
           color: var(--fg-muted);
           padding: 4px 12px 2px;
         }
+        [data-theme='light'] .lgnav__search-group-label {
+          color: #41526b;
+        }
         .lgnav__search-group ul {
           list-style: none;
           margin: 0;
@@ -966,6 +1103,13 @@ export default function LiquidGlassNav() {
           font-size: 0.92rem;
           transition: background 0.2s ease, color 0.2s ease;
         }
+        [data-theme='light'] .lgnav__search-result {
+          color: var(--bg-2);
+        }
+        [data-theme='light'] .lgnav__search-result:hover {
+          background: rgba(0, 144, 168, 0.08);
+          color: var(--cyan);
+        }
         .lgnav__search-result:hover {
           background: rgba(0, 240, 255, 0.08);
           color: var(--cyan);
@@ -973,20 +1117,30 @@ export default function LiquidGlassNav() {
         .lgnav__search-result-title {
           font-weight: 600;
         }
+        [data-theme='light'] .lgnav__search-result-title {
+          color: var(--bg-0);
+        }
         .lgnav__search-result-meta {
           font-size: 0.78rem;
           color: var(--fg-muted);
+        }
+        [data-theme='light'] .lgnav__search-result-meta {
+          color: #41526b;
         }
         .lgnav__search-empty {
           margin: 8px 10px 0;
           color: var(--fg-muted);
           font-size: 0.88rem;
         }
+        [data-theme='light'] .lgnav__search-empty {
+          color: #41526b;
+        }
 
         /* Tablet: show compact links */
         @media (max-width: ${BREAKPOINT_TABLET}px) and (min-width: ${BREAKPOINT_MOBILE}px) {
           .lgnav__links {
             gap: 2px;
+            flex-wrap: wrap;
           }
           .lgnav__link {
             padding: 8px 10px;
@@ -1037,16 +1191,24 @@ export default function LiquidGlassNav() {
             height: 22px;
             width: auto;
           }
+          [data-theme='light'] .lgnav__brand svg {
+            filter: brightness(0.2);
+          }
         }
 
         /* Landscape mobile optimization */
         @media (max-width: 1024px) and (orientation: landscape) {
           .lgnav {
-            padding: 6px 12px;
+            padding: 4px 12px;
           }
           .lgnav__inner {
-            padding: 6px 12px;
-            gap: 10px;
+            padding: 4px 12px;
+            gap: 8px;
+          }
+          .lgnav__mobile-menu,
+          .lgnav__search-panel {
+            top: calc(var(--nav-h) + 4px);
+            max-height: calc(100vh - var(--nav-h) - 12px);
           }
         }
 
@@ -1058,6 +1220,9 @@ export default function LiquidGlassNav() {
           .lgnav__refract {
             filter: none;
             opacity: 0.35;
+          }
+          [data-theme='light'] .lgnav__refract {
+            opacity: 0.25;
           }
         }
       `}</style>
