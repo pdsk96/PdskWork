@@ -115,10 +115,11 @@ export async function getPaginatedPosts(
 
   if (page <= 1) {
     const q = query(baseQuery, limit(perPage))
-    const snap = await getDocs(q)
-    const posts = snap.docs.map((d) => snapToPost(d.id, d.data() as Record<string, unknown>))
-    const hasMore = posts.length === perPage
-    return { posts, hasMore, totalCount: hasMore ? posts.length + 1 : posts.length }
+  const snap = await getDocs(q)
+  const posts = snap.docs.map((d) => snapToPost(d.id, d.data() as Record<string, unknown>))
+  const hasMore = posts.length === perPage
+  console.debug(`[blog-firestore] getPaginatedPosts page=${page} locale=${locale ?? 'all'} count=${posts.length} hasMore=${hasMore}`)
+  return { posts, hasMore, totalCount: hasMore ? posts.length + 1 : posts.length }
   }
 
   const cursorQ = query(baseQuery, limit((page - 1) * perPage))

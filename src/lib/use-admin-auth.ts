@@ -28,6 +28,7 @@ export function useAdminAuth(): AdminAuth {
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (u) => {
+      console.debug('[admin-auth] state changed', { uid: u?.uid ?? null, email: u?.email ?? null })
       setUser(u)
       setLoading(false)
     })
