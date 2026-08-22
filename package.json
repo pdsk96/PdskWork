@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/gen-feed.mjs",
+    "prebuild": "node scripts/gen-feed.mjs && node scripts/gen-cover-images.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
@@ -32,6 +32,7 @@
     "eslint": "^9.18.0",
     "eslint-config-next": "16.3.1",
     "firebase-admin": "^14.2.0",
+    "sharp": "^0.35.3",
     "typescript": "^5.7.0"
   }
 }

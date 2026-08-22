@@ -25,13 +25,11 @@ export function generateGradientThumbnail(post: BlogPost): string {
 }
 
 /**
- * Get thumbnail URL for a post - uses placeholder service for demo
- * In production, this would generate actual thumbnails
+ * Get thumbnail URL for a post - prefers local cover image, falls back to OG image or placeholder
  */
 export function getPostThumbnail(post: BlogPost): string {
-  // Use picsum.photos with seed based on post slug for consistent thumbnails
+  if (post.coverImage) return post.coverImage
   const width = 800
   const height = 400
-
   return `https://picsum.photos/seed/${post.slug}/${width}/${height}`
 }

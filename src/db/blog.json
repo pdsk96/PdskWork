@@ -12,7 +12,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-07-01T00:00:00.000Z",
-    "updatedAt": "2026-07-01T00:00:00.000Z"
+    "updatedAt": "2026-07-01T00:00:00.000Z",
+    "coverImage": "/blog-covers/welcome-to-pdskwork.jpg",
+    "coverImageAlt": "Welcome to PdskWork"
   },
   {
     "id": "selamat-datang-pdskwork",
@@ -27,7 +29,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-07-02T00:00:00.000Z",
-    "updatedAt": "2026-07-02T00:00:00.000Z"
+    "updatedAt": "2026-07-02T00:00:00.000Z",
+    "coverImage": "/blog-covers/selamat-datang-pdskwork.jpg",
+    "coverImageAlt": "Selamat Datang di PdskWork"
   },
   {
     "id": "nextjs-16-3-instant-navigations",
@@ -44,7 +48,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-08-04T00:00:00.000Z",
-    "updatedAt": "2026-08-04T00:00:00.000Z"
+    "updatedAt": "2026-08-04T00:00:00.000Z",
+    "coverImage": "/blog-covers/nextjs-16-3-instant-navigations.jpg",
+    "coverImageAlt": "Next.js 16.3 Brings Instant Navigations to the React Ecosystem"
   },
   {
     "id": "react-19-2-view-transitions",
@@ -60,7 +66,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-07-28T00:00:00.000Z",
-    "updatedAt": "2026-07-28T00:00:00.000Z"
+    "updatedAt": "2026-07-28T00:00:00.000Z",
+    "coverImage": "/blog-covers/react-19-2-view-transitions.jpg",
+    "coverImageAlt": "React 19.2 Makes View Transitions First-Class"
   },
   {
     "id": "turbopack-default-bundler-2026",
@@ -76,7 +84,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-07-20T00:00:00.000Z",
-    "updatedAt": "2026-07-20T00:00:00.000Z"
+    "updatedAt": "2026-07-20T00:00:00.000Z",
+    "coverImage": "/blog-covers/turbopack-default-bundler-2026.jpg",
+    "coverImageAlt": "Turbopack as Default Bundler: A 2026 Retrospective"
   },
   {
     "id": "liquid-glass-design-era-2026",
@@ -93,7 +103,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-07-12T00:00:00.000Z",
-    "updatedAt": "2026-07-12T00:00:00.000Z"
+    "updatedAt": "2026-07-12T00:00:00.000Z",
+    "coverImage": "/blog-covers/liquid-glass-design-era-2026.jpg",
+    "coverImageAlt": "The Liquid-Glass Design Era Is Here"
   },
   {
     "id": "edge-runtime-maturity-2026",
@@ -109,7 +121,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-06-28T00:00:00.000Z",
-    "updatedAt": "2026-06-28T00:00:00.000Z"
+    "updatedAt": "2026-06-28T00:00:00.000Z",
+    "coverImage": "/blog-covers/edge-runtime-maturity-2026.jpg",
+    "coverImageAlt": "Edge Runtimes Hit Production Maturity in 2026"
   },
   {
     "id": "ai-coding-agents-mainstream-2026",
@@ -126,7 +140,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-06-20T00:00:00.000Z",
-    "updatedAt": "2026-06-20T00:00:00.000Z"
+    "updatedAt": "2026-06-20T00:00:00.000Z",
+    "coverImage": "/blog-covers/ai-coding-agents-mainstream-2026.jpg",
+    "coverImageAlt": "AI Coding Agents Cross Into Mainstream in 2026"
   },
   {
     "id": "webgpu-comes-to-browsers-2026",
@@ -143,7 +159,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-06-14T00:00:00.000Z",
-    "updatedAt": "2026-06-14T00:00:00.000Z"
+    "updatedAt": "2026-06-14T00:00:00.000Z",
+    "coverImage": "/blog-covers/webgpu-comes-to-browsers-2026.jpg",
+    "coverImageAlt": "WebGPU Is Finally Everywhere in 2026"
   },
   {
     "id": "typescript-6-type-erasure-2026",
@@ -159,7 +177,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-06-08T00:00:00.000Z",
-    "updatedAt": "2026-06-08T00:00:00.000Z"
+    "updatedAt": "2026-06-08T00:00:00.000Z",
+    "coverImage": "/blog-covers/typescript-6-type-erasure-2026.jpg",
+    "coverImageAlt": "TypeScript 6 and the Type Erasure Revolution"
   },
   {
     "id": "vector-databases-commoditized-2026",
@@ -176,7 +196,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-06-02T00:00:00.000Z",
-    "updatedAt": "2026-06-02T00:00:00.000Z"
+    "updatedAt": "2026-06-02T00:00:00.000Z",
+    "coverImage": "/blog-covers/vector-databases-commoditized-2026.jpg",
+    "coverImageAlt": "Vector Databases Got Commoditized in 2026"
   },
   {
     "id": "rust-in-the-frontend-toolchain-2026",
@@ -193,7 +215,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-05-28T00:00:00.000Z",
-    "updatedAt": "2026-05-28T00:00:00.000Z"
+    "updatedAt": "2026-05-28T00:00:00.000Z",
+    "coverImage": "/blog-covers/rust-in-the-frontend-toolchain-2026.jpg",
+    "coverImageAlt": "Rust Quietly Took Over the Frontend Toolchain"
   },
   {
     "id": "tutorial-build-3d-cyberpunk-hero-r3f",
@@ -210,7 +234,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-08-02T00:00:00.000Z",
-    "updatedAt": "2026-08-02T00:00:00.000Z"
+    "updatedAt": "2026-08-02T00:00:00.000Z",
+    "coverImage": "/blog-covers/tutorial-build-3d-cyberpunk-hero-r3f.jpg",
+    "coverImageAlt": "Tutorial: Build a Cyberpunk 3D Hero Scene With React Three Fiber"
   },
   {
     "id": "tutorial-nextjs-16-cache-components",
@@ -227,7 +253,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-07-30T00:00:00.000Z",
-    "updatedAt": "2026-07-30T00:00:00.000Z"
+    "updatedAt": "2026-07-30T00:00:00.000Z",
+    "coverImage": "/blog-covers/tutorial-nextjs-16-cache-components.jpg",
+    "coverImageAlt": "Tutorial: Adopting Cache Components in Next.js 16"
   },
   {
     "id": "tutorial-motion-lazy-bundle",
@@ -244,7 +272,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-07-26T00:00:00.000Z",
-    "updatedAt": "2026-07-26T00:00:00.000Z"
+    "updatedAt": "2026-07-26T00:00:00.000Z",
+    "coverImage": "/blog-covers/tutorial-motion-lazy-bundle.jpg",
+    "coverImageAlt": "Tutorial: Shrinking Your Motion Bundle With LazyMotion"
   },
   {
     "id": "tutorial-static-export-firebase-hosting",
@@ -261,7 +291,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-07-22T00:00:00.000Z",
-    "updatedAt": "2026-07-22T00:00:00.000Z"
+    "updatedAt": "2026-07-22T00:00:00.000Z",
+    "coverImage": "/blog-covers/tutorial-static-export-firebase-hosting.jpg",
+    "coverImageAlt": "Tutorial: Static Export a Next.js App to Firebase Hosting Free Tier"
   },
   {
     "id": "tutorial-web-audio-ambient-drone",
@@ -278,7 +310,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-07-18T00:00:00.000Z",
-    "updatedAt": "2026-07-18T00:00:00.000Z"
+    "updatedAt": "2026-07-18T00:00:00.000Z",
+    "coverImage": "/blog-covers/tutorial-web-audio-ambient-drone.jpg",
+    "coverImageAlt": "Tutorial: Synthesize an Ambient Drone With the Web Audio API"
   },
   {
     "id": "tutorial-i18n-client-side-nextjs",
@@ -295,7 +329,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-07-14T00:00:00.000Z",
-    "updatedAt": "2026-07-14T00:00:00.000Z"
+    "updatedAt": "2026-07-14T00:00:00.000Z",
+    "coverImage": "/blog-covers/tutorial-i18n-client-side-nextjs.jpg",
+    "coverImageAlt": "Tutorial: Client-Side i18n in a Static Next.js Export"
   },
   {
     "id": "tutorial-rss-feed-static-nextjs",
@@ -312,7 +348,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-07-10T00:00:00.000Z",
-    "updatedAt": "2026-07-10T00:00:00.000Z"
+    "updatedAt": "2026-07-10T00:00:00.000Z",
+    "coverImage": "/blog-covers/tutorial-rss-feed-static-nextjs.jpg",
+    "coverImageAlt": "Tutorial: Generate an RSS Feed for a Static Next.js Site"
   },
   {
     "id": "tutorial-firestore-client-sdk-static-site",
@@ -329,7 +367,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-07-06T00:00:00.000Z",
-    "updatedAt": "2026-07-06T00:00:00.000Z"
+    "updatedAt": "2026-07-06T00:00:00.000Z",
+    "coverImage": "/blog-covers/tutorial-firestore-client-sdk-static-site.jpg",
+    "coverImageAlt": "Tutorial: Adding Firestore to a Static Next.js Export"
   },
   {
     "id": "tutorial-reduced-motion-accessibility",
@@ -346,7 +386,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-06-30T00:00:00.000Z",
-    "updatedAt": "2026-06-30T00:00:00.000Z"
+    "updatedAt": "2026-06-30T00:00:00.000Z",
+    "coverImage": "/blog-covers/tutorial-reduced-motion-accessibility.jpg",
+    "coverImageAlt": "Tutorial: Building for `prefers-reduced-motion`"
   },
   {
     "id": "tutorial-seo-nextjs-16",
@@ -363,7 +405,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-06-24T00:00:00.000Z",
-    "updatedAt": "2026-06-24T00:00:00.000Z"
+    "updatedAt": "2026-06-24T00:00:00.000Z",
+    "coverImage": "/blog-covers/tutorial-seo-nextjs-16.jpg",
+    "coverImageAlt": "Tutorial: Production SEO in Next.js 16"
   },
   {
     "id": "tutorial-github-actions-deploy-firebase",
@@ -380,7 +424,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-06-18T00:00:00.000Z",
-    "updatedAt": "2026-06-18T00:00:00.000Z"
+    "updatedAt": "2026-06-18T00:00:00.000Z",
+    "coverImage": "/blog-covers/tutorial-github-actions-deploy-firebase.jpg",
+    "coverImageAlt": "Tutorial: CI/CD for Firebase Hosting With GitHub Actions"
   },
   {
     "id": "programming-async-params-nextjs-16",
@@ -397,7 +443,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-08-01T00:00:00.000Z",
-    "updatedAt": "2026-08-01T00:00:00.000Z"
+    "updatedAt": "2026-08-01T00:00:00.000Z",
+    "coverImage": "/blog-covers/programming-async-params-nextjs-16.jpg",
+    "coverImageAlt": "Next.js 16 Makes Async Request APIs Mandatory — Here Is How to Adapt"
   },
   {
     "id": "programming-middleware-to-proxy-nextjs-16",
@@ -414,7 +462,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-07-29T00:00:00.000Z",
-    "updatedAt": "2026-07-29T00:00:00.000Z"
+    "updatedAt": "2026-07-29T00:00:00.000Z",
+    "coverImage": "/blog-covers/programming-middleware-to-proxy-nextjs-16.jpg",
+    "coverImageAlt": "Next.js 16 Renamed Middleware to Proxy — What It Means"
   },
   {
     "id": "programming-next-image-priority-deprecated",
@@ -431,7 +481,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-07-24T00:00:00.000Z",
-    "updatedAt": "2026-07-24T00:00:00.000Z"
+    "updatedAt": "2026-07-24T00:00:00.000Z",
+    "coverImage": "/blog-covers/programming-next-image-priority-deprecated.jpg",
+    "coverImageAlt": "Next.js 16: `next/image` `priority` Is Deprecated — Use `preload`"
   },
   {
     "id": "programming-eslint-flat-config-nextjs-16",
@@ -448,7 +500,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-07-19T00:00:00.000Z",
-    "updatedAt": "2026-07-19T00:00:00.000Z"
+    "updatedAt": "2026-07-19T00:00:00.000Z",
+    "coverImage": "/blog-covers/programming-eslint-flat-config-nextjs-16.jpg",
+    "coverImageAlt": "Next.js 16: ESLint Flat Config and the End of `next lint`"
   },
   {
     "id": "programming-server-components-boundaries",
@@ -465,7 +519,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-07-15T00:00:00.000Z",
-    "updatedAt": "2026-07-15T00:00:00.000Z"
+    "updatedAt": "2026-07-15T00:00:00.000Z",
+    "coverImage": "/blog-covers/programming-server-components-boundaries.jpg",
+    "coverImageAlt": "Programming Server Components: Drawing the Right Boundaries"
   },
   {
     "id": "programming-react-compiler-2026",
@@ -482,7 +538,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-07-11T00:00:00.000Z",
-    "updatedAt": "2026-07-11T00:00:00.000Z"
+    "updatedAt": "2026-07-11T00:00:00.000Z",
+    "coverImage": "/blog-covers/programming-react-compiler-2026.jpg",
+    "coverImageAlt": "The React Compiler Is Real in 2026 — What It Changes"
   },
   {
     "id": "programming-error-handling-typescript",
@@ -499,7 +557,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-06-26T00:00:00.000Z",
-    "updatedAt": "2026-06-26T00:00:00.000Z"
+    "updatedAt": "2026-06-26T00:00:00.000Z",
+    "coverImage": "/blog-covers/programming-error-handling-typescript.jpg",
+    "coverImageAlt": "TypeScript Error Handling: Beyond `try/catch`"
   },
   {
     "id": "programming-state-machines-react",
@@ -516,7 +576,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-06-22T00:00:00.000Z",
-    "updatedAt": "2026-06-22T00:00:00.000Z"
+    "updatedAt": "2026-06-22T00:00:00.000Z",
+    "coverImage": "/blog-covers/programming-state-machines-react.jpg",
+    "coverImageAlt": "Modeling UI State With State Machines in React"
   },
   {
     "id": "programming-testing-react-server-components",
@@ -533,7 +595,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-06-16T00:00:00.000Z",
-    "updatedAt": "2026-06-16T00:00:00.000Z"
+    "updatedAt": "2026-06-16T00:00:00.000Z",
+    "coverImage": "/blog-covers/programming-testing-react-server-components.jpg",
+    "coverImageAlt": "Testing React Server Components in 2026"
   },
   {
     "id": "programming-css-container-queries-2026",
@@ -550,7 +614,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-06-10T00:00:00.000Z",
-    "updatedAt": "2026-06-10T00:00:00.000Z"
+    "updatedAt": "2026-06-10T00:00:00.000Z",
+    "coverImage": "/blog-covers/programming-css-container-queries-2026.jpg",
+    "coverImageAlt": "Container Queries Changed How I Write CSS in 2026"
   },
   {
     "id": "open-source-langgraph-1-0-stable",
@@ -567,7 +633,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-08-05T00:00:00.000Z",
-    "updatedAt": "2026-08-05T00:00:00.000Z"
+    "updatedAt": "2026-08-05T00:00:00.000Z",
+    "coverImage": "/blog-covers/open-source-langgraph-1-0-stable.jpg",
+    "coverImageAlt": "LangGraph 1.0 Is Stable — The Stateful Agent Standard"
   },
   {
     "id": "open-source-crewai-1-14-memory",
@@ -584,7 +652,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-07-31T00:00:00.000Z",
-    "updatedAt": "2026-07-31T00:00:00.000Z"
+    "updatedAt": "2026-07-31T00:00:00.000Z",
+    "coverImage": "/blog-covers/open-source-crewai-1-14-memory.jpg",
+    "coverImageAlt": "CrewAI 1.14 Ships Pluggable Memory and Knowledge Backends"
   },
   {
     "id": "open-source-microsoft-agent-framework-1-0",
@@ -601,7 +671,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-07-27T00:00:00.000Z",
-    "updatedAt": "2026-07-27T00:00:00.000Z"
+    "updatedAt": "2026-07-27T00:00:00.000Z",
+    "coverImage": "/blog-covers/open-source-microsoft-agent-framework-1-0.jpg",
+    "coverImageAlt": "Microsoft Agent Framework 1.0: Semantic Kernel Meets AutoGen"
   },
   {
     "id": "open-source-google-adk-2-0",
@@ -618,7 +690,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-07-23T00:00:00.000Z",
-    "updatedAt": "2026-07-23T00:00:00.000Z"
+    "updatedAt": "2026-07-23T00:00:00.000Z",
+    "coverImage": "/blog-covers/open-source-google-adk-2-0.jpg",
+    "coverImageAlt": "Google ADK 2.0: Four-Language Agent Parity"
   },
   {
     "id": "open-source-mastra-1-0-typescript",
@@ -636,7 +710,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-07-17T00:00:00.000Z",
-    "updatedAt": "2026-07-17T00:00:00.000Z"
+    "updatedAt": "2026-07-17T00:00:00.000Z",
+    "coverImage": "/blog-covers/open-source-mastra-1-0-typescript.jpg",
+    "coverImageAlt": "Mastra 1.0: The TypeScript-First Agent Framework"
   },
   {
     "id": "open-source-openai-agents-sdk-sandbox",
@@ -653,7 +729,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-07-13T00:00:00.000Z",
-    "updatedAt": "2026-07-13T00:00:00.000Z"
+    "updatedAt": "2026-07-13T00:00:00.000Z",
+    "coverImage": "/blog-covers/open-source-openai-agents-sdk-sandbox.jpg",
+    "coverImageAlt": "OpenAI Agents SDK Adds Sandbox Execution and TypeScript Parity"
   },
   {
     "id": "open-source-claude-agent-sdk-subagents",
@@ -671,7 +749,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-07-09T00:00:00.000Z",
-    "updatedAt": "2026-07-09T00:00:00.000Z"
+    "updatedAt": "2026-07-09T00:00:00.000Z",
+    "coverImage": "/blog-covers/open-source-claude-agent-sdk-subagents.jpg",
+    "coverImageAlt": "Claude Agent SDK Adds Hierarchical Subagents and Fallback Chains"
   },
   {
     "id": "open-source-llamaindex-workflows-1-0",
@@ -689,7 +769,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-06-29T00:00:00.000Z",
-    "updatedAt": "2026-06-29T00:00:00.000Z"
+    "updatedAt": "2026-06-29T00:00:00.000Z",
+    "coverImage": "/blog-covers/open-source-llamaindex-workflows-1-0.jpg",
+    "coverImageAlt": "LlamaIndex Workflows 1.0: Event-Driven, Async-First Agents"
   },
   {
     "id": "open-source-pydantic-ai-v2",
@@ -707,7 +789,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-06-19T00:00:00.000Z",
-    "updatedAt": "2026-06-19T00:00:00.000Z"
+    "updatedAt": "2026-06-19T00:00:00.000Z",
+    "coverImage": "/blog-covers/open-source-pydantic-ai-v2.jpg",
+    "coverImageAlt": "Pydantic AI V2: Type-Safe Agent Development Done Right"
   },
   {
     "id": "open-source-deer-flow-bytedance",
@@ -725,7 +809,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-06-12T00:00:00.000Z",
-    "updatedAt": "2026-06-12T00:00:00.000Z"
+    "updatedAt": "2026-06-12T00:00:00.000Z",
+    "coverImage": "/blog-covers/open-source-deer-flow-bytedance.jpg",
+    "coverImageAlt": "ByteDance Open-Sources Deer-Flow 2.0, Tops GitHub Trending"
   },
   {
     "id": "openhands-open-source-dev-agent",
@@ -743,7 +829,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-08-06T00:00:00.000Z",
-    "updatedAt": "2026-08-06T00:00:00.000Z"
+    "updatedAt": "2026-08-06T00:00:00.000Z",
+    "coverImage": "/blog-covers/openhands-open-source-dev-agent.jpg",
+    "coverImageAlt": "OpenHands: The Open-Source Devin Heir"
   },
   {
     "id": "autogpt-open-source-agent-2026",
@@ -760,7 +848,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-08-03T00:00:00.000Z",
-    "updatedAt": "2026-08-03T00:00:00.000Z"
+    "updatedAt": "2026-08-03T00:00:00.000Z",
+    "coverImage": "/blog-covers/autogpt-open-source-agent-2026.jpg",
+    "coverImageAlt": "AutoGPT: The Original Open-Source Agent, Still Evolving"
   },
   {
     "id": "metagpt-software-company-agent",
@@ -778,7 +868,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-07-25T00:00:00.000Z",
-    "updatedAt": "2026-07-25T00:00:00.000Z"
+    "updatedAt": "2026-07-25T00:00:00.000Z",
+    "coverImage": "/blog-covers/metagpt-software-company-agent.jpg",
+    "coverImageAlt": "MetaGPT: An Open-Source Software Company in a Box"
   },
   {
     "id": "smolagents-minimal-code-first",
@@ -796,7 +888,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-07-21T00:00:00.000Z",
-    "updatedAt": "2026-07-21T00:00:00.000Z"
+    "updatedAt": "2026-07-21T00:00:00.000Z",
+    "coverImage": "/blog-covers/smolagents-minimal-code-first.jpg",
+    "coverImageAlt": "Smolagents: Minimal, Code-First Agents from Hugging Face"
   },
   {
     "id": "agno-lightweight-python-agents",
@@ -814,7 +908,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-07-16T00:00:00.000Z",
-    "updatedAt": "2026-07-16T00:00:00.000Z"
+    "updatedAt": "2026-07-16T00:00:00.000Z",
+    "coverImage": "/blog-covers/agno-lightweight-python-agents.jpg",
+    "coverImageAlt": "Agno: Lightweight, High-Performance Python Agents"
   },
   {
     "id": "openclaw-privacy-first-agent",
@@ -832,7 +928,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-07-08T00:00:00.000Z",
-    "updatedAt": "2026-07-08T00:00:00.000Z"
+    "updatedAt": "2026-07-08T00:00:00.000Z",
+    "coverImage": "/blog-covers/openclaw-privacy-first-agent.jpg",
+    "coverImageAlt": "OpenClaw: The Privacy-First Agent That Connects 50+ Apps"
   },
   {
     "id": "semantic-kernel-enterprise-dotnet",
@@ -850,7 +948,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-06-27T00:00:00.000Z",
-    "updatedAt": "2026-06-27T00:00:00.000Z"
+    "updatedAt": "2026-06-27T00:00:00.000Z",
+    "coverImage": "/blog-covers/semantic-kernel-enterprise-dotnet.jpg",
+    "coverImageAlt": "Semantic Kernel: Enterprise AI for the .NET World"
   },
   {
     "id": "autogen-legacy-multi-agent",
@@ -868,7 +968,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-06-15T00:00:00.000Z",
-    "updatedAt": "2026-06-15T00:00:00.000Z"
+    "updatedAt": "2026-06-15T00:00:00.000Z",
+    "coverImage": "/blog-covers/autogen-legacy-multi-agent.jpg",
+    "coverImageAlt": "AutoGen / AG2: The Legacy Multi-Agent Option"
   },
   {
     "id": "vibe-trading-open-source-agents",
@@ -886,7 +988,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-07-12T00:00:00.000Z",
-    "updatedAt": "2026-07-12T00:00:00.000Z"
+    "updatedAt": "2026-07-12T00:00:00.000Z",
+    "coverImage": "/blog-covers/vibe-trading-open-source-agents.jpg",
+    "coverImageAlt": "Vibe-Trading and the Rise of Open-Source Trading Agents"
   },
   {
     "id": "mcp-model-context-protocol-2026",
@@ -904,7 +1008,9 @@
     "published": true,
     "locale": "en",
     "createdAt": "2026-06-05T00:00:00.000Z",
-    "updatedAt": "2026-06-05T00:00:00.000Z"
+    "updatedAt": "2026-06-05T00:00:00.000Z",
+    "coverImage": "/blog-covers/mcp-model-context-protocol-2026.jpg",
+    "coverImageAlt": "MCP Won the Agent Tooling Standard in 2026"
   },
   {
     "id": "id-nextjs-16-3-instant-navigations",
@@ -921,7 +1027,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-04T00:00:00.000Z",
-    "updatedAt": "2026-08-04T00:00:00.000Z"
+    "updatedAt": "2026-08-04T00:00:00.000Z",
+    "coverImage": "/blog-covers/id-nextjs-16-3-instant-navigations.jpg",
+    "coverImageAlt": "Next.js 16.3 Hadirkan Navigasi Instan untuk Ekosistem React"
   },
   {
     "id": "id-react-19-2-view-transitions",
@@ -937,7 +1045,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-07-28T00:00:00.000Z",
-    "updatedAt": "2026-07-28T00:00:00.000Z"
+    "updatedAt": "2026-07-28T00:00:00.000Z",
+    "coverImage": "/blog-covers/id-react-19-2-view-transitions.jpg",
+    "coverImageAlt": "React 19.2 Jadikan View Transitions Kelas Satu"
   },
   {
     "id": "id-turbopack-default-bundler-2026",
@@ -953,7 +1063,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-07-20T00:00:00.000Z",
-    "updatedAt": "2026-07-20T00:00:00.000Z"
+    "updatedAt": "2026-07-20T00:00:00.000Z",
+    "coverImage": "/blog-covers/id-turbopack-default-bundler-2026.jpg",
+    "coverImageAlt": "Turbopack Sebagai Bundler Default: Retrospektif 2026"
   },
   {
     "id": "id-liquid-glass-design-era-2026",
@@ -970,7 +1082,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-07-12T00:00:00.000Z",
-    "updatedAt": "2026-07-12T00:00:00.000Z"
+    "updatedAt": "2026-07-12T00:00:00.000Z",
+    "coverImage": "/blog-covers/id-liquid-glass-design-era-2026.jpg",
+    "coverImageAlt": "Era Desain Liquid-Glass Sudah Hadir"
   },
   {
     "id": "id-edge-runtime-maturity-2026",
@@ -986,7 +1100,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-06-28T00:00:00.000Z",
-    "updatedAt": "2026-06-28T00:00:00.000Z"
+    "updatedAt": "2026-06-28T00:00:00.000Z",
+    "coverImage": "/blog-covers/id-edge-runtime-maturity-2026.jpg",
+    "coverImageAlt": "Edge Runtimes Mencapai Kematangan Produksi di 2026"
   },
   {
     "id": "id-ai-coding-agents-mainstream-2026",
@@ -1003,7 +1119,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-06-20T00:00:00.000Z",
-    "updatedAt": "2026-06-20T00:00:00.000Z"
+    "updatedAt": "2026-06-20T00:00:00.000Z",
+    "coverImage": "/blog-covers/id-ai-coding-agents-mainstream-2026.jpg",
+    "coverImageAlt": "AI Coding Agents Menyebar ke Mainstream di 2026"
   },
   {
     "id": "id-webgpu-comes-to-browsers-2026",
@@ -1020,7 +1138,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-06-14T00:00:00.000Z",
-    "updatedAt": "2026-06-14T00:00:00.000Z"
+    "updatedAt": "2026-06-14T00:00:00.000Z",
+    "coverImage": "/blog-covers/id-webgpu-comes-to-browsers-2026.jpg",
+    "coverImageAlt": "WebGPU Akhirnya Tersebar di Semua Browser di 2026"
   },
   {
     "id": "id-typescript-6-type-erasure-2026",
@@ -1036,7 +1156,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-06-08T00:00:00.000Z",
-    "updatedAt": "2026-06-08T00:00:00.000Z"
+    "updatedAt": "2026-06-08T00:00:00.000Z",
+    "coverImage": "/blog-covers/id-typescript-6-type-erasure-2026.jpg",
+    "coverImageAlt": "TypeScript 6 dan Revolusi Type Erasure"
   },
   {
     "id": "id-vector-databases-commoditized-2026",
@@ -1053,7 +1175,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-06-02T00:00:00.000Z",
-    "updatedAt": "2026-06-02T00:00:00.000Z"
+    "updatedAt": "2026-06-02T00:00:00.000Z",
+    "coverImage": "/blog-covers/id-vector-databases-commoditized-2026.jpg",
+    "coverImageAlt": "Vector Databases Ter Commoditize di 2026"
   },
   {
     "id": "id-rust-in-the-frontend-toolchain-2026",
@@ -1070,7 +1194,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-06-05T00:00:00.000Z",
-    "updatedAt": "2026-06-05T00:00:00.000Z"
+    "updatedAt": "2026-06-05T00:00:00.000Z",
+    "coverImage": "/blog-covers/id-rust-in-the-frontend-toolchain-2026.jpg",
+    "coverImageAlt": "Rust di Frontend Toolchain Menjadi Normal di 2026"
   },
   {
     "id": "id-tutorial-build-3d-cyberpunk-hero-r3f",
@@ -1088,7 +1214,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-07-15T00:00:00.000Z",
-    "updatedAt": "2026-07-15T00:00:00.000Z"
+    "updatedAt": "2026-07-15T00:00:00.000Z",
+    "coverImage": "/blog-covers/id-tutorial-build-3d-cyberpunk-hero-r3f.jpg",
+    "coverImageAlt": "Bangun Hero 3D Cyberpunk dengan React Three Fiber"
   },
   {
     "id": "id-tutorial-nextjs-16-cache-components",
@@ -1105,7 +1233,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-07-10T00:00:00.000Z",
-    "updatedAt": "2026-07-10T00:00:00.000Z"
+    "updatedAt": "2026-07-10T00:00:00.000Z",
+    "coverImage": "/blog-covers/id-tutorial-nextjs-16-cache-components.jpg",
+    "coverImageAlt": "Menguasai Next.js 16 Cache Components"
   },
   {
     "id": "id-open-source-langgraph-1-0-stable",
@@ -1122,7 +1252,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-07-25T00:00:00.000Z",
-    "updatedAt": "2026-07-25T00:00:00.000Z"
+    "updatedAt": "2026-07-25T00:00:00.000Z",
+    "coverImage": "/blog-covers/id-open-source-langgraph-1-0-stable.jpg",
+    "coverImageAlt": "LangGraph 1.0: Framework Agent Berbasis Graf yang Stabil"
   },
   {
     "id": "id-open-source-crewai-1-14-memory",
@@ -1139,7 +1271,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-07-18T00:00:00.000Z",
-    "updatedAt": "2026-07-18T00:00:00.000Z"
+    "updatedAt": "2026-07-18T00:00:00.000Z",
+    "coverImage": "/blog-covers/id-open-source-crewai-1-14-memory.jpg",
+    "coverImageAlt": "CrewAI 1.14: Memory dan Konteks Jangka Panjang"
   },
   {
     "id": "id-openhands-open-source-dev-agent",
@@ -1156,7 +1290,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-07-05T00:00:00.000Z",
-    "updatedAt": "2026-07-05T00:00:00.000Z"
+    "updatedAt": "2026-07-05T00:00:00.000Z",
+    "coverImage": "/blog-covers/id-openhands-open-source-dev-agent.jpg",
+    "coverImageAlt": "OpenHands: Agent Developer AI Open-Source"
   },
   {
     "id": "id-tutorial-motion-lazy-bundle",
@@ -1173,7 +1309,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-tutorial-motion-lazy-bundle.jpg",
+    "coverImageAlt": "Tutorial: Lazy Bundle dengan Motion untuk Performa Optimal"
   },
   {
     "id": "id-tutorial-static-export-firebase-hosting",
@@ -1190,7 +1328,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-tutorial-static-export-firebase-hosting.jpg",
+    "coverImageAlt": "Tutorial: Static Export Next.js ke Firebase Hosting"
   },
   {
     "id": "id-tutorial-web-audio-ambient-drone",
@@ -1207,7 +1347,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-tutorial-web-audio-ambient-drone.jpg",
+    "coverImageAlt": "Tutorial: Ambient Drone dengan Web Audio API"
   },
   {
     "id": "id-tutorial-i18n-client-side-nextjs",
@@ -1224,7 +1366,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-tutorial-i18n-client-side-nextjs.jpg",
+    "coverImageAlt": "Tutorial: i18n Client-Side dengan Next.js"
   },
   {
     "id": "id-tutorial-rss-feed-static-nextjs",
@@ -1241,7 +1385,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-tutorial-rss-feed-static-nextjs.jpg",
+    "coverImageAlt": "Tutorial: RSS Feed untuk Next.js Static Export"
   },
   {
     "id": "id-tutorial-firestore-client-sdk-static-site",
@@ -1258,7 +1404,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-tutorial-firestore-client-sdk-static-site.jpg",
+    "coverImageAlt": "Tutorial: Firebase Firestore Client SDK untuk Static Site"
   },
   {
     "id": "id-tutorial-reduced-motion-accessibility",
@@ -1275,7 +1423,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-tutorial-reduced-motion-accessibility.jpg",
+    "coverImageAlt": "Tutorial: Reduced Motion untuk Aksesibilitas Web"
   },
   {
     "id": "id-tutorial-seo-nextjs-16",
@@ -1292,7 +1442,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-tutorial-seo-nextjs-16.jpg",
+    "coverImageAlt": "Tutorial: SEO untuk Next.js 16"
   },
   {
     "id": "id-tutorial-github-actions-deploy-firebase",
@@ -1309,7 +1461,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-tutorial-github-actions-deploy-firebase.jpg",
+    "coverImageAlt": "Tutorial: Deploy Firebase dengan GitHub Actions"
   },
   {
     "id": "id-programming-async-params-nextjs-16",
@@ -1326,7 +1480,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-programming-async-params-nextjs-16.jpg",
+    "coverImageAlt": "Async Params di Next.js 16: Preview dan API"
   },
   {
     "id": "id-programming-middleware-to-proxy-nextjs-16",
@@ -1343,7 +1499,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-programming-middleware-to-proxy-nextjs-16.jpg",
+    "coverImageAlt": "Middleware sebagai Proxy di Next.js 16"
   },
   {
     "id": "id-programming-next-image-priority-deprecated",
@@ -1360,7 +1518,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-programming-next-image-priority-deprecated.jpg",
+    "coverImageAlt": "Next.js Image Priority: Tidak Lagi Diperlukan?"
   },
   {
     "id": "id-programming-eslint-flat-config-nextjs-16",
@@ -1377,7 +1537,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-programming-eslint-flat-config-nextjs-16.jpg",
+    "coverImageAlt": "ESLint Flat Config untuk Next.js 16"
   },
   {
     "id": "id-programming-server-components-boundaries",
@@ -1394,7 +1556,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-programming-server-components-boundaries.jpg",
+    "coverImageAlt": "Server Components Boundaries di Next.js"
   },
   {
     "id": "id-programming-react-compiler-2026",
@@ -1411,7 +1575,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-programming-react-compiler-2026.jpg",
+    "coverImageAlt": "React Compiler 2026: Status dan Best Practices"
   },
   {
     "id": "id-programming-error-handling-typescript",
@@ -1427,7 +1593,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-programming-error-handling-typescript.jpg",
+    "coverImageAlt": "Error Handling di TypeScript: Pola Modern"
   },
   {
     "id": "id-programming-state-machines-react",
@@ -1444,7 +1612,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-programming-state-machines-react.jpg",
+    "coverImageAlt": "State Machines untuk React: XState dan Zustand"
   },
   {
     "id": "id-programming-testing-react-server-components",
@@ -1461,7 +1631,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-programming-testing-react-server-components.jpg",
+    "coverImageAlt": "Testing React Server Components"
   },
   {
     "id": "id-programming-css-container-queries-2026",
@@ -1478,7 +1650,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-programming-css-container-queries-2026.jpg",
+    "coverImageAlt": "CSS Container Queries: Layout Responsif Komponen"
   },
   {
     "id": "id-open-source-microsoft-agent-framework-1-0",
@@ -1495,7 +1669,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-open-source-microsoft-agent-framework-1-0.jpg",
+    "coverImageAlt": "Microsoft Agent Framework 1.0: Semantic Kernel + AutoGen"
   },
   {
     "id": "id-open-source-google-adk-2-0",
@@ -1512,7 +1688,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-open-source-google-adk-2-0.jpg",
+    "coverImageAlt": "Google Agent Development Kit 2.0"
   },
   {
     "id": "id-open-source-mastra-1-0-typescript",
@@ -1530,7 +1708,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-open-source-mastra-1-0-typescript.jpg",
+    "coverImageAlt": "Mastra 1.0: Agent Framework untuk TypeScript"
   },
   {
     "id": "id-open-source-openai-agents-sdk-sandbox",
@@ -1547,7 +1727,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-open-source-openai-agents-sdk-sandbox.jpg",
+    "coverImageAlt": "OpenAI Agents SDK dengan Sandbox Execution"
   },
   {
     "id": "id-open-source-claude-agent-sdk-subagents",
@@ -1565,7 +1747,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:49:52.000Z",
-    "updatedAt": "2026-08-18T12:49:52.000Z"
+    "updatedAt": "2026-08-18T12:49:52.000Z",
+    "coverImage": "/blog-covers/id-open-source-claude-agent-sdk-subagents.jpg",
+    "coverImageAlt": "Claude Agent SDK: Sub-Agents dan Tool Calling"
   },
   {
     "id": "id-open-source-llamaindex-workflows-1-0",
@@ -1583,7 +1767,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-open-source-llamaindex-workflows-1-0.jpg",
+    "coverImageAlt": "LlamaIndex Workflows 1.0: RAG Agent Pipelines"
   },
   {
     "id": "id-open-source-pydantic-ai-v2",
@@ -1601,7 +1787,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-open-source-pydantic-ai-v2.jpg",
+    "coverImageAlt": "PydanticAI v2: Type-Safe AI Agents dengan Python"
   },
   {
     "id": "id-open-source-deer-flow-bytedance",
@@ -1618,7 +1806,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-open-source-deer-flow-bytedance.jpg",
+    "coverImageAlt": "DeerFlow: Agent Framework dari ByteDance"
   },
   {
     "id": "id-autogpt-open-source-agent-2026",
@@ -1635,7 +1825,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-autogpt-open-source-agent-2026.jpg",
+    "coverImageAlt": "AutoGPT: Agent Open-Source yang Berevolusi"
   },
   {
     "id": "id-metagpt-software-company-agent",
@@ -1652,7 +1844,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-metagpt-software-company-agent.jpg",
+    "coverImageAlt": "MetaGPT: Software Company dalam Agent"
   },
   {
     "id": "id-smolagents-minimal-code-first",
@@ -1669,7 +1863,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-smolagents-minimal-code-first.jpg",
+    "coverImageAlt": "smolagents: Minimal, Code-First Agent Framework"
   },
   {
     "id": "id-agno-lightweight-python-agents",
@@ -1687,7 +1883,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-agno-lightweight-python-agents.jpg",
+    "coverImageAlt": "Agno: Agent Python Ringan dan High-Performance"
   },
   {
     "id": "id-openclaw-privacy-first-agent",
@@ -1705,7 +1903,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-openclaw-privacy-first-agent.jpg",
+    "coverImageAlt": "OpenClaw: Agent Privacy-First yang Terhubung ke 50+ Apps"
   },
   {
     "id": "id-semantic-kernel-enterprise-dotnet",
@@ -1723,7 +1923,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-semantic-kernel-enterprise-dotnet.jpg",
+    "coverImageAlt": "Semantic Kernel: AI Enterprise untuk Dunia .NET"
   },
   {
     "id": "id-autogen-legacy-multi-agent",
@@ -1741,7 +1943,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-autogen-legacy-multi-agent.jpg",
+    "coverImageAlt": "AutoGen / AG2: Opsi Multi-Agent Legacy"
   },
   {
     "id": "id-vibe-trading-open-source-agents",
@@ -1758,7 +1962,9 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-vibe-trading-open-source-agents.jpg",
+    "coverImageAlt": "Vibe-Trading dan Kebangkitan Open-Source Trading Agents"
   },
   {
     "id": "id-mcp-model-context-protocol-2026",
@@ -1776,6 +1982,8 @@
     "published": true,
     "locale": "id",
     "createdAt": "2026-08-18T12:54:10.000Z",
-    "updatedAt": "2026-08-18T12:54:10.000Z"
+    "updatedAt": "2026-08-18T12:54:10.000Z",
+    "coverImage": "/blog-covers/id-mcp-model-context-protocol-2026.jpg",
+    "coverImageAlt": "MCP Memenangkan Standar Tooling Agent di 2026"
   }
 ]

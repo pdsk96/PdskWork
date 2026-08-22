@@ -159,17 +159,18 @@ export default function BlogPage() {
               {showingAll && <p className="blog-list__fallback">{dict.blog.noPostsMatch}</p>}
               {posts.map((post) => (
                 <article key={post.id} className="glass-card blog-card">
-                  <div className="blog-card__thumbnail" style={{
-                    backgroundImage: `url(${getPostThumbnail(post)})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    width: '100%',
-                    height: '180px',
-                    borderRadius: '10px',
-                    marginBottom: '1rem',
-                    border: '1px solid var(--glass-border)'
-                  }} role="img" aria-label={post.title}>
-                  </div>
+                  {post.coverImage && (
+                    <div
+                      className="blog-card__thumbnail"
+                      style={{
+                        backgroundImage: `url(${getPostThumbnail(post)})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                      }}
+                      role="img"
+                      aria-label={post.coverImageAlt || post.title}
+                    />
+                  )}
                   <div className="blog-card__meta">
                     <time dateTime={post.createdAt}>{formatDate(post.createdAt, locale)}</time>
                     <span className="blog-card__dot" aria-hidden="true">·</span>

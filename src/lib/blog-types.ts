@@ -16,6 +16,8 @@ export interface BlogPost {
   createdAt: string
   updatedAt: string
   viewCount?: number
+  coverImage?: string
+  coverImageAlt?: string
 }
 
 export interface BlogInput {
@@ -26,6 +28,8 @@ export interface BlogInput {
   tags?: string[]
   published?: boolean
   locale?: 'en' | 'id'
+  coverImage?: string
+  coverImageAlt?: string
 }
 
 /** Slugify a title into a URL-safe slug. */

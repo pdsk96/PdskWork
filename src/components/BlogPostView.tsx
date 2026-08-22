@@ -89,6 +89,19 @@ export default function BlogPostView() {
              ← {dict.blog.backToBlog}
           </Link>
 
+          {post.coverImage && (
+            <div
+              className="blog-post__thumbnail"
+              style={{
+                backgroundImage: `url(${post.coverImage})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+              role="img"
+              aria-label={post.coverImageAlt || post.title}
+            />
+          )}
+
           <header className="blog-post__header">
             <div className="blog-card__meta">
               <time dateTime={post.createdAt}>{formatDate(post.createdAt, locale)}</time>
