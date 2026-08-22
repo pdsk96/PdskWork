@@ -33,6 +33,7 @@ export async function callLLM(config: LLMConfig, messages: { role: string; conte
         temperature,
         max_tokens: maxTokens,
       }),
+      signal: AbortSignal.timeout(60000),
     })
 
     if (!res.ok) {
@@ -61,6 +62,7 @@ export async function callLLM(config: LLMConfig, messages: { role: string; conte
           return_full_text: false,
         },
       }),
+      signal: AbortSignal.timeout(60000),
     })
 
     if (!res.ok) {

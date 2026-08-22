@@ -1,8 +1,7 @@
 'use client'
 
 import { doc, getDoc, setDoc } from 'firebase/firestore'
-import { db, isFirebaseReady } from '@/lib/firebase'
-import { auth } from '@/lib/firebase'
+import { db, isFirebaseReady, auth } from '@/lib/firebase'
 import type { LLMConfig } from '@/lib/ai/llm-client'
 
 export interface AgentSettings extends LLMConfig {
@@ -43,6 +42,12 @@ function getAuthErrorMessage(err: unknown): string {
   return 'Unknown error'
 }
 
+function sanitizeSettings(data: Partial<AgentSettings>): AgentSettings {
+  const temperature = typeof data.temperature === 'number' && Number.isFinite(data.temperature) ? data.temperature : DEFAULT_SETTINGS.temperature
+  const maxTokens = typeof data.maxTokens === 'number' && Number.isFinite(data.maxTokens) ? data.maxTokens : DEFAULT_SETTINGS.maxTokens
+  return { ...DEFAULT_SETTINGS, ...data, temperature, maxTokens }
+}
+
 export async function loadAgentSettings(): Promise<AgentSettings> {
   try {
     if (!db || !isFirebaseReady()) {
@@ -54,7 +59,7 @@ export async function loadAgentSettings(): Promise<AgentSettings> {
     if (snap.exists()) {
       const data = snap.data()
       console.log('[agent-settings] Loaded settings from Firestore:', data)
-      return { ...DEFAULT_SETTINGS, ...(data as Partial<AgentSettings>) }
+      return sanitizeSettings(data as Partial<AgentSettings>)
     } else {
       console.log('[agent-settings] No saved settings found, returning defaults')
       return DEFAULT_SETTINGS

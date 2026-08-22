@@ -104,10 +104,11 @@ export default function LiquidGlassNav() {
 
         <ul className="lgnav__links">
           {NAV_LINKS.map((link) => {
+            const safePathname = pathname ?? '/'
             const active =
               link.href === '/'
-                ? pathname === '/'
-                : pathname === link.href || pathname.startsWith(`${link.href}/`)
+                ? safePathname === '/'
+                : safePathname === link.href || safePathname.startsWith(`${link.href}/`)
             return (
               <li key={link.href}>
                 <Link

@@ -13,8 +13,29 @@ export interface MediaItem {
 }
 
 const MEDIA_ROOT = 'media'
+const MAX_FILE_SIZE = 5 * 1024 * 1024
+const ALLOWED_TYPES = new Set([
+  'image/jpeg',
+  'image/png',
+  'image/gif',
+  'image/webp',
+  'image/svg+xml',
+  'video/mp4',
+  'video/webm',
+  'video/ogg',
+])
+
+function validateFile(file: File): void {
+  if (file.size > MAX_FILE_SIZE) {
+    throw new Error(`File too large. Maximum size is ${MAX_FILE_SIZE / 1024 / 1024}MB.`)
+  }
+  if (!ALLOWED_TYPES.has(file.type)) {
+    throw new Error(`Unsupported file type: ${file.type}. Allowed: images and videos.`)
+  }
+}
 
 export async function uploadMedia(file: File): Promise<MediaItem> {
+  validateFile(file)
   const path = `${MEDIA_ROOT}/${Date.now()}_${file.name}`
   const storageRef = ref(storage, path)
   await uploadBytes(storageRef, file)

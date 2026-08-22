@@ -5,6 +5,7 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  increment,
   limit,
   orderBy,
   query,
@@ -64,6 +65,7 @@ function snapToPost(id: string, data: Record<string, unknown>): BlogPost {
     locale: data.locale === 'id' ? 'id' : 'en',
     createdAt: String(data.createdAt ?? new Date().toISOString()),
     updatedAt: String(data.updatedAt ?? new Date().toISOString()),
+    viewCount: typeof data.viewCount === 'number' ? data.viewCount : 0,
   }
 }
 
@@ -98,7 +100,7 @@ export async function getPaginatedPosts(
   page: number = 1,
   perPage: number = POSTS_PER_PAGE,
 ): Promise<PaginatedPosts> {
-  const postsQuery = locale
+  const baseQuery = locale
     ? query(
         collection(db, COLLECTION),
         where('published', '==', true),
@@ -111,39 +113,28 @@ export async function getPaginatedPosts(
         orderBy('createdAt', 'desc'),
       )
 
-  // Get total count first
-  const countSnap = await getDocs(postsQuery)
-  const totalCount = countSnap.size
-
-  if (page === 1) {
-    // First page: just apply limit
-    const q = query(postsQuery, limit(perPage))
+  if (page <= 1) {
+    const q = query(baseQuery, limit(perPage))
     const snap = await getDocs(q)
     const posts = snap.docs.map((d) => snapToPost(d.id, d.data() as Record<string, unknown>))
-    return { posts, hasMore: posts.length === perPage, totalCount }
+    const hasMore = posts.length === perPage
+    return { posts, hasMore, totalCount: hasMore ? posts.length + 1 : posts.length }
   }
 
-  // For subsequent pages, we need to get all docs up to the offset
-  // Firestore doesn't support offset, so we fetch all docs up to (page * perPage)
-  // and slice. For large datasets, consider using cursor-based pagination with startAfter.
-  const allDocs = countSnap.docs
-  const startIndex = (page - 1) * perPage
-  const pageDocs = allDocs.slice(startIndex, startIndex + perPage)
+  const cursorQ = query(baseQuery, limit((page - 1) * perPage))
+  const cursorSnap = await getDocs(cursorQ)
+  const lastDoc = cursorSnap.docs[cursorSnap.docs.length - 1]
 
-  if (pageDocs.length === 0) {
-    return { posts: [], hasMore: false, totalCount }
-  }
-
-  // Get the last doc of the previous page for cursor-based approach on next page
-  const lastDocOfPrevPage = allDocs[startIndex - 1]
-  const q = query(postsQuery, startAfter(lastDocOfPrevPage), limit(perPage))
+  const q = lastDoc
+    ? query(baseQuery, startAfter(lastDoc), limit(perPage))
+    : query(baseQuery, limit(perPage))
   const snap = await getDocs(q)
   const posts = snap.docs.map((d) => snapToPost(d.id, d.data() as Record<string, unknown>))
 
   return {
     posts,
-    hasMore: startIndex + posts.length < totalCount,
-    totalCount,
+    hasMore: posts.length === perPage,
+    totalCount: cursorSnap.size + posts.length,
   }
 }
 
@@ -237,15 +228,17 @@ export async function deletePost(id: string): Promise<boolean> {
 
 /** Ensure a slug is unique across all posts (appends -2, -3, … if needed). */
 async function uniqueSlug(slug: string, excludeId?: string): Promise<string> {
-  const posts = await getAllPosts()
   const base = slug || 'post'
   let candidate = base
   let n = 1
-  while (posts.some((p) => p.slug === candidate && p.id !== excludeId)) {
+  while (true) {
+    const q = query(collection(db, COLLECTION), where('slug', '==', candidate))
+    const snap = await getDocs(q)
+    const conflict = snap.docs.some((d) => d.id !== excludeId)
+    if (!conflict) return candidate
     n += 1
     candidate = `${base}-${n}`
   }
-  return candidate
 }
 
 /** Bulk update posts by id list. */
@@ -279,5 +272,20 @@ export async function bulkDeletePosts(ids: string[]): Promise<number> {
   return count
 }
 
-export { slugify }
+/** Increment view count for a post. */
+export async function incrementViewCount(id: string): Promise<void> {
+  await updateDoc(doc(db, COLLECTION, id), { viewCount: increment(1) })
+}
+
+/** Get adjacent posts (previous and next) for a given slug, ordered by createdAt desc. */
+export async function getAdjacentPosts(slug: string, locale?: 'en' | 'id'): Promise<{ prev: BlogPost | null; next: BlogPost | null }> {
+  const posts = await getPublishedPosts(locale)
+  const idx = posts.findIndex((p) => p.slug === slug)
+  if (idx === -1) return { prev: null, next: null }
+  return {
+    prev: idx > 0 ? posts[idx - 1] : null,
+    next: idx < posts.length - 1 ? posts[idx + 1] : null,
+  }
+}
+
 export type { BlogPost, BlogInput }

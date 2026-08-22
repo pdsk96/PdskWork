@@ -20,16 +20,31 @@ export default function AdminNav() {
   const pathname = usePathname()
   const { dict } = useLocale()
 
-  const isAgentsSection = pathname === '/admin/agents' || pathname.startsWith('/admin/agents/')
+  const safePathname = pathname ?? '/admin'
+  const isAgentsSection = safePathname === '/admin/agents' || safePathname.startsWith('/admin/agents/')
   const navItems = isAgentsSection ? AGENT_SUB_NAV : ADMIN_NAV
+
+  const getLabel = (item: typeof ADMIN_NAV[0]): string => {
+    if (item.labelKey.includes('.')) {
+      const parts = item.labelKey.split('.')
+      let value: unknown = dict
+      for (const k of parts) {
+        if (value && typeof value === 'object' && k in value) {
+          value = (value as Record<string, unknown>)[k]
+        } else {
+          return item.href
+        }
+      }
+      return typeof value === 'string' ? value : item.href
+    }
+    return (dict as Record<string, unknown>)[item.labelKey] || item.href
+  }
 
   return (
     <nav className="admin-nav" aria-label="Admin">
       {navItems.map((item) => {
-        const active = item.exact ? pathname === item.href : pathname === item.href || pathname.startsWith(`${item.href}/`)
-        const label = item.labelKey.includes('.')
-          ? item.labelKey.split('.').reduce((acc: any, k: string) => acc?.[k], dict as any) || item.href
-          : (dict as any)[item.labelKey] || item.href
+        const active = item.exact ? safePathname === item.href : safePathname === item.href || safePathname.startsWith(`${item.href}/`)
+        const label = getLabel(item)
         return (
           <Link
             key={item.href}

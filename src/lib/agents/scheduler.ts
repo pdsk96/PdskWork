@@ -33,7 +33,7 @@ export function useScheduler(intervalMs = 300000, existingPosts: BlogPost[] = []
     if (!db) return
     const q = query(collection(db, 'scheduledJobs'), where('status', '==', 'pending'))
     const unsub = onSnapshot(q, (snap) => {
-      const items: ScheduledJob[] = snap.docs.map((d) => ({ id: d.id, ...(d.data() as any) }))
+      const items: ScheduledJob[] = snap.docs.map((d) => ({ id: d.id, ...(d.data() as ScheduledJob) }))
       setJobs(items)
     })
     return () => unsub()

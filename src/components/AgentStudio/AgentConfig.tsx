@@ -43,32 +43,38 @@ export default function AgentConfig({ config, onChange }: {
           placeholder={config.provider === 'groq' ? 'llama-3.3-70b-versatile' : 'mistralai/Mistral-7B-Instruct-v0.3'}
         />
       </div>
-      <div className="agent-config__row">
-        <div className="field">
-          <span className="field-label">Temperature</span>
-          <input
-            className="field-input"
-            type="number"
-            min="0"
-            max="2"
-            step="0.1"
-            value={config.temperature ?? 0.7}
-            onChange={(e) => onChange({ ...config, temperature: parseFloat(e.target.value) })}
-          />
+        <div className="agent-config__row">
+          <div className="field">
+            <span className="field-label">Temperature</span>
+            <input
+              className="field-input"
+              type="number"
+              min="0"
+              max="2"
+              step="0.1"
+              value={config.temperature ?? 0.7}
+              onChange={(e) => {
+                const v = parseFloat(e.target.value)
+                onChange({ ...config, temperature: Number.isNaN(v) ? 0.7 : v })
+              }}
+            />
+          </div>
+          <div className="field">
+            <span className="field-label">Max Tokens</span>
+            <input
+              className="field-input"
+              type="number"
+              min="256"
+              max="8192"
+              step="256"
+              value={config.maxTokens ?? 2048}
+              onChange={(e) => {
+                const v = parseInt(e.target.value, 10)
+                onChange({ ...config, maxTokens: Number.isNaN(v) ? 2048 : v })
+              }}
+            />
+          </div>
         </div>
-        <div className="field">
-          <span className="field-label">Max Tokens</span>
-          <input
-            className="field-input"
-            type="number"
-            min="256"
-            max="8192"
-            step="256"
-            value={config.maxTokens ?? 2048}
-            onChange={(e) => onChange({ ...config, maxTokens: parseInt(e.target.value, 10) })}
-          />
-        </div>
-      </div>
     </div>
   )
 }

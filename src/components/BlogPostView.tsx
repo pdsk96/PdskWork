@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useLocale } from '@/i18n/LocaleProvider'
-import { getPostBySlug, getPaginatedPosts, type BlogPost } from '@/lib/blog-firestore'
+import { getPostBySlug, getAdjacentPosts, incrementViewCount, type BlogPost } from '@/lib/blog-firestore'
 import { renderMarkdown } from '@/lib/markdown'
 import { formatDate, readingTime } from '@/lib/blog-utils'
 import { getPostThumbnail } from '@/lib/thumbnail-generator'
@@ -22,7 +22,6 @@ export default function BlogPostView() {
   const [post, setPost] = useState<BlogPost | null | undefined>(undefined)
   const [prevPost, setPrevPost] = useState<BlogPost | null>(null)
   const [nextPost, setNextPost] = useState<BlogPost | null>(null)
-  const [currentPage, setCurrentPage] = useState(1)
 
   useEffect(() => {
     let active = true
@@ -36,11 +35,10 @@ export default function BlogPostView() {
         setPost(p)
         if (p) {
           try {
-            const result = await getPaginatedPosts(locale, 1, 100)
-            const idx = result.posts.findIndex((x) => x.id === p.id)
-            if (idx > 0) setPrevPost(result.posts[idx - 1])
-            if (idx < result.posts.length - 1) setNextPost(result.posts[idx + 1])
-            setCurrentPage(Math.floor(idx / 6) + 1)
+            const { prev, next } = await getAdjacentPosts(p.slug, locale)
+            setPrevPost(prev)
+            setNextPost(next)
+            void incrementViewCount(p.id)
           } catch { /* ignore */ }
         }
       })
@@ -87,9 +85,9 @@ export default function BlogPostView() {
     <RouteTransition>
       <main className="page">
         <article className="glass-card page-card blog-post">
-          <Link href={`/blog?page=${currentPage}`} className="blog-post__back">
+          <Link href="/blog" className="blog-post__back">
              ← {dict.blog.backToBlog}
-           </Link>
+          </Link>
 
           <header className="blog-post__header">
             <div className="blog-card__meta">

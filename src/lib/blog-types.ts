@@ -15,6 +15,7 @@ export interface BlogPost {
   locale: 'en' | 'id'
   createdAt: string
   updatedAt: string
+  viewCount?: number
 }
 
 export interface BlogInput {
