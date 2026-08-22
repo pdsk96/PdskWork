@@ -12,6 +12,8 @@ export const dictionaries = {
       admin: 'Admin',
       blog: 'Blog',
       faq: 'FAQ',
+      searchPlaceholder: 'Search posts...',
+      noResults: 'No results found.',
     },
     hero: {
       title: 'PdskWork',
@@ -315,6 +317,8 @@ export const dictionaries = {
       admin: 'Admin',
       blog: 'Blog',
       faq: 'FAQ',
+      searchPlaceholder: 'Cari postingan...',
+      noResults: 'Tidak ada hasil.',
     },
     hero: {
       title: 'PdskWork',
