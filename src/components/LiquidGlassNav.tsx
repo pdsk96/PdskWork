@@ -724,7 +724,7 @@ export default function LiquidGlassNav() {
           box-shadow:
             0 18px 50px -20px rgba(0, 0, 0, 0.7),
             inset 0 1px 0 rgba(255, 255, 255, 0.14);
-          z-index: 200;
+          z-index: 202;
         }
         .lgnav__mobile-links {
           list-style: none;
@@ -827,7 +827,7 @@ export default function LiquidGlassNav() {
           box-shadow:
             0 18px 50px -20px rgba(0, 0, 0, 0.7),
             inset 0 1px 0 rgba(255, 255, 255, 0.14);
-          z-index: 200;
+          z-index: 202;
         }
         .lgnav__search-header {
           display: flex;
