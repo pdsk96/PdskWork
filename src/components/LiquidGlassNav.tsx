@@ -114,7 +114,13 @@ export default function LiquidGlassNav() {
   const handleSearchToggle = useCallback(() => {
     setSearchOpen((v) => {
       const next = !v
-      if (next) setMobileOpen(false)
+      if (next) {
+        setMobileOpen(false)
+      } else {
+        // Clear search state when closing
+        setSearchQuery('')
+        setSearchPosts([])
+      }
       return next
     })
   }, [])
@@ -130,6 +136,8 @@ export default function LiquidGlassNav() {
   const closeAll = useCallback(() => {
     setSearchOpen(false)
     setMobileOpen(false)
+    setSearchQuery('')
+    setSearchPosts([])
   }, [])
 
   useEffect(() => {
@@ -171,22 +179,22 @@ export default function LiquidGlassNav() {
     }
   }, [reduceMotion, viewMode])
 
-  // Swipe-to-close gesture for mobile
+  // Swipe-to-close gesture for mobile (right-to-left swipe closes the right-side menu)
   useEffect(() => {
     if (viewMode !== 'mobile' || !mobileOpen) return
 
     function onTouchStart(e: TouchEvent) {
       const touch = e.touches[0]
-      if (touch.clientX < 40) {
-        touchStartRef.current = { x: touch.clientX, y: touch.clientY }
-      }
+      touchStartRef.current = { x: touch.clientX, y: touch.clientY }
     }
 
     function onTouchMove(e: TouchEvent) {
       if (!touchStartRef.current) return
       const touch = e.touches[0]
-      const dx = touch.clientX - touchStartRef.current.x
-      if (dx > 80) {
+      const dx = touchStartRef.current.x - touch.clientX
+      const dy = Math.abs(touch.clientY - touchStartRef.current.y)
+      // Only trigger if horizontal swipe (dx > dy) and moving left (dx > 60)
+      if (dx > 60 && dx > dy) {
         setMobileOpen(false)
         touchStartRef.current = null
       }
@@ -229,6 +237,11 @@ export default function LiquidGlassNav() {
       document.body.style.paddingRight = ''
     }
   }, [mobileOpen, searchOpen])
+
+  // Close mobile menu on navigation
+  useEffect(() => {
+    setMobileOpen(false)
+  }, [pathname])
 
   const filterId = 'liquid-glass-refract'
 
@@ -335,7 +348,24 @@ export default function LiquidGlassNav() {
             initial={{ opacity: 0, y: isMobile ? 0 : -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: reduceMotion ? 0 : 0.2 }}
+            role="dialog"
+            aria-modal="true"
+            aria-label={dict.nav.searchPlaceholder || 'Search'}
           >
+            <div className="lgnav__search-header">
+              <span className="lgnav__search-title">{dict.nav.searchPlaceholder || 'Search'}</span>
+              <button
+                type="button"
+                className="lgnav__search-close"
+                onClick={handleSearchToggle}
+                aria-label="Close search"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
             <div className="lgnav__search-field">
               <svg className="lgnav__search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <circle cx="11" cy="11" r="8" />
@@ -350,7 +380,20 @@ export default function LiquidGlassNav() {
                 placeholder={dict.nav.searchPlaceholder || 'Search posts...'}
                 aria-label="Search"
               />
-              {(matchedLinks.length > 0 || matchedPosts.length > 0) && (
+              {searchQuery.trim() && (
+                <button
+                  type="button"
+                  className="lgnav__search-clear"
+                  onClick={() => setSearchQuery('')}
+                  aria-label="Clear search"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </button>
+              )}
+              {searchQuery.trim() && (matchedLinks.length > 0 || matchedPosts.length > 0) && (
                 <span className="lgnav__search-count">
                   {matchedLinks.length + matchedPosts.length}
                 </span>
@@ -358,44 +401,55 @@ export default function LiquidGlassNav() {
             </div>
             <div className="lgnav__search-results">
               {matchedLinks.length > 0 && (
-                <ul className="lgnav__search-group">
-                  {matchedLinks.map((link) => (
-                    <li key={link.href}>
-                      <Link
-                        href={link.href}
-                        className="lgnav__search-result"
-                        onClick={() => {
-                          setSearchOpen(false)
-                          setSearchQuery('')
-                        }}
-                      >
-                        {dict.nav[link.navKey]}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+                <div className="lgnav__search-group">
+                  <span className="lgnav__search-group-label">{dict.ui?.navLinks || 'Navigation'}</span>
+                  <ul>
+                    {matchedLinks.map((link) => (
+                      <li key={link.href}>
+                        <Link
+                          href={link.href}
+                          className="lgnav__search-result"
+                          onClick={() => {
+                            setSearchOpen(false)
+                            setSearchQuery('')
+                            setSearchPosts([])
+                          }}
+                        >
+                          <span className="lgnav__search-result-title">{dict.nav[link.navKey]}</span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               )}
               {matchedPosts.length > 0 && (
-                <ul className="lgnav__search-group">
-                  {matchedPosts.map((post) => (
-                    <li key={post.id}>
-                      <Link
-                        href={`/blog/${post.slug}`}
-                        className="lgnav__search-result"
-                        onClick={() => {
-                          setSearchOpen(false)
-                          setSearchQuery('')
-                        }}
-                      >
-                        <span className="lgnav__search-result-title">{post.title}</span>
-                        <span className="lgnav__search-result-meta">{formatDate(post.createdAt, locale)}</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+                <div className="lgnav__search-group">
+                  <span className="lgnav__search-group-label">{dict.ui?.posts || 'Posts'}</span>
+                  <ul>
+                    {matchedPosts.map((post) => (
+                      <li key={post.id}>
+                        <Link
+                          href={`/blog/${post.slug}`}
+                          className="lgnav__search-result"
+                          onClick={() => {
+                            setSearchOpen(false)
+                            setSearchQuery('')
+                            setSearchPosts([])
+                          }}
+                        >
+                          <span className="lgnav__search-result-title">{post.title}</span>
+                          <span className="lgnav__search-result-meta">{formatDate(post.createdAt, locale)}</span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               )}
-              {searchQuery.trim() && matchedLinks.length === 0 && matchedPosts.length === 0 && (
+              {searchQuery.trim() && matchedLinks.length === 0 && matchedPosts.length === 0 && !searchLoading && (
                 <p className="lgnav__search-empty">{dict.nav.noResults || 'No results found.'}</p>
+              )}
+              {searchLoading && searchQuery.trim() && (
+                <p className="lgnav__search-empty">{dict.ui?.searching || 'Searching...'}</p>
               )}
             </div>
           </m.div>
@@ -434,7 +488,7 @@ export default function LiquidGlassNav() {
                 )
               })}
             </ul>
-            <div className="lgnav__mobile-settings" role="separator" aria-orientation="horizontal">
+            <div className="lgnav__mobile-settings">
               <span className="lgnav__mobile-settings-label">{dict.ui.settings}</span>
               <div className="lgnav__mobile-settings-row">
                 <LanguageToggle />
@@ -654,10 +708,10 @@ export default function LiquidGlassNav() {
           position: absolute;
           top: calc(100% + 10px);
           right: 12px;
-          width: min(280px, calc(100vw - 24px));
+          width: min(300px, calc(100vw - 24px));
           max-height: calc(100vh - 120px);
           overflow-y: auto;
-          padding: 12px;
+          padding: 14px;
           border-radius: 16px;
           border: 1px solid var(--glass-border);
           background: rgba(16, 22, 40, 0.92);
@@ -674,15 +728,17 @@ export default function LiquidGlassNav() {
           padding: 0;
           display: flex;
           flex-direction: column;
-          gap: 4px;
+          gap: 2px;
         }
         .lgnav__mobile-links .lgnav__link {
-          display: block;
-          padding: 12px 14px;
+          display: flex;
+          align-items: center;
+          padding: 14px 16px;
           border-radius: 10px;
           color: var(--fg);
           text-decoration: none;
-          font-size: 0.95rem;
+          font-size: 1rem;
+          font-weight: 500;
           transition: color 0.2s ease, background 0.2s ease;
         }
         .lgnav__mobile-links .lgnav__link:hover {
@@ -699,12 +755,12 @@ export default function LiquidGlassNav() {
 
         /* Mobile settings section */
         .lgnav__mobile-settings {
-          margin-top: 10px;
-          padding-top: 10px;
+          margin-top: 14px;
+          padding-top: 14px;
           border-top: 1px solid var(--glass-border);
           display: flex;
           flex-direction: column;
-          gap: 8px;
+          gap: 10px;
         }
         .lgnav__mobile-settings-label {
           font-size: 0.72rem;
@@ -717,11 +773,13 @@ export default function LiquidGlassNav() {
         .lgnav__mobile-settings-row {
           display: flex;
           align-items: center;
-          gap: 8px;
-          flex-wrap: wrap;
+          justify-content: space-between;
+          gap: 4px;
+          flex-wrap: nowrap;
         }
         .lgnav__mobile-settings-row > * {
-          flex-shrink: 0;
+          flex: 1 1 0;
+          min-width: 0;
         }
 
         /* Search */
@@ -754,8 +812,11 @@ export default function LiquidGlassNav() {
           position: absolute;
           top: calc(100% + 10px);
           right: 12px;
-          width: min(320px, calc(100vw - 24px));
-          padding: 12px;
+          width: min(360px, calc(100vw - 24px));
+          max-height: min(480px, calc(100vh - 120px));
+          display: flex;
+          flex-direction: column;
+          padding: 14px;
           border-radius: 16px;
           border: 1px solid var(--glass-border);
           background: rgba(16, 22, 40, 0.92);
@@ -766,14 +827,51 @@ export default function LiquidGlassNav() {
             inset 0 1px 0 rgba(255, 255, 255, 0.14);
           z-index: 120;
         }
+        .lgnav__search-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 10px;
+          flex-shrink: 0;
+        }
+        .lgnav__search-title {
+          font-size: 0.78rem;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          color: var(--fg-muted);
+        }
+        .lgnav__search-close {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 32px;
+          height: 32px;
+          padding: 0;
+          border: 1px solid var(--glass-border);
+          border-radius: 8px;
+          background: transparent;
+          color: var(--fg-muted);
+          cursor: pointer;
+          transition: color 0.2s ease, border-color 0.2s ease;
+        }
+        .lgnav__search-close:hover {
+          color: var(--fg);
+          border-color: var(--cyan);
+        }
+        .lgnav__search-close:focus-visible {
+          outline: none;
+          box-shadow: var(--focus-ring);
+        }
         .lgnav__search-field {
           display: flex;
           align-items: center;
-          gap: 8px;
-          padding: 10px 12px;
+          gap: 10px;
+          padding: 12px 14px;
           border-radius: 10px;
           border: 1px solid var(--glass-border);
           background: rgba(5, 6, 10, 0.45);
+          flex-shrink: 0;
         }
         .lgnav__search-icon {
           color: var(--fg-muted);
@@ -798,24 +896,62 @@ export default function LiquidGlassNav() {
           padding: 2px 8px;
           border-radius: 999px;
           font-weight: 700;
+          flex-shrink: 0;
+        }
+        .lgnav__search-clear {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 28px;
+          height: 28px;
+          padding: 0;
+          border: 0;
+          border-radius: 6px;
+          background: transparent;
+          color: var(--fg-muted);
+          cursor: pointer;
+          flex-shrink: 0;
+          transition: color 0.2s ease, background 0.2s ease;
+        }
+        .lgnav__search-clear:hover {
+          color: var(--fg);
+          background: rgba(255, 255, 255, 0.08);
+        }
+        .lgnav__search-clear:focus-visible {
+          outline: none;
+          box-shadow: var(--focus-ring);
         }
         .lgnav__search-results {
-          margin-top: 8px;
-          max-height: 280px;
+          margin-top: 10px;
           overflow-y: auto;
+          flex: 1;
+          min-height: 0;
         }
         .lgnav__search-group {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+        }
+        .lgnav__search-group + .lgnav__search-group {
+          margin-top: 10px;
+          padding-top: 10px;
+          border-top: 1px solid var(--glass-border);
+        }
+        .lgnav__search-group-label {
+          font-size: 0.68rem;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          color: var(--fg-muted);
+          padding: 4px 12px 2px;
+        }
+        .lgnav__search-group ul {
           list-style: none;
           margin: 0;
           padding: 0;
           display: flex;
           flex-direction: column;
           gap: 2px;
-        }
-        .lgnav__search-group + .lgnav__search-group {
-          margin-top: 6px;
-          padding-top: 6px;
-          border-top: 1px solid var(--glass-border);
         }
         .lgnav__search-result {
           display: flex;

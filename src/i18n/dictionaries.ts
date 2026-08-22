@@ -179,6 +179,9 @@ export const dictionaries = {
       footerRights: 'All rights reserved.',
       footerBuiltWith: 'Built with Next.js, R3F & Motion',
       feed: 'RSS feed',
+      navLinks: 'Navigation',
+      posts: 'Posts',
+      searching: 'Searching...',
     },
     showcase: {
       realtime3d: 'Real-time 3D scenes',
@@ -523,6 +526,9 @@ export const dictionaries = {
       footerRights: 'Hak cipta dilindungi.',
       footerBuiltWith: 'Dibuat dengan Next.js, R3F & Motion',
       feed: 'Feed RSS',
+      navLinks: 'Navigasi',
+      posts: 'Postingan',
+      searching: 'Mencari...',
     },
     showcase: {
       realtime3d: 'Adegan 3D real-time',
