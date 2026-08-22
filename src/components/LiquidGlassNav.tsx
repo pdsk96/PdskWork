@@ -335,7 +335,9 @@ export default function LiquidGlassNav() {
         <span className="lgnav__refract" aria-hidden="true" />
       </nav>
 
-      {/* Backdrop - outside lgnav__inner for proper fixed positioning */}
+      {/* ===== OVERLAYS - outside lgnav__inner for proper stacking ===== */}
+
+      {/* Backdrop */}
       {(searchOpen || mobileOpen) && (
         <div
           className="lgnav__backdrop"
@@ -347,7 +349,7 @@ export default function LiquidGlassNav() {
         />
       )}
 
-      {/* Search panel - outside lgnav__inner for proper z-index stacking */}
+      {/* Search panel */}
       {searchOpen && (
         <m.div
           id="lgnav-search-panel"
@@ -462,7 +464,7 @@ export default function LiquidGlassNav() {
         </m.div>
       )}
 
-      {/* Mobile menu - outside lgnav__inner for proper z-index stacking */}
+      {/* Mobile menu */}
       {mobileOpen && isMobile && (
         <m.nav
           id="lgnav-mobile-menu"
