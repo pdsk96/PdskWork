@@ -218,9 +218,6 @@ export default function LiquidGlassNav() {
   const isMobile = viewMode === 'mobile'
   const isTablet = viewMode === 'tablet'
 
-  // Bottom nav items for mobile (primary links only)
-  const bottomNavItems = isMobile ? NAV_LINKS.slice(0, 5) : []
-
   return (
     <header ref={navRef} className={`lgnav lgnav--${viewMode}${isLandscape ? ' lgnav--landscape' : ''}`} role="banner">
       {/* SVG filter */}
@@ -435,46 +432,6 @@ export default function LiquidGlassNav() {
         {/* Cursor glare (desktop only) */}
         {!isMobile && <span className="lgnav__glare" aria-hidden="true" />}
         <span className="lgnav__refract" aria-hidden="true" />
-
-        {/* Mobile bottom navigation */}
-        {isMobile && (
-          <nav className="lgnav__bottom" aria-label={locale === 'en' ? 'Primary' : 'Utama'}>
-            {bottomNavItems.map((link) => {
-              const safePathname = pathname ?? '/'
-              const active =
-                link.href === '/'
-                  ? safePathname === '/'
-                  : safePathname === link.href || safePathname.startsWith(`${link.href}/`)
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`lgnav__bottom-item${active ? ' is-active' : ''}`}
-                  aria-current={active ? 'page' : undefined}
-                >
-                  <span className="lgnav__bottom-icon" aria-hidden="true">
-                    {link.href === '/' && '⌂'}
-                    {link.href === '/work' && '◈'}
-                    {link.href === '/blog' && '☰'}
-                    {link.href === '/about' && '◎'}
-                    {link.href === '/contact' && '✉'}
-                  </span>
-                  <span className="lgnav__bottom-label">{dict.nav[link.navKey]}</span>
-                </Link>
-              )
-            })}
-            <button
-              type="button"
-              className="lgnav__bottom-item lgnav__bottom-more"
-              onClick={handleMobileToggle}
-              aria-expanded={mobileOpen}
-              aria-label={mobileOpen ? 'Close menu' : 'More'}
-            >
-              <span className="lgnav__bottom-icon" aria-hidden="true">⋯</span>
-              <span className="lgnav__bottom-label">{mobileOpen ? 'Close' : 'More'}</span>
-            </button>
-          </nav>
-        )}
       </nav>
 
       <style jsx>{`
@@ -871,69 +828,6 @@ export default function LiquidGlassNav() {
           font-size: 0.88rem;
         }
 
-        /* Mobile bottom navigation */
-        .lgnav__bottom {
-          position: fixed;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          z-index: 98;
-          display: flex;
-          align-items: center;
-          justify-content: space-around;
-          gap: 4px;
-          padding: 6px 8px;
-          padding-bottom: max(6px, env(safe-area-inset-bottom));
-          background: rgba(16, 22, 40, 0.92);
-          -webkit-backdrop-filter: blur(18px) saturate(150%);
-          backdrop-filter: blur(18px) saturate(150%);
-          border-top: 1px solid var(--glass-border);
-          box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
-        }
-        .lgnav__bottom-item {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          gap: 2px;
-          flex: 1;
-          min-width: 0;
-          padding: 6px 4px;
-          border-radius: 12px;
-          color: var(--fg-muted);
-          text-decoration: none;
-          font-size: 0.7rem;
-          transition: color 0.2s ease, background 0.2s ease;
-          text-align: center;
-        }
-        .lgnav__bottom-item:hover {
-          color: var(--fg);
-          background: rgba(255, 255, 255, 0.04);
-        }
-        .lgnav__bottom-item.is-active {
-          color: var(--cyan);
-        }
-        .lgnav__bottom-item.is-active .lgnav__bottom-icon {
-          text-shadow: 0 0 8px rgba(0, 240, 255, 0.5);
-        }
-        .lgnav__bottom-icon {
-          font-size: 1.3rem;
-          line-height: 1;
-          transition: text-shadow 0.2s ease;
-        }
-        .lgnav__bottom-label {
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          max-width: 100%;
-        }
-        .lgnav__bottom-more {
-          background: none;
-          border: none;
-          cursor: pointer;
-          font-family: inherit;
-        }
-
         /* Tablet: show compact links */
         @media (max-width: ${BREAKPOINT_TABLET}px) and (min-width: ${BREAKPOINT_MOBILE}px) {
           .lgnav__links {
@@ -953,12 +847,8 @@ export default function LiquidGlassNav() {
           }
         }
 
-        /* Mobile: hide top links, show bottom nav + hamburger */
+        /* Mobile: hide top links, show hamburger */
         @media (max-width: ${BREAKPOINT_MOBILE}px) {
-          .lgnav {
-            padding: 8px 10px;
-            padding-bottom: max(8px, calc(env(safe-area-inset-bottom) + 72px));
-          }
           .lgnav__links {
             display: none;
           }
@@ -992,37 +882,16 @@ export default function LiquidGlassNav() {
             height: 22px;
             width: auto;
           }
-          .lgnav__bottom-item {
-            font-size: 0.65rem;
-            padding: 4px 2px;
-          }
-          .lgnav__bottom-icon {
-            font-size: 1.1rem;
-          }
         }
 
         /* Landscape mobile optimization */
         @media (max-width: 1024px) and (orientation: landscape) {
           .lgnav {
             padding: 6px 12px;
-            padding-bottom: max(6px, calc(env(safe-area-inset-bottom) + 68px));
           }
           .lgnav__inner {
             padding: 6px 12px;
             gap: 10px;
-          }
-          .lgnav__bottom {
-            padding: 4px 8px;
-            padding-bottom: max(4px, env(safe-area-inset-bottom));
-          }
-          .lgnav__bottom-item {
-            padding: 4px 6px;
-          }
-          .lgnav__bottom-icon {
-            font-size: 1.1rem;
-          }
-          .lgnav__bottom-label {
-            font-size: 0.65rem;
           }
         }
 
