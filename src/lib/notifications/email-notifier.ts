@@ -60,6 +60,9 @@ const DEFAULT_CONFIG: EmailNotifierConfig = {
 }
 
 export function getEmailNotifierConfig(): EmailNotifierConfig {
+  // Static export has no server runtime, so we cannot safely call Resend
+  // or SendGrid from the client (their API keys would be exposed in the JS
+  // bundle). EmailJS is the only client-safe provider (uses public keys).
   if (typeof window === 'undefined') {
     // Server-side / build-time: read from env vars
     const provider = (process.env.EMAIL_PROVIDER as EmailProvider) || 'resend'
@@ -76,19 +79,32 @@ export function getEmailNotifierConfig(): EmailNotifierConfig {
     }
   }
 
-  // Client-side: read from localStorage or env
+  // Client-side: only EmailJS is safe (public keys). Resend/SendGrid
+  // require server-side proxy (Firebase Cloud Function / Edge Function).
+  const clientProvider: EmailProvider = 'emailjs'
   try {
     const stored = localStorage.getItem('pdsk-email-notifier-config')
-    if (stored) return { ...DEFAULT_CONFIG, ...JSON.parse(stored) }
+    if (stored) {
+      const parsed = JSON.parse(stored) as Partial<EmailNotifierConfig>
+      return {
+        ...DEFAULT_CONFIG,
+        provider: clientProvider,
+        ...parsed,
+        apiKey: undefined, // never persist or use API keys on client
+      }
+    }
   } catch {
     // ignore
   }
 
   return {
     ...DEFAULT_CONFIG,
-    apiKey: process.env.NEXT_PUBLIC_RESEND_API_KEY || process.env.NEXT_PUBLIC_SENDGRID_API_KEY,
+    provider: clientProvider,
+    apiKey: undefined,
     fromEmail: process.env.NEXT_PUBLIC_EMAIL_FROM || DEFAULT_CONFIG.fromEmail,
     fromName: process.env.NEXT_PUBLIC_EMAIL_FROM_NAME || DEFAULT_CONFIG.fromName,
+    emailJsServiceId: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+    emailJsTemplateId: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
     emailJsPublicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
     recipients: (process.env.NEXT_PUBLIC_EMAIL_RECIPIENTS || '').split(',').filter(Boolean),
   }
@@ -118,6 +134,13 @@ export function saveEmailNotifierConfig(config: EmailNotifierConfig): void {
  */
 export async function sendEmail(message: EmailMessage): Promise<boolean> {
   const config = getEmailNotifierConfig()
+
+  // Static export: only EmailJS is supported client-side.
+  // Resend/SendGrid require a server-side proxy (Firebase Cloud Function).
+  if (typeof window !== 'undefined' && config.provider !== 'emailjs') {
+    logger.warn('[email-notifier] Client-side email via Resend/SendGrid is blocked in static export. Use EmailJS or deploy a server-side proxy.')
+    return false
+  }
 
   if (config.provider === 'resend') {
     return sendViaResend(config, message)

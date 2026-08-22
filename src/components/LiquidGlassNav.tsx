@@ -38,8 +38,32 @@ export default function LiquidGlassNav() {
   const [searchPosts, setSearchPosts] = useState<BlogPost[]>([])
   const [searchLoading, setSearchLoading] = useState(false)
   const searchDebounceRef = useRef<number | null>(null)
+  const allPostsRef = useRef<BlogPost[]>([])
+  const postsLoadedRef = useRef(false)
 
-  // Search posts from Firestore with debounce instead of bundling blog.json.
+  // Pre-fetch published posts once (or when locale changes) for search.
+  useEffect(() => {
+    let active = true
+    setSearchLoading(true)
+    getPublishedPosts(locale)
+      .then((posts) => {
+        if (active) {
+          allPostsRef.current = posts
+          postsLoadedRef.current = true
+        }
+      })
+      .catch(() => {
+        if (active) postsLoadedRef.current = false
+      })
+      .finally(() => {
+        if (active) setSearchLoading(false)
+      })
+    return () => {
+      active = false
+    }
+  }, [locale])
+
+  // Search posts from the pre-fetched cache with debounce.
   useEffect(() => {
     if (!searchQuery.trim()) {
       setSearchPosts([])
@@ -49,23 +73,18 @@ export default function LiquidGlassNav() {
     setSearchLoading(true)
     if (searchDebounceRef.current) window.clearTimeout(searchDebounceRef.current)
 
-    searchDebounceRef.current = window.setTimeout(async () => {
-      try {
-        const posts = await getPublishedPosts(locale)
-        const q = searchQuery.trim().toLowerCase()
-        const matched = posts
-          .filter((p) =>
-            p.title.toLowerCase().includes(q) ||
-            p.excerpt.toLowerCase().includes(q) ||
-            p.tags.some((t) => t.toLowerCase().includes(q))
-          )
-          .slice(0, 8)
-        setSearchPosts(matched)
-      } catch {
-        setSearchPosts([])
-      } finally {
-        setSearchLoading(false)
-      }
+    searchDebounceRef.current = window.setTimeout(() => {
+      const posts = allPostsRef.current
+      const q = searchQuery.trim().toLowerCase()
+      const matched = posts
+        .filter((p) =>
+          p.title.toLowerCase().includes(q) ||
+          p.excerpt.toLowerCase().includes(q) ||
+          p.tags.some((t) => t.toLowerCase().includes(q))
+        )
+        .slice(0, 8)
+      setSearchPosts(matched)
+      setSearchLoading(false)
     }, 300)
 
     return () => {

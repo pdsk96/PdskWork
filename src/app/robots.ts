@@ -12,11 +12,13 @@ const BASE =
  */
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: {
-      userAgent: '*',
-      allow: '/',
-      disallow: ['/admin'],
-    },
+    rules: [
+      {
+        userAgent: '*',
+        allow: '/',
+        disallow: ['/admin', '/blog/_'],
+      },
+    ],
     sitemap: `${BASE}/sitemap.xml`,
     host: BASE,
   }

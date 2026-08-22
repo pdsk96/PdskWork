@@ -171,13 +171,14 @@ export async function sendPostPublishedNotification(post: BlogPost): Promise<voi
   const settings = await getNotificationSettings()
   if (!settings.email.enabled || !settings.email.events.postPublished) return
 
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://pdskwork.web.app'
   const subject = `[PdskWork] New post published: ${post.title}`
   const html = `
     <h2>New Post Published</h2>
     <p><strong>Title:</strong> ${post.title}</p>
     <p><strong>Slug:</strong> ${post.slug}</p>
     <p><strong>Locale:</strong> ${post.locale}</p>
-    <p><a href="https://pdskwork.web.app/blog/${post.slug}">View post</a></p>
+    <p><a href="${baseUrl}/blog/${post.slug}">View post</a></p>
     <p><em>Sent automatically by PdskWork AutoPilot</em></p>
   `
 
@@ -217,7 +218,8 @@ export async function distributeToSocial(
   accounts: { twitter?: SocialAccount; linkedin?: SocialAccount; whatsapp?: SocialAccount },
 ): Promise<DistributionLog[]> {
   const logs: DistributionLog[] = []
-  const text = `${post.title}\n\n${post.excerpt}\n\nhttps://pdskwork.web.app/blog/${post.slug}`
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://pdskwork.web.app'
+  const text = `${post.title}\n\n${post.excerpt}\n\n${baseUrl}/blog/${post.slug}`
 
   if (channels.twitter && accounts.twitter) {
     const log = await postToSocial(accounts.twitter, {

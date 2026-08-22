@@ -70,6 +70,21 @@ function setCached<T>(key: string, data: T): void {
   queryCache.set(key, { data, ts: Date.now() })
 }
 
+function invalidateCache(...parts: (string | number | boolean | undefined)[]): void {
+  const key = cacheKey(...parts)
+  queryCache.delete(key)
+  // Also clear slug-related cache entries
+  for (const k of queryCache.keys()) {
+    if (k.startsWith('slug|')) queryCache.delete(k)
+  }
+  // Also clear published-related cache entries for the locale
+  if (parts[0] === 'published' || parts[0] === 'slug') {
+    for (const k of queryCache.keys()) {
+      if (k.startsWith('published|')) queryCache.delete(k)
+    }
+  }
+}
+
 function newId(): string {
   if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
     return crypto.randomUUID()
@@ -154,8 +169,9 @@ export async function getPaginatedPosts(
     totalCount = countSnap.data().count
   } catch {
     // Count aggregation unavailable (missing index / permissions).
-    // Fallback: estimate from cursor position + current page size.
-    totalCount = 0
+    // Set totalCount to Infinity so the UI shows pagination controls
+    // without a broken "0 items" state.
+    totalCount = Infinity
   }
 
   if (page <= 1) {
@@ -163,8 +179,8 @@ export async function getPaginatedPosts(
     const snap = await getDocs(q)
     const posts = snap.docs.map((d) => snapToPost(d.id, d.data() as Record<string, unknown>))
     const hasMore = posts.length === perPage
-    if (totalCount === 0) {
-      totalCount = hasMore ? posts.length + 1 : posts.length
+    if (totalCount === Infinity) {
+      totalCount = hasMore ? perPage + 1 : posts.length
     }
     return { posts, hasMore, totalCount }
   }
@@ -180,7 +196,7 @@ export async function getPaginatedPosts(
   const snap = await getDocs(q)
   const posts = snap.docs.map((d) => snapToPost(d.id, d.data() as Record<string, unknown>))
 
-  if (totalCount === 0) {
+  if (totalCount === Infinity) {
     totalCount = cursorSnap.size + posts.length + (posts.length === perPage ? 1 : 0)
   }
 
@@ -258,6 +274,8 @@ export async function createPost(input: BlogInput): Promise<BlogPost> {
   }
   // setDoc with the chosen id so doc id === post.id (stable for edits/deletes).
   await setDoc(doc(db, COLLECTION, id), { ...post })
+  invalidateCache('published', input.locale)
+  invalidateCache('slug', post.slug, input.locale)
   return post
 }
 
@@ -281,6 +299,9 @@ export async function updatePost(id: string, input: Partial<BlogInput>): Promise
     updatedAt: new Date().toISOString(),
   }
   await updateDoc(doc(db, COLLECTION, id), { ...updated })
+  invalidateCache('published', current.locale)
+  invalidateCache('slug', current.slug, current.locale)
+  invalidateCache('slug', slug, current.locale)
   return updated
 }
 
@@ -289,6 +310,8 @@ export async function deletePost(id: string): Promise<boolean> {
   const current = await getPostById(id)
   if (!current) return false
   await deleteDoc(doc(db, COLLECTION, id))
+  invalidateCache('published', current.locale)
+  invalidateCache('slug', current.slug, current.locale)
   return true
 }
 
@@ -296,15 +319,14 @@ export async function deletePost(id: string): Promise<boolean> {
 async function uniqueSlug(slug: string, excludeId?: string): Promise<string> {
   const base = slug || 'post'
   let candidate = base
-  let n = 1
-  while (true) {
+  for (let n = 1; n <= 1000; n++) {
     const q = query(collection(db, COLLECTION), where('slug', '==', candidate))
     const snap = await getDocs(q)
     const conflict = snap.docs.some((d) => d.id !== excludeId)
     if (!conflict) return candidate
-    n += 1
     candidate = `${base}-${n}`
   }
+  throw new Error('Unable to generate unique slug after 1000 attempts')
 }
 
 /** Bulk update posts by id list. */
@@ -321,6 +343,9 @@ export async function bulkUpdatePosts(ids: string[], patch: Partial<Pick<BlogPos
     count++
   }
   await batch.commit()
+  // Invalidate cache for all affected locales
+  invalidateCache('published')
+  invalidateCache('slug')
   return count
 }
 
@@ -335,6 +360,9 @@ export async function bulkDeletePosts(ids: string[]): Promise<number> {
     count++
   }
   await batch.commit()
+  // Invalidate cache for all affected locales
+  invalidateCache('published')
+  invalidateCache('slug')
   return count
 }
 
@@ -345,8 +373,29 @@ export async function incrementViewCount(id: string): Promise<void> {
 
 /** Get adjacent posts (previous and next) for a given slug, ordered by createdAt desc. */
 export async function getAdjacentPosts(slug: string, locale?: 'en' | 'id'): Promise<{ prev: BlogPost | null; next: BlogPost | null }> {
-  const posts = await getPublishedPosts(locale)
+  // First, get the current post to know its createdAt
+  const current = await getPostBySlug(slug, locale)
+  if (!current) return { prev: null, next: null }
+
+  const base = locale
+    ? query(
+        collection(db, COLLECTION),
+        where('published', '==', true),
+        where('locale', '==', locale),
+        orderBy('createdAt', 'desc'),
+      )
+    : query(
+        collection(db, COLLECTION),
+        where('published', '==', true),
+        orderBy('createdAt', 'desc'),
+      )
+
+  // Fetch a small window around the current post (2 before + current + 2 after)
+  const q = query(base, limit(5))
+  const snap = await getDocs(q)
+  const posts = snap.docs.map((d) => snapToPost(d.id, d.data() as Record<string, unknown>))
   const idx = posts.findIndex((p) => p.slug === slug)
+
   if (idx === -1) return { prev: null, next: null }
   return {
     prev: idx > 0 ? posts[idx - 1] : null,

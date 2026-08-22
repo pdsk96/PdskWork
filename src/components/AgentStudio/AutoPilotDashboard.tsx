@@ -224,9 +224,7 @@ export default function AutoPilotDashboard() {
               onChange={(e) => patchEmail({ provider: e.target.value as EmailNotifierConfig['provider'] })}
               className="auth-input"
             >
-              <option value="resend">Resend</option>
-              <option value="sendgrid">SendGrid</option>
-              <option value="emailjs">EmailJS</option>
+              <option value="emailjs">EmailJS (client-side, static export compatible)</option>
             </select>
           </label>
           <label style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
@@ -325,7 +323,7 @@ export default function AutoPilotDashboard() {
           </label>
           {notifSettings.social.whatsapp.enabled && (
             <p style={{ fontSize: '0.8rem', opacity: 0.7 }}>
-              Configure WhatsApp Business API credentials via env vars (WHATSAPP_ACCESS_TOKEN, WHATSAPP_PHONE_NUMBER_ID).
+              Configure WhatsApp recipient phone number (E.164 format, e.g. 6281234567890) in the account settings.
               Requires WhatsApp Business Account (paid).
             </p>
           )}

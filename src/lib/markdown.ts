@@ -24,12 +24,29 @@ const ALLOWED_TAGS = [
   'a', 'img', 'figure', 'figcaption',
   'table', 'thead', 'tbody', 'tr', 'td', 'th',
   'hr', 'div', 'span', 'sup', 'sub',
+  'iframe', 'video', 'source',
 ]
 
 const ALLOWED_ATTR = [
   'href', 'src', 'alt', 'title', 'class', 'id',
   'target', 'rel', 'width', 'height',
+  'allow', 'allowfullscreen', 'frameborder', 'sandbox',
+  'controls', 'type',
 ]
+
+const ALLOWED_IFRAME_DOMAINS = [
+  'www.youtube.com',
+  'player.vimeo.com',
+]
+
+function isAllowedIframeSrc(src: string): boolean {
+  try {
+    const url = new URL(src)
+    return ALLOWED_IFRAME_DOMAINS.includes(url.hostname)
+  } catch {
+    return false
+  }
+}
 
 /** Extract video ID from URL based on platform */
 function extractVideoId(url: string, platform: string): string | null {
@@ -63,6 +80,7 @@ function getVideoEmbedHtml(platform: string, videoId: string): string {
     return `
       <div class="video-embed" style="${baseStyles}">
         <iframe src="https://www.youtube.com/embed/${videoId}"
+                sandbox="allow-scripts allow-same-origin allow-presentation"
                 frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowfullscreen
@@ -74,6 +92,7 @@ function getVideoEmbedHtml(platform: string, videoId: string): string {
     return `
       <div class="video-embed" style="${baseStyles}">
         <iframe src="https://player.vimeo.com/video/${videoId}"
+                sandbox="allow-scripts allow-same-origin allow-presentation"
                 frameborder="0"
                 allow="autoplay; fullscreen; picture-in-picture"
                 allowfullscreen
