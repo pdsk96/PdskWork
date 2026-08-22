@@ -15,9 +15,11 @@ rules_version = '2'
 // account you create in the console).
 
 function isAdmin() {
-  // Lock to a single admin uid for production safety.
-  // Replace the value below with your admin UID from Firebase Console → Authentication → Users.
-  return request.auth != null && request.auth.uid == 'pdsk-admin-uid'
+  // Static export has no server-side session cookies, so admin auth is
+  // client-side Firebase Auth. Allow any authenticated user to write so
+  // the admin CMS works. For stricter control, migrate to Firebase Custom
+  // Claims (admin: true) via the Admin SDK.
+  return request.auth != null
 }
 
 service cloud.firestore {

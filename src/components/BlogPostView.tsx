@@ -30,6 +30,7 @@ export default function BlogPostView() {
 
   useEffect(() => {
     let active = true
+    const abortController = new AbortController()
     const slug = readSlugFromPath()
     setPost(undefined)
     setPrevPost(null)
@@ -52,6 +53,7 @@ export default function BlogPostView() {
       })
     return () => {
       active = false
+      abortController.abort()
     }
   }, [locale])
 

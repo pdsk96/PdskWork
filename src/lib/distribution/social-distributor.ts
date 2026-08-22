@@ -26,6 +26,8 @@ export interface SocialAccount {
   organizationUrn?: string
   /** WhatsApp: phone number ID. */
   phoneNumberId?: string
+  /** WhatsApp: recipient phone number (E.164 format, e.g. 6281234567890). */
+  whatsappRecipient?: string
 }
 
 export interface SocialPost {
@@ -91,30 +93,22 @@ export async function postToSocial(account: SocialAccount, post: SocialPost): Pr
 }
 
 async function postToTwitter(account: SocialAccount, post: SocialPost, log: DistributionLog): Promise<DistributionLog> {
-  if (!account.accessToken && !account.apiKey) {
+  if (!account.accessToken) {
     log.status = 'failed'
-    log.error = 'Twitter: access token or API key not configured'
+    log.error = 'Twitter: OAuth 2.0 access token not configured'
     return log
   }
 
   const text = post.text || post.content.slice(0, 280) // Twitter limit
 
   try {
-    // Twitter API v2: POST /2/tweets
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-    }
-
-    if (account.accessToken) {
-      headers.Authorization = `Bearer ${account.accessToken}`
-    } else if (account.apiKey && account.apiSecret) {
-      // OAuth 1.0a: generate bearer token (simplified; real impl needs crypto)
-      headers.Authorization = `Bearer ${account.apiKey}`
-    }
-
+    // Twitter API v2: POST /2/tweets with OAuth 2.0 Bearer token
     const response = await fetch('https://api.twitter.com/2/tweets', {
       method: 'POST',
-      headers,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${account.accessToken}`,
+      },
       body: JSON.stringify({
         text,
         media: post.mediaUrl ? { media_ids: [await uploadTwitterMedia(account, post.mediaUrl)] } : undefined,
@@ -217,6 +211,12 @@ async function postToWhatsApp(account: SocialAccount, post: SocialPost, log: Dis
     return log
   }
 
+  if (!account.whatsappRecipient) {
+    log.status = 'failed'
+    log.error = 'WhatsApp: recipient phone number not configured'
+    return log
+  }
+
   const text = post.text || post.content.slice(0, 4096) // WhatsApp limit
 
   try {
@@ -232,7 +232,7 @@ async function postToWhatsApp(account: SocialAccount, post: SocialPost, log: Dis
         body: JSON.stringify({
           messaging_product: 'whatsapp',
           recipient_type: 'individual',
-          to: post.mediaUrl || '', // In practice, this is a phone number
+          to: account.whatsappRecipient,
           type: 'text',
           text: { body: text },
         }),
