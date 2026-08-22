@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/gen-feed.mjs && node scripts/gen-cover-images.mjs",
+    "prebuild": "node scripts/gen-feed.mjs && node scripts/gen-cover-images.mjs && node scripts/add-insights.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
