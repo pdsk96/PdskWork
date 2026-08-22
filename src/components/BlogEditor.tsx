@@ -27,7 +27,15 @@ export default function BlogEditor({ post }: BlogEditorProps) {
   // Detect edit id from /admin/blog/<id>/edit when no post is provided.
   const editIdFromPath =
     typeof window !== 'undefined'
-      ? (window.location.pathname.match(/\/admin\/blog\/([^/]+)\/edit(?:\/)?$/) ?? [])[1]
+      ? (() => {
+          try {
+            const path = new URL(window.location.href).pathname
+            const m = path.match(/\/admin\/blog\/([^/]+)\/edit/)
+            return m ? m[1] : undefined
+          } catch {
+            return undefined
+          }
+        })()
       : undefined
   const isEdit = !!post || !!editIdFromPath
 

@@ -41,7 +41,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     document.documentElement.setAttribute('data-theme', t)
     localStorage.setItem(STORAGE_KEY, t)
     // Mirror to cookie so server can read it (avoids FOUC on hard reload).
-    document.cookie = `${STORAGE_KEY}=${t}; path=/; max-age=31536000; samesite=lax`
+    document.cookie = `${STORAGE_KEY}=${t}; path=/; max-age=${7 * 24 * 60 * 60}; samesite=lax`
   }, [])
 
   const setTheme = useCallback(

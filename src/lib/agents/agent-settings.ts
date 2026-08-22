@@ -3,8 +3,9 @@
 import { doc, getDoc, setDoc } from 'firebase/firestore'
 import { db, isFirebaseReady, auth } from '@/lib/firebase'
 import type { LLMConfig } from '@/lib/ai/llm-client'
+import { logger } from '@/lib/logger'
 
-export interface AgentSettings extends LLMConfig {
+export interface AgentSettings extends Omit<LLMConfig, 'apiKey'> {
   autoScheduleEnabled: boolean
   autoScheduleTimes: number[]
   autoScheduleLocale: 'en' | 'id'
@@ -13,7 +14,6 @@ export interface AgentSettings extends LLMConfig {
 
 const DEFAULT_SETTINGS: AgentSettings = {
   provider: 'groq',
-  apiKey: '',
   model: '',
   temperature: 0.7,
   maxTokens: 2048,
@@ -24,6 +24,7 @@ const DEFAULT_SETTINGS: AgentSettings = {
 }
 
 const CONFIG_DOC_ID = 'default'
+const API_KEY_STORAGE_KEY = 'pdsk-llm-api-key'
 
 function getAuthErrorMessage(err: unknown): string {
   if (err instanceof Error) {
@@ -48,29 +49,52 @@ function sanitizeSettings(data: Partial<AgentSettings>): AgentSettings {
   return { ...DEFAULT_SETTINGS, ...data, temperature, maxTokens }
 }
 
-export async function loadAgentSettings(): Promise<AgentSettings> {
+/** Read API key from browser localStorage (never stored in Firestore). */
+export function getApiKeyFromStorage(): string {
+  if (typeof window === 'undefined') return ''
+  return localStorage.getItem(API_KEY_STORAGE_KEY) || ''
+}
+
+/** Write API key to browser localStorage (never stored in Firestore). */
+export function setApiKeyToStorage(key: string): void {
+  if (typeof window === 'undefined') return
+  if (key) {
+    localStorage.setItem(API_KEY_STORAGE_KEY, key)
+  } else {
+    localStorage.removeItem(API_KEY_STORAGE_KEY)
+  }
+}
+
+/** Clear API key from browser localStorage. */
+export function clearApiKeyFromStorage(): void {
+  if (typeof window === 'undefined') return
+  localStorage.removeItem(API_KEY_STORAGE_KEY)
+}
+
+export async function loadAgentSettings(): Promise<AgentSettings & { apiKey: string }> {
   try {
     if (!db || !isFirebaseReady()) {
-      console.warn('[agent-settings] Firebase not ready, returning default settings')
-      return DEFAULT_SETTINGS
+      logger.warn('[agent-settings] Firebase not ready, returning default settings')
+      return { ...DEFAULT_SETTINGS, apiKey: getApiKeyFromStorage() }
     }
 
     const snap = await getDoc(doc(db, 'agentConfigs', CONFIG_DOC_ID))
     if (snap.exists()) {
       const data = snap.data()
-      console.log('[agent-settings] Loaded settings from Firestore:', data)
-      return sanitizeSettings(data as Partial<AgentSettings>)
+      logger.debug('[agent-settings] Loaded settings from Firestore')
+      // Merge Firestore config with localStorage API key.
+      return { ...sanitizeSettings(data as Partial<AgentSettings>), apiKey: getApiKeyFromStorage() }
     } else {
-      console.log('[agent-settings] No saved settings found, returning defaults')
-      return DEFAULT_SETTINGS
+      logger.debug('[agent-settings] No saved settings found, returning defaults')
+      return { ...DEFAULT_SETTINGS, apiKey: getApiKeyFromStorage() }
     }
   } catch (err) {
-    console.error('[agent-settings] Failed to load settings:', err)
-    return DEFAULT_SETTINGS
+    logger.error('[agent-settings] Failed to load settings:', err)
+    return { ...DEFAULT_SETTINGS, apiKey: getApiKeyFromStorage() }
   }
 }
 
-export async function saveAgentSettings(settings: AgentSettings): Promise<void> {
+export async function saveAgentSettings(settings: AgentSettings & { apiKey?: string }): Promise<void> {
   try {
     if (!db || !isFirebaseReady()) {
       throw new Error('Firebase belum siap. Refresh halaman dan coba lagi.')
@@ -81,11 +105,17 @@ export async function saveAgentSettings(settings: AgentSettings): Promise<void> 
       throw new Error('Anda belum login sebagai admin. Silakan login terlebih dahulu.')
     }
 
-    console.log('[agent-settings] Saving settings to Firestore:', settings, 'authUid:', currentUser.uid)
-    await setDoc(doc(db, 'agentConfigs', CONFIG_DOC_ID), settings, { merge: true })
-    console.log('[agent-settings] Settings saved successfully')
+    // Store API key in localStorage, NOT in Firestore.
+    if (settings.apiKey !== undefined) {
+      setApiKeyToStorage(settings.apiKey)
+    }
+
+    const { apiKey: _apiKey, ...firestoreSettings } = settings
+    logger.debug('[agent-settings] Saving settings to Firestore')
+    await setDoc(doc(db, 'agentConfigs', CONFIG_DOC_ID), firestoreSettings, { merge: true })
+    logger.debug('[agent-settings] Settings saved successfully')
   } catch (err) {
-    console.error('[agent-settings] Failed to save settings:', err)
+    logger.error('[agent-settings] Failed to save settings:', err)
     throw new Error(getAuthErrorMessage(err))
   }
 }

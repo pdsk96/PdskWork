@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import { useRouter, usePathname } from 'next/navigation'
+import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import { useAdminAuth } from '@/lib/use-admin-auth'
 
 /**
@@ -17,13 +17,16 @@ export default function AdminGate({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAdminAuth()
   const router = useRouter()
   const pathname = usePathname()
+  const searchParams = useSearchParams()
 
   useEffect(() => {
     if (!loading && !user) {
-      const next = encodeURIComponent(pathname ?? '/admin')
-      router.replace(`/admin/login?next=${next}`)
+      const rawNext = searchParams.get('next')
+      // Only allow internal paths to prevent open redirect attacks.
+      const safeNext = rawNext && rawNext.startsWith('/') ? rawNext : '/admin'
+      router.replace(`/admin/login?next=${encodeURIComponent(safeNext)}`)
     }
-  }, [loading, user, router, pathname])
+  }, [loading, user, router, searchParams])
 
   if (loading || !user) {
     return (

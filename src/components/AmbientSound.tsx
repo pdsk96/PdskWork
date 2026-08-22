@@ -14,10 +14,17 @@ import { useLocale } from '@/i18n/LocaleProvider'
  * zeroed so the drone is static (less sensory stimulation).
  */
 export default function AmbientSound() {
-  const [enabled, setEnabled] = useState(false)
+  const [enabled, setEnabled] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false
+    return localStorage.getItem('pdsk-ambient') === '1'
+  })
   const ctxRef = useRef<AudioContext | null>(null)
   const nodesRef = useRef<{ stop: () => void } | null>(null)
   const { dict } = useLocale()
+
+  useEffect(() => {
+    localStorage.setItem('pdsk-ambient', enabled ? '1' : '0')
+  }, [enabled])
 
   useEffect(() => {
     return () => {

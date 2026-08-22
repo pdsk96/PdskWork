@@ -7,6 +7,7 @@ import { createPost } from '@/lib/blog-firestore'
 import { runAgentPipeline, type AgentJob, type AgentRunOptions } from './agent-orchestrator'
 import { callLLM, type LLMConfig } from '@/lib/ai/llm-client'
 import type { BlogPost } from '@/lib/blog-types'
+import { logger } from '@/lib/logger'
 
 export interface ScheduledJob {
   id: string
@@ -52,7 +53,7 @@ export function useScheduler(intervalMs = 300000, existingPosts: BlogPost[] = []
       for (const job of due) {
         try {
           if (job.type === 'auto-generate' && job.agentConfig) {
-            console.debug('[scheduler] processing auto-generate', { jobId: job.id, scheduledAt: job.scheduledAt })
+            logger.debug('[scheduler] processing auto-generate', { jobId: job.id, scheduledAt: job.scheduledAt })
             await updateDoc(doc(db, 'scheduledJobs', job.id), { status: 'generating' })
             const options: AgentRunOptions = {
               config: job.agentConfig,
@@ -72,13 +73,13 @@ export function useScheduler(intervalMs = 300000, existingPosts: BlogPost[] = []
                 locale: result.draft.locale,
               })
               await updateDoc(doc(db, 'scheduledJobs', job.id), { status: 'published', publishedAt: serverTimestamp() })
-              console.debug('[scheduler] auto-generate published', { jobId: job.id, title: result.draft.title })
+              logger.debug('[scheduler] auto-generate published', { jobId: job.id, title: result.draft.title })
             } else {
               await updateDoc(doc(db, 'scheduledJobs', job.id), { status: 'failed' })
-              console.warn('[scheduler] auto-generate failed', { jobId: job.id, error: result.error })
+              logger.warn('[scheduler] auto-generate failed', { jobId: job.id, error: result.error })
             }
           } else if (job.type === 'manual' && job.title && job.content) {
-            console.debug('[scheduler] processing manual', { jobId: job.id, title: job.title })
+            logger.debug('[scheduler] processing manual', { jobId: job.id, title: job.title })
             await createPost({
               title: job.title,
               slug: job.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''),
@@ -89,10 +90,10 @@ export function useScheduler(intervalMs = 300000, existingPosts: BlogPost[] = []
               locale: (job.locale as 'en' | 'id') || 'en',
             })
             await updateDoc(doc(db, 'scheduledJobs', job.id), { status: 'published', publishedAt: serverTimestamp() })
-            console.debug('[scheduler] manual published', { jobId: job.id })
+            logger.debug('[scheduler] manual published', { jobId: job.id })
           }
         } catch (err) {
-          console.error('[scheduler] job failed', { jobId: job.id, error: err instanceof Error ? err.message : err })
+          logger.error('[scheduler] job failed', { jobId: job.id, error: err instanceof Error ? err.message : err })
           await updateDoc(doc(db, 'scheduledJobs', job.id), { status: 'failed' })
         }
       }

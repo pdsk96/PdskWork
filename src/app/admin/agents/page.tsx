@@ -23,6 +23,7 @@ import { useAutoPilot } from '@/lib/agents/autopilot'
 import { useReports, generateReport } from '@/lib/agents/report-generator'
 import { loadAgentSettings, saveAgentSettings } from '@/lib/agents/agent-settings'
 import AutoPilotDashboard from '@/components/AgentStudio/AutoPilotDashboard'
+import { logger } from '@/lib/logger'
 
 type Tab = 'agents' | 'autopilot' | 'schedule' | 'reports'
 
@@ -68,11 +69,11 @@ export default function AdminAgentsPage() {
     setConfig(next)
     try {
       const current = await loadAgentSettings()
-      console.log('[agents/page] Saving updated config:', { ...current, ...next })
+      logger.debug('[agents/page] Saving updated config:', { ...current, ...next })
       await saveAgentSettings({ ...current, ...next })
-      console.log('[agents/page] Config saved successfully')
+      logger.debug('[agents/page] Config saved successfully')
     } catch (err) {
-      console.error('[agents/page] Failed to save config:', err)
+      logger.error('[agents/page] Failed to save config:', err)
     }
   }
 

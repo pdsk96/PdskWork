@@ -5,6 +5,7 @@ import { shaderMaterial } from '@react-three/drei'
 import { useReducedMotion } from 'motion/react'
 import { useMemo, useRef, useState, useEffect } from 'react'
 import * as THREE from 'three'
+import { logger } from '@/lib/logger'
 
 /**
  * CyberBackground — full-bleed R3F backdrop.
@@ -164,10 +165,10 @@ export default function CyberBackground() {
       const canvas = document.createElement('canvas')
       const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl')
       const supported = !!gl
-      console.debug('[cyber-bg] WebGL supported:', supported)
+      logger.debug('[cyber-bg] WebGL supported:', supported)
       setGlSupported(supported)
     } catch (err) {
-      console.warn('[cyber-bg] WebGL probe failed:', err)
+      logger.warn('[cyber-bg] WebGL probe failed:', err)
       setGlSupported(false)
     }
   }, [])

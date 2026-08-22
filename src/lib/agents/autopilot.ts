@@ -23,6 +23,7 @@ import { loadAgentSettings } from './agent-settings'
 import { sendCycleNotification, sendPostPublishedNotification, sendPostFailedNotification } from '@/lib/distribution/distributor'
 import { getNotificationSettings, distributeToSocial } from '@/lib/distribution/distributor'
 import { useEffect, useRef, useState } from 'react'
+import { logger } from '@/lib/logger'
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -325,14 +326,14 @@ export async function runAutoPilotCycle(onEvent?: (e: AutoPilotEvent) => void): 
           // Send email notification + social distribution
           const settings = await getNotificationSettings()
           if (settings.email.enabled && settings.email.events.postPublished) {
-            sendPostPublishedNotification(publishedPost).catch((err) => console.error('[autopilot] post-published email failed:', err))
+            sendPostPublishedNotification(publishedPost).catch((err) => logger.error('[autopilot] post-published email failed:', err))
           }
           if (config.distributionChannels.twitter || config.distributionChannels.linkedin || config.distributionChannels.whatsapp) {
             distributeToSocial(publishedPost, config.distributionChannels, {
               twitter: settings.social.twitter.enabled ? settings.social.twitter : undefined,
               linkedin: settings.social.linkedin.enabled ? settings.social.linkedin : undefined,
               whatsapp: settings.social.whatsapp.enabled ? settings.social.whatsapp : undefined,
-            }).catch((err: unknown) => console.error('[autopilot] social distribution failed:', err))
+            }).catch((err: unknown) => logger.error('[autopilot] social distribution failed:', err))
           }
         } catch (err) {
           await updateContentPlan(plan.id, { status: 'failed' })
@@ -341,7 +342,7 @@ export async function runAutoPilotCycle(onEvent?: (e: AutoPilotEvent) => void): 
           // Send failure notification
           const settings = await getNotificationSettings()
           if (settings.email.enabled && settings.email.events.postFailed) {
-            sendPostFailedNotification(result.draft.title, err instanceof Error ? err.message : 'Unknown').catch((e) => console.error('[autopilot] post-failed email failed:', e))
+            sendPostFailedNotification(result.draft.title, err instanceof Error ? err.message : 'Unknown').catch((e) => logger.error('[autopilot] post-failed email failed:', e))
           }
         }
       }
@@ -360,14 +361,14 @@ export async function runAutoPilotCycle(onEvent?: (e: AutoPilotEvent) => void): 
     run.output = { plansCreated: plans.length, trendsFound: trends.length }
     await logRun(run)
     onEvent?.({ type: 'cycle-done', timestamp: Date.now(), message: 'AutoPilot cycle complete' })
-    sendCycleNotification('cycle-done', { message: 'AutoPilot cycle complete', trendsFound: trends.length, plansCreated: plans.length }).catch((err) => console.error('[autopilot] cycle-done email failed:', err))
+    sendCycleNotification('cycle-done', { message: 'AutoPilot cycle complete', trendsFound: trends.length, plansCreated: plans.length }).catch((err) => logger.error('[autopilot] cycle-done email failed:', err))
   } catch (err) {
     run.status = 'error'
     run.finishedAt = Date.now()
     run.error = err instanceof Error ? err.message : 'Unknown error'
     await logRun(run)
     onEvent?.({ type: 'cycle-error', timestamp: Date.now(), message: `Cycle error: ${run.error}` })
-    sendCycleNotification('cycle-error', { message: `Cycle error: ${run.error}`, error: run.error }).catch((err) => console.error('[autopilot] cycle-error email failed:', err))
+    sendCycleNotification('cycle-error', { message: `Cycle error: ${run.error}`, error: run.error }).catch((err) => logger.error('[autopilot] cycle-error email failed:', err))
     throw err
   }
 }

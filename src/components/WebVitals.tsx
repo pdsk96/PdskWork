@@ -1,6 +1,7 @@
 'use client'
 
 import { useReportWebVitals } from 'next/web-vitals'
+import { logger } from '@/lib/logger'
 
 /**
  * WebVitals — Core Web Vitals reporter.
@@ -21,7 +22,7 @@ export function WebVitals() {
   useReportWebVitals((metric) => {
     if (isDev) {
       // eslint-disable-next-line no-console
-      console.debug(`[web-vitals] ${metric.name}`, {
+      logger.debug(`[web-vitals] ${metric.name}`, {
         value: Math.round(metric.name === 'CLS' ? metric.value * 1000 : metric.value),
         rating: metric.rating,
         id: metric.id,

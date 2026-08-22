@@ -5,6 +5,7 @@ import { AdaptiveDpr, PerformanceMonitor, Sparkles } from '@react-three/drei'
 import { useReducedMotion, useScroll, useTransform } from 'motion/react'
 import { useMemo, useRef, useState, useEffect } from 'react'
 import * as THREE from 'three'
+import { logger } from '@/lib/logger'
 
 /**
  * CyberHero — a cursor-reactive, scroll-linked React Three Fiber scene.
@@ -193,10 +194,10 @@ export default function CyberHero() {
       const canvas = document.createElement('canvas')
       const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl')
       const supported = !!gl
-      console.debug('[cyber-hero] WebGL supported:', supported)
+      logger.debug('[cyber-hero] WebGL supported:', supported)
       setGlSupported(supported)
     } catch (err) {
-      console.warn('[cyber-hero] WebGL probe failed:', err)
+      logger.warn('[cyber-hero] WebGL probe failed:', err)
       setGlSupported(false)
     }
   }, [])

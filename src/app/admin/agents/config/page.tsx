@@ -6,23 +6,26 @@ import { useLocale } from '@/i18n/LocaleProvider'
 import AdminGate from '@/components/AdminGate'
 import AdminNav from '@/components/AdminNav'
 import { loadAgentSettings, saveAgentSettings, type AgentSettings } from '@/lib/agents/agent-settings'
+import { logger } from '@/lib/logger'
+
+type ConfigState = AgentSettings & { apiKey: string }
 
 export default function AgentConfigPage() {
   const { dict } = useLocale()
-  const [settings, setSettings] = useState<AgentSettings | null>(null)
+  const [settings, setSettings] = useState<ConfigState | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [toast, setToast] = useState<string | null>(null)
 
   useEffect(() => {
-    console.log('[agent-config] Loading agent settings...')
+    logger.debug('[agent-config] Loading agent settings...')
     loadAgentSettings()
       .then((s) => {
-        console.log('[agent-config] Settings loaded:', s)
+        logger.debug('[agent-config] Settings loaded:', s)
         setSettings(s)
       })
       .catch((err) => {
-        console.error('[agent-config] Failed to load settings:', err)
+        logger.error('[agent-config] Failed to load settings:', err)
         setToast('Failed to load settings.')
       })
       .finally(() => setLoading(false))
@@ -32,17 +35,17 @@ export default function AgentConfigPage() {
     if (!settings) return
     setSaving(true)
     setToast(null)
-    console.log('[agent-config] Saving settings:', settings)
+    logger.debug('[agent-config] Saving settings:', settings)
     try {
       await saveAgentSettings(settings)
       setToast('Settings saved successfully.')
-      console.log('[agent-config] Reloading settings to confirm save...')
+      logger.debug('[agent-config] Reloading settings to confirm save...')
       const reloaded = await loadAgentSettings()
       setSettings(reloaded)
-      console.log('[agent-config] Reloaded settings:', reloaded)
+      logger.debug('[agent-config] Reloaded settings:', reloaded)
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Unknown error'
-      console.error('[agent-config] Save failed:', err)
+      logger.error('[agent-config] Save failed:', err)
       setToast(`Gagal menyimpan: ${msg}`)
     } finally {
       setSaving(false)

@@ -11,6 +11,8 @@
  * All integrations are best-effort and log failures gracefully.
  */
 
+import { logger } from '@/lib/logger'
+
 export type SocialPlatform = 'twitter' | 'linkedin' | 'whatsapp'
 
 export interface SocialAccount {
@@ -130,7 +132,7 @@ async function postToTwitter(account: SocialAccount, post: SocialPost, log: Dist
     log.status = 'sent'
     log.externalId = data.data?.id
     log.updatedAt = Date.now()
-    console.debug('[social] Posted to Twitter:', log.externalId)
+    logger.debug('[social] Posted to Twitter:', log.externalId)
     return log
   } catch (err) {
     log.status = 'failed'
@@ -143,7 +145,7 @@ async function uploadTwitterMedia(account: SocialAccount, mediaUrl: string): Pro
   // Simplified: Twitter media upload requires chunked upload for images.
   // For a single image, use media/upload endpoint.
   // This is a placeholder — real implementation needs multipart upload.
-  console.warn('[social] Twitter media upload not fully implemented')
+  logger.warn('[social] Twitter media upload not fully implemented')
   return mediaUrl
 }
 
@@ -199,7 +201,7 @@ async function postToLinkedIn(account: SocialAccount, post: SocialPost, log: Dis
     log.status = 'sent'
     log.externalId = data.id
     log.updatedAt = Date.now()
-    console.debug('[social] Posted to LinkedIn:', log.externalId)
+    logger.debug('[social] Posted to LinkedIn:', log.externalId)
     return log
   } catch (err) {
     log.status = 'failed'
@@ -248,7 +250,7 @@ async function postToWhatsApp(account: SocialAccount, post: SocialPost, log: Dis
     log.status = 'sent'
     log.externalId = data.messages?.[0]?.id
     log.updatedAt = Date.now()
-    console.debug('[social] Posted to WhatsApp:', log.externalId)
+    logger.debug('[social] Posted to WhatsApp:', log.externalId)
     return log
   } catch (err) {
     log.status = 'failed'

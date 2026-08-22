@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs'
-import { join } from 'node:path'
+import { join, dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import type { BlogPost } from './blog-types'
 
 /**
@@ -15,7 +16,8 @@ import type { BlogPost } from './blog-types'
  * so the two stay in sync for the initial set.
  */
 
-const SEED_FILE = join(process.cwd(), 'src', 'db', 'blog.json')
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const SEED_FILE = join(__dirname, '..', 'db', 'blog.json')
 
 function readSeed(): BlogPost[] {
   try {

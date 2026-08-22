@@ -43,11 +43,8 @@ export default function BlogPage() {
       setHasMore(result.hasMore)
       setTotalCount(result.totalCount)
       setCurrentPage(page)
-      if (result.posts.length > 0 && result.posts.every((p) => p.locale !== locale)) {
-        setShowingAll(true)
-      } else {
-        setShowingAll(false)
-      }
+      const localeMatches = result.posts.some((p) => p.locale === locale)
+      setShowingAll(!localeMatches && result.posts.length > 0)
     } catch {
       setPosts([])
     } finally {
@@ -67,13 +64,13 @@ export default function BlogPage() {
           setHasMore(result.hasMore)
           setTotalCount(result.totalCount)
           setCurrentPage(initialPage)
-          if (result.posts.every((p) => p.locale !== locale)) {
-            setShowingAll(true)
-          } else {
-            setShowingAll(false)
-          }
+          // Show "no posts in this language" only if there are posts
+          // but none match the current locale.
+          const localeMatches = result.posts.some((p) => p.locale === locale)
+          setShowingAll(!localeMatches)
         } else {
           setPosts([])
+          setShowingAll(false)
         }
       })
       .catch(() => {
