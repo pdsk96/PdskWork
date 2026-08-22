@@ -70,7 +70,7 @@ a {
 :focus-visible {
   outline: none;
   box-shadow: var(--focus-ring);
-  border-radius: 6px;
+  border-radius: inherit;
 }
 
 /* Skip link for accessibility */
@@ -286,6 +286,11 @@ a {
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
+}
+:root[data-theme='light'] .primary-btn {
+  background: linear-gradient(180deg, rgba(0, 144, 168, 0.35), rgba(90, 60, 240, 0.28));
+  border-color: rgba(0, 144, 168, 0.5);
+  color: #0b1020;
 }
 
 .primary-btn:hover {
@@ -967,7 +972,7 @@ a {
   padding: 1rem;
   border: 1px solid var(--glass-border);
   border-radius: 12px;
-  background: rgba(16, 22, 40, 0.3);
+  background: var(--glass-bg);
 }
 .welcome__stat-n {
   display: block;
@@ -1028,13 +1033,14 @@ a {
   padding: 11px 12px;
   border-radius: 10px;
   border: 1px solid var(--glass-border);
-  background: rgba(5, 6, 10, 0.6);
+  background: var(--glass-bg);
   color: var(--fg);
   font-size: 1rem;
 }
 
 .field-input:focus-visible {
   border-color: var(--cyan);
+  box-shadow: var(--focus-ring);
 }
 
 .auth-error {
@@ -1061,6 +1067,13 @@ a {
   .bento__cell--feature,
   .bento__cell--cta {
     grid-column: span 2;
+  }
+}
+
+@media (max-width: 640px) {
+  .bento__cell--feature,
+  .bento__cell--cta {
+    grid-column: span 1;
   }
 }
 
@@ -1209,7 +1222,7 @@ a {
   transform: scaleX(0);
   background: linear-gradient(90deg, var(--cyan), var(--violet), var(--magenta));
   box-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
-  transition: transform 0.1s linear;
+  transition: transform 0.05s linear;
 }
 @media (prefers-reduced-motion: reduce) {
   .reading-progress__bar { transition: none; }
@@ -1235,7 +1248,7 @@ a {
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-  transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease, opacity 0.3s ease;
   animation: back-to-top-in 0.3s ease-out;
 }
 .back-to-top:hover {
@@ -1247,9 +1260,18 @@ a {
   outline: none;
   box-shadow: var(--focus-ring);
 }
+.back-to-top--hidden {
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+}
 @keyframes back-to-top-in {
   from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
+}
+@keyframes back-to-top-out {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(12px); }
 }
 @media (prefers-reduced-motion: reduce) {
   .back-to-top { animation: none; }
@@ -1463,7 +1485,7 @@ a {
   border-radius: 10px;
   overflow: hidden;
   margin-bottom: 1rem;
-  background: rgba(5, 6, 10, 0.6);
+  background: var(--glass-bg);
   border: 1px solid var(--glass-border);
 }
 
@@ -1528,10 +1550,11 @@ a {
   text-decoration: none;
   font-size: 0.88rem;
   font-weight: 600;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.2s ease, color 0.2s ease;
 }
 .blog-card__readmore:hover {
-  opacity: 0.75;
+  color: var(--magenta);
+  opacity: 1;
 }
 .blog-tag {
   padding: 2px 8px;
@@ -1633,7 +1656,7 @@ a {
   border-radius: 10px;
   overflow: hidden;
   margin-bottom: 1.5rem;
-  background: rgba(5, 6, 10, 0.6);
+  background: var(--glass-bg);
   border: 1px solid var(--glass-border);
 }
 
@@ -1697,7 +1720,7 @@ a {
 .blog-post__content pre {
   padding: 1rem 1.2rem;
   border-radius: 10px;
-  background: rgba(5, 6, 10, 0.6);
+  background: var(--glass-bg);
   border: 1px solid var(--glass-border);
   overflow-x: auto;
 }
@@ -1734,7 +1757,7 @@ a {
   border-radius: 10px;
   overflow: hidden;
   margin: 1rem 0;
-  background: rgba(5, 6, 10, 0.6);
+  background: var(--glass-bg);
   border: 1px solid var(--glass-border);
 }
 
@@ -1757,7 +1780,7 @@ a {
   padding: 1rem;
   border-radius: 12px;
   border: 1px solid var(--glass-border);
-  background: rgba(5, 6, 10, 0.45);
+  background: var(--glass-bg);
 }
 .md-diagram svg {
   display: block;
@@ -1827,11 +1850,14 @@ a {
   gap: 2px;
   padding: 6px 4px;
   padding-bottom: max(6px, env(safe-area-inset-bottom));
-  background: rgba(16, 22, 40, 0.95);
+  background: var(--glass-bg);
   -webkit-backdrop-filter: blur(18px) saturate(150%);
   backdrop-filter: blur(18px) saturate(150%);
   border-top: 1px solid var(--glass-border);
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4);
+}
+[data-theme='dark'] .admin-nav__bottom {
+  background: rgba(16, 22, 40, 0.95);
 }
 .admin-nav__bottom-item {
   display: flex;
@@ -1942,8 +1968,8 @@ a {
   color: var(--fg-muted);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  background: transparent;
-  border: none;
+  background: rgba(0, 240, 255, 0.04);
+  border-bottom: 1px solid var(--glass-border);
   padding-left: 0;
   padding-right: 0;
 }
@@ -1987,7 +2013,7 @@ a {
 .toast {
   position: fixed;
   bottom: 1.2rem;
-  right: 1.2rem;
+  right: 5rem;
   padding: 0.8rem 1.2rem;
   border-radius: 10px;
   border: 1px solid var(--glass-border);
@@ -1995,6 +2021,16 @@ a {
   color: var(--fg);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
   z-index: 200;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  animation: toast-in 0.2s ease-out;
+}
+.toast--exit {
+  opacity: 0;
+  transform: translateY(8px);
+}
+@keyframes toast-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(4px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
 /* Media Gallery */
@@ -2023,6 +2059,7 @@ a {
   justify-content: space-between;
   gap: 0.5rem;
   padding: 0.6rem 0.8rem;
+  flex-wrap: wrap;
 }
 .media-gallery__name {
   font-size: 0.82rem;
@@ -2138,16 +2175,16 @@ a {
   font-weight: 500;
   color: var(--fg);
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid var(--glass-border);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .pagination__btn:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.3);
-  color: var(--accent);
+  background: var(--glass-bg);
+  border-color: var(--glass-border);
+  color: var(--cyan);
 }
 
 .pagination__btn:disabled {
@@ -2233,6 +2270,10 @@ a {
   background: transparent;
   color: var(--fg);
   cursor: pointer;
+}
+.admin-tabs__btn:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
 }
 .admin-tabs__btn.is-active {
   background: var(--cyan);
