@@ -3,7 +3,7 @@
 import { Canvas, extend, useFrame, useThree } from '@react-three/fiber'
 import { shaderMaterial } from '@react-three/drei'
 import { useReducedMotion } from 'motion/react'
-import { useMemo, useRef } from 'react'
+import { useMemo, useRef, useState, useEffect } from 'react'
 import * as THREE from 'three'
 
 /**
@@ -156,17 +156,33 @@ function ShaderPlane({ reduceMotion }: { reduceMotion: boolean | null }) {
 
 export default function CyberBackground() {
   const reduceMotion = useReducedMotion()
+  const [glSupported, setGlSupported] = useState<boolean | null>(null)
   const camera = useMemo(() => ({ position: [0, 0, 1] as [number, number, number] }), [])
+
+  useEffect(() => {
+    try {
+      const canvas = document.createElement('canvas')
+      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl')
+      const supported = !!gl
+      console.debug('[cyber-bg] WebGL supported:', supported)
+      setGlSupported(supported)
+    } catch (err) {
+      console.warn('[cyber-bg] WebGL probe failed:', err)
+      setGlSupported(false)
+    }
+  }, [])
 
   return (
     <div className="cyber-bg" aria-hidden="true" data-reduce={reduceMotion ? 'on' : 'off'}>
-      <Canvas
-        camera={camera}
-        dpr={[1, 1.75]}
-        gl={{ alpha: false, antialias: true, powerPreference: 'high-performance' }}
-      >
-        <ShaderPlane reduceMotion={reduceMotion} />
-      </Canvas>
+      {glSupported === true && (
+        <Canvas
+          camera={camera}
+          dpr={[1, 1.75]}
+          gl={{ alpha: false, antialias: true, powerPreference: 'high-performance' }}
+        >
+          <ShaderPlane reduceMotion={reduceMotion} />
+        </Canvas>
+      )}
       <style jsx>{`
         .cyber-bg {
           position: fixed;

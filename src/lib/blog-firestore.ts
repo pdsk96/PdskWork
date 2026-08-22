@@ -4,6 +4,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getCountFromServer,
   getDocs,
   increment,
   limit,
@@ -113,13 +114,27 @@ export async function getPaginatedPosts(
         orderBy('createdAt', 'desc'),
       )
 
+  // Accurate total count via Firestore count aggregation.
+  let totalCount = 0
+  try {
+    const countSnap = await getCountFromServer(baseQuery)
+    totalCount = countSnap.data().count
+  } catch {
+    // Count aggregation unavailable (missing index / permissions).
+    // Fallback: estimate from cursor position + current page size.
+    totalCount = 0
+  }
+
   if (page <= 1) {
     const q = query(baseQuery, limit(perPage))
-  const snap = await getDocs(q)
-  const posts = snap.docs.map((d) => snapToPost(d.id, d.data() as Record<string, unknown>))
-  const hasMore = posts.length === perPage
-  console.debug(`[blog-firestore] getPaginatedPosts page=${page} locale=${locale ?? 'all'} count=${posts.length} hasMore=${hasMore}`)
-  return { posts, hasMore, totalCount: hasMore ? posts.length + 1 : posts.length }
+    const snap = await getDocs(q)
+    const posts = snap.docs.map((d) => snapToPost(d.id, d.data() as Record<string, unknown>))
+    const hasMore = posts.length === perPage
+    console.debug(`[blog-firestore] getPaginatedPosts page=${page} locale=${locale ?? 'all'} count=${posts.length} hasMore=${hasMore}`)
+    if (totalCount === 0) {
+      totalCount = hasMore ? posts.length + 1 : posts.length
+    }
+    return { posts, hasMore, totalCount }
   }
 
   const cursorQ = query(baseQuery, limit((page - 1) * perPage))
@@ -132,10 +147,14 @@ export async function getPaginatedPosts(
   const snap = await getDocs(q)
   const posts = snap.docs.map((d) => snapToPost(d.id, d.data() as Record<string, unknown>))
 
+  if (totalCount === 0) {
+    totalCount = cursorSnap.size + posts.length + (posts.length === perPage ? 1 : 0)
+  }
+
   return {
     posts,
     hasMore: posts.length === perPage,
-    totalCount: cursorSnap.size + posts.length,
+    totalCount,
   }
 }
 

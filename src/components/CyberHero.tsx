@@ -3,7 +3,7 @@
 import { Canvas, useFrame, type RootState } from '@react-three/fiber'
 import { AdaptiveDpr, PerformanceMonitor, Sparkles } from '@react-three/drei'
 import { useReducedMotion, useScroll, useTransform } from 'motion/react'
-import { useMemo, useRef } from 'react'
+import { useMemo, useRef, useState, useEffect } from 'react'
 import * as THREE from 'three'
 
 /**
@@ -185,21 +185,37 @@ function Stage({ reduceMotion }: { reduceMotion: boolean | null }) {
 
 export default function CyberHero() {
   const reduceMotion = useReducedMotion()
+  const [glSupported, setGlSupported] = useState<boolean | null>(null)
   const camera = useMemo(() => ({ position: [0, 0, 5] as Vec3 }), [])
+
+  useEffect(() => {
+    try {
+      const canvas = document.createElement('canvas')
+      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl')
+      const supported = !!gl
+      console.debug('[cyber-hero] WebGL supported:', supported)
+      setGlSupported(supported)
+    } catch (err) {
+      console.warn('[cyber-hero] WebGL probe failed:', err)
+      setGlSupported(false)
+    }
+  }, [])
 
   return (
     <div className="cyber-hero" aria-hidden="true">
-      <Canvas
-        camera={camera}
-        dpr={[1, 2]}
-        gl={{ alpha: true, antialias: true, powerPreference: 'high-performance' }}
-      >
-        {/* drei lowers dpr automatically on sustained low fps; AdaptiveDpr
-            reads the PerformanceMonitor-regulated pixel ratio during motion. */}
-        <PerformanceMonitor />
-        <AdaptiveDpr pixelated />
-        <Stage reduceMotion={reduceMotion} />
-      </Canvas>
+      {glSupported === true && (
+        <Canvas
+          camera={camera}
+          dpr={[1, 2]}
+          gl={{ alpha: true, antialias: true, powerPreference: 'high-performance' }}
+        >
+          {/* drei lowers dpr automatically on sustained low fps; AdaptiveDpr
+              reads the PerformanceMonitor-regulated pixel ratio during motion. */}
+          <PerformanceMonitor />
+          <AdaptiveDpr pixelated />
+          <Stage reduceMotion={reduceMotion} />
+        </Canvas>
+      )}
       <style jsx>{`
         .cyber-hero {
           position: fixed;
